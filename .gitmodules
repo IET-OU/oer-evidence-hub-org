@@ -1,0 +1,6 @@
+[submodule "wordpress"]
+	path = wordpress
+	url = https://github.com/WordPress/WordPress.git
+[submodule "wp-evidence-hub"]
+	path = wp-evidence-hub
+	url = https://github.com/mhawksey/wp-evidence-hub.git
