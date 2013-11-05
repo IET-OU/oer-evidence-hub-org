@@ -1,7 +1,7 @@
 # OER Evidence Hub site
 
 
-* Demo:  http://sites.hawksey.info/oerhub/
+* Demo:  http://sites.hawksey.info/oerhub
 * Martin Hawksey's plugin: https://github.com/mhawksey/wp-evidence-hub
 * Martin Hawksey's blog: [mashe.hawksey.info/2013/10/building-an-evidence-..][blog-build-plugin]
 
@@ -14,10 +14,11 @@ Please refer to [installing WordPress][wp-install], and [@mhawksey's Readme][plu
 
         git clone --recursive http://github.com/IET-OU/oer-evidence-hub-org.git oer_evidence_hub
 
-2. You will then need to set up two symbolic links...
+2. You will then need to set up three (3) symbolic links...
 
         cd oer_evidence_hub/wordpress/wp-content/plugins
         ln -s  ../../../wp-evidence-hub/ wp-evidence-hub
+        ln -s  ../../../wpmail-smtp/ wpmail-smtp
 
         cd ../themes
         ln -s ../../../tiny-forge tiny-forge
@@ -26,7 +27,7 @@ Please refer to [installing WordPress][wp-install], and [@mhawksey's Readme][plu
 
         cd ../../../
         cp wp-config-OER-TEMPLATE.php wordpress/wp-config.php
-    vi wordpress/wp-config.php
+        vi wordpress/wp-config.php
 
 ...
 
@@ -41,7 +42,7 @@ Tiny Forge, version 1.4.1 - a snapshot is included in this Git repo.
 
 [wp-install]: http://codex.wordpress.org/Installing_WordPress
 [plugin-readme]: https://github.com/mhawksey/wp-evidence-hub#readme
-[blog-build-plugi]: http://mashe.hawksey.info/2013/10/building-an-evidence-hub-plugin-for-wordpress
+[blog-build-plugin]: http://mashe.hawksey.info/2013/10/building-an-evidence-hub-plugin-for-wordpress
 [submodules]: http://git-scm.com/book/en/Git-Tools-Submodules
 
 

@@ -42,6 +42,12 @@ define('WP_PROXY_PORT', '80');
 
 
 
+define('SMTP_HOST', 'smtpmail.open.ac.uk');
+define('SMTP_PORT', 25);
+//ini_set('SMTP', 'smtpmail.open.ac.uk');
+
+
+
 /**#@+
  * Authentication Unique Keys and Salts.
  *
