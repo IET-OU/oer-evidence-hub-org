@@ -4,4 +4,8 @@ wp-content/plugins/wp-evidence-hub
 wp-content/themes/tiny-forge
 
 
+*.diff
+*.patch
+
+
 #End.
