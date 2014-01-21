@@ -7,3 +7,6 @@
 [submodule "wordpress-importer"]
 	path = wordpress-importer
 	url = https://github.com/svn2github/wordpress-importer.git
+[submodule "wp-juxtalearn-hub"]
+	path = wp-juxtalearn-hub
+	url = https://github.com/mhawksey/wp-juxtalearn-hub.git
