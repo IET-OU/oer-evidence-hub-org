@@ -1,4 +1,4 @@
-# OER Evidence Hub site
+# OER Evidence Hub/ Juxtalearn sites
 
 
 * Demo:  http://sites.hawksey.info/oerhub
@@ -13,7 +13,7 @@ Please refer to [installing WordPress][wp-install], and [@mhawksey's Readme][plu
 
 1. We're using [Git submodules][submodules], so please clone using the recursive flag,
 
-        git clone --recursive http://github.com/IET-OU/oer-evidence-hub-org.git oer_evidence_hub
+        git clone --recursive https://github.com/IET-OU/oer-evidence-hub-org.git oer_evidence_hub
 
 2. You will then need to set up three (3) symbolic links...
 
