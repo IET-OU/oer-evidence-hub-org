@@ -1,5 +1,6 @@
 # GNU Make file for OER Evidence Hub/ Juxtalearn/ ..
 
+
 help:
 	@echo OER Evidence Hub/ Juxtalearn installer. Commands:
 	@echo "		make install-oer"
@@ -10,7 +11,7 @@ sym-links:
 	ln -s  ./wordpress-importer/trunk/  wordpress/wp-content/plugins/wordpress-importer
 	ln -s  ./wpmail-smtp/ wordpress/wp-content/plugins/wpmail-smtp
 	#cd ../themes
-	ln -s ./tiny-forge themes/tiny-forge
+	ln -s  ./tiny-forge  wordpress/wp-content/themes/tiny-forge
 
 install-cmn: sym-links
 	cp  ./wp-config-OER-TEMPLATE.php  wordpress/wp-config.php
