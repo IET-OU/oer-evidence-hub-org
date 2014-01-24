@@ -9,28 +9,31 @@
 
 ## Install
 
-Please refer to [installing WordPress][wp-install], and [@mhawksey's Readme][plugin-readme-jx].
+Please refer to [installing WordPress][wp-install], and [@mhawksey's Readme][plugin-readme-jx]:
 
-1. We're using [Git submodules][submodules], so please clone using the recursive flag,
+1. Preparation (Redhat or CentOS Linux),
+
+        yum -y install  git
+        yum -y install  php-mysql
+
+2. We're using [Git submodules][submodules], so please clone using the recursive flag,
 
         git clone --recursive https://github.com/IET-OU/oer-evidence-hub-org.git oer_evidence_hub
 
-2. You will then need to set up three (3) symbolic links...
+3. You will then need to set up symbolic links...
 
-        cd oer_evidence_hub/wordpress/wp-content/plugins
-        #ln -s  ../../../wp-evidence-hub/  wp-evidence-hub
-        ln -s  ../../../wp-juxtalearn-hub/  wp-juxtalearn-hub
-        ln -s  ../../../wordpress-importer/trunk/  wordpress-importer
-        ln -s  ../../../wpmail-smtp/ wpmail-smtp
+        make install-oer
+   Or
 
-        cd ../themes
-        ln -s ../../../tiny-forge tiny-forge
+        make install-juxta
 
-3. Copy and edit the configuration template,
+4. Edit the Wordpress configuration script,
 
-        cd ../../../
-        cp wp-config-OER-TEMPLATE.php wordpress/wp-config.php
         vi wordpress/wp-config.php
+
+5. Edit Apache configuration,
+
+        vi /etc/httpd/conf.d/oerevidencehub-org.conf
 
 ...
 
@@ -44,6 +47,7 @@ Tiny Forge, version 1.4.1 - a snapshot is included in this Git repo.
 
 
 [wp-install]: http://codex.wordpress.org/Installing_WordPress
+[wp-secrets]: https://api.wordpress.org/secret-key/1.1/salt/
 [plugin-readme-jx]: https://github.com/mhawksey/wp-juxtalearn-hub#readme
 [plugin-readme]: https://github.com/mhawksey/wp-evidence-hub#readme
 [blog-build-plugin]: http://mashe.hawksey.info/2013/10/building-an-evidence-hub-plugin-for-wordpress
@@ -52,4 +56,3 @@ Tiny Forge, version 1.4.1 - a snapshot is included in this Git repo.
 
 
 [End]: http://example
-

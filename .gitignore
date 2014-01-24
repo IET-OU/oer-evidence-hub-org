@@ -1,11 +1,16 @@
 
+Thumbs.db
+.DS_Store
+
 wp-config.php
+wp-content/plugins/wordpress-importer
 wp-content/plugins/wp-evidence-hub
+wp-content/plugins/wp-juxtalearn-hub
 wp-content/themes/tiny-forge
 
 
 *.diff
 *.patch
-
+*.log
 
 #End.

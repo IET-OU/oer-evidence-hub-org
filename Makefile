@@ -2,19 +2,21 @@
 
 
 help:
-	@echo OER Evidence Hub/ Juxtalearn installer. Commands:
+	@echo OER Evidence Hub/ Juxtalearn installer.
+	@echo
+	@echo "	Commands:"
 	@echo "		make install-oer"
-	@echo "		make install-jx"
+	@echo "		make install-juxta"
+	@echo
 
 sym-links:
 	#cd oer_evidence_hub/
-	ln -s  ./wordpress-importer/trunk/  wordpress/wp-content/plugins/wordpress-importer
-	ln -s  ./wpmail-smtp/ wordpress/wp-content/plugins/wpmail-smtp
+	ln -sf  ./wordpress-importer/trunk  wordpress/wp-content/plugins/wordpress-importer
+	ln -sf  ./wpmail-smtp  wordpress/wp-content/plugins/wpmail-smtp
 	#cd ../themes
-	ln -s  ./tiny-forge  wordpress/wp-content/themes/tiny-forge
+	ln -sf  ./tiny-forge/1.5.4.2  wordpress/wp-content/themes/tiny-forge
 
 install-cmn: sym-links
-	cp  ./wp-config-OER-TEMPLATE.php  wordpress/wp-config.php
 	mkdir  wordpress/wp-content/files/
 	chown -R apache:apache  wordpress/wp-content/files/
 	mkdir  wordpress/wp-content/uploads/
@@ -22,10 +24,12 @@ install-cmn: sym-links
 
 install-oer: install-cmn
 	@echo Installing OER Evidence Hub...
-	ln -s  ./wp-evidence-hub/  wordpress/wp-content/plugins/wp-evidence-hub
+	cp  ./wp-config-OER-TEMPLATE.php  wordpress/wp-config.php
+	ln -sf  ./wp-evidence-hub  wordpress/wp-content/plugins/wp-evidence-hub
 
-install-jx: install-cmn
+install-juxta: install-cmn
 	@echo Installing Juxtalearn...
-	ln -s  ./wp-juxtalearn-hub/  wordpress/wp-content/plugins/wp-juxtalearn-hub
+	cp  ./wp-config-JUXTA-TEMPLATE.php  wordpress/wp-config.php
+	ln -sf  ./wp-juxtalearn-hub  wordpress/wp-content/plugins/wp-juxtalearn-hub
 
 #End.
