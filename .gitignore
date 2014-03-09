@@ -8,7 +8,8 @@ wp-content/plugins/wp-evidence-hub
 wp-content/plugins/wp-juxtalearn-hub
 wp-content/themes/tiny-forge
 
-
+/_dev
+/*.sql
 *.diff
 *.patch
 *.log
