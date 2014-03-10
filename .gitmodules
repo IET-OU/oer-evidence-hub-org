@@ -13,3 +13,6 @@
 [submodule "tiny-forge"]
 	path = tiny-forge
 	url = https://github.com/svn2github/tiny-forge.git
+[submodule "social-connect"]
+	path = social-connect
+	url = https://github.com/wp-plugins/social-connect.git
