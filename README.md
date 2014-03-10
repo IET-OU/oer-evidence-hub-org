@@ -1,10 +1,13 @@
-# OER Evidence Hub/ Juxtalearn sites
+# OER Impact Map/ Juxtalearn sites
 
 
 * Demo:  http://sites.hawksey.info/oerhub
 * Martin Hawksey's plugin: https://github.com/mhawksey/wp-evidence-hub
+* JuxtaLearn trick topic tool: <http://juxtalearn.net>
 * Martin's Juxtalearn plugin: <https://github.com/mhawksey/wp-juxtalearn-hub>
 * Martin Hawksey's blog: [mashe.hawksey.info/2013/10/building-an-evidence-..][blog-build-plugin]
+
+(Note, the OER Impact Map site was called the "OER Evidence Hub".)
 
 
 ## Install
@@ -20,22 +23,42 @@ Please refer to [installing WordPress][wp-install], and [@mhawksey's Readme][plu
 
         git clone --recursive https://github.com/IET-OU/oer-evidence-hub-org.git oer_evidence_hub
 
-3. You will then need to set up symbolic links...
+3. You may need to switch branches,
+
+        git checkout origin juxtalearn:juxtalearn
+
+4. You will then need to set up symbolic links, upload directories and so on...
 
         make install-oer
    Or
 
         make install-juxta
 
-4. Edit the Wordpress configuration script,
+5. Edit the Wordpress configuration script,
 
         vi wordpress/wp-config.php
 
-5. Edit Apache configuration,
+6. Edit Apache configuration,
 
         vi /etc/httpd/conf.d/oerevidencehub-org.conf
 
 ...
+
+
+## Upgrade
+
+1. Pull latest modifications from Github,
+
+        git pull origin juxtalearn:juxtalearn
+
+2. Ensure that submodules are correctly updated,
+
+        git submodule update --init
+
+3. Set up additional symbolic links - probably manually,
+
+        more Makefile
+        ln -sf  ../../../{NAME}  wordpress/wp-content/plugins/{NAME}
 
 
 ## Theme

@@ -26,6 +26,8 @@ install-cmn: sym-links
 install-oer: install-cmn
 	@echo Installing OER Evidence Hub...
 	cp  ./wp-config-OER-TEMPLATE.php  wordpress/wp-config.php
+	ln -sf  ../../../social-connect  wordpress/wp-content/plugins/social-connect
+	ln -sf  ../../../jetpack  wordpress/wp-content/plugins/jetpack
 	ln -sf  ../../../wp-evidence-hub  wordpress/wp-content/plugins/wp-evidence-hub
 
 install-juxta: install-cmn
