@@ -16,3 +16,6 @@
 [submodule "social-connect"]
 	path = social-connect
 	url = https://github.com/wp-plugins/social-connect.git
+[submodule "jetpack"]
+	path = jetpack
+	url = https://github.com/wp-plugins/jetpack.git
