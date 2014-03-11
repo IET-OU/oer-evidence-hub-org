@@ -2,8 +2,8 @@
 /*
 Plugin Name: My Custom Functions
 Plugin URI:  https://gist.github.com/nfreear/9049532
-Description: A simple plugin that contains all the awesome little functions that
-    I use to make my site work <a href=
+Description: A simple plugin for little utility functions, inc. admin UI simplifications for teachers/editors.
+    I use them to make my site work <a href=
 "http://wphidedash.org/2011/04/best-practice-for-adding-custom-functions/">my way.</a>
 Author:  Nick Freear
 Author URI:  https://github.com/IET-OU/oer-evidence-hub-org/#Juxtalearn
@@ -32,20 +32,20 @@ define('CUSTOM_FUNC_REGISTER_FILE',
 //remove_filter ('the_content', 'wpautop');
 
 
-//http://wordpress.stackexchange.com/questions/66834/how-to-target-with-css-admin-elements-according-to-user-role-level
-function wpa66834_role_admin_body_class( $classes ) {
+class My_Custom_Functions {
+
+  public function __construct() {
+    add_filter('admin_body_class', array(&$this, 'admin_body_class'));
+    add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
+  }
+
+
+  // http://wordpress.stackexchange.com/questions/66834/how-to-target-with-css-admin-elem-
+  public function admin_body_class( $classes ) {
     global $current_user;
     foreach( $current_user->roles as $role )
         $classes .= ' role-' . $role;
     return trim( $classes );
-}
-add_filter( 'admin_body_class', 'wpa66834_role_admin_body_class' );
-
-
-class My_Custom_Functions {
-
-  public function __construct() {
-    add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
   }
 
 
