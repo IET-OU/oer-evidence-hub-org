@@ -9,7 +9,7 @@
 	url = https://github.com/svn2github/wordpress-importer.git
 [submodule "wp-juxtalearn-hub"]
 	path = wp-juxtalearn-hub
-	url = https://github.com/mhawksey/wp-juxtalearn-hub.git
+	url = https://github.com/IET-OU/wp-juxtalearn-hub.git
 [submodule "tiny-forge"]
 	path = tiny-forge
 	url = https://github.com/svn2github/tiny-forge.git
