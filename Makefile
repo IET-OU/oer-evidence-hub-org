@@ -33,6 +33,7 @@ install-oer: install-cmn
 install-juxta: install-cmn
 	@echo Installing Juxtalearn...
 	cp  ./wp-config-JUXTA-TEMPLATE.php  wordpress/wp-config.php
+	ln -sf  ../../../custom-functions   wordpress/wp-content/plugins/custom-functions
 	ln -sf  ../../../wp-juxtalearn-hub  wordpress/wp-content/plugins/wp-juxtalearn-hub
 
 test:

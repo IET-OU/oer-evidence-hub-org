@@ -1,0 +1,24 @@
+
+/* Teacher - "role-editor"
+*/
+.wp-admin.X-role-editor #menu-dashboard,
+.wp-admin.role-editor #menu-posts,
+.wp-admin.role-editor #menu-media,
+.wp-admin.role-editor #menu-pages,
+.wp-admin.role-editor #menu-comments,
+.wp-admin.role-editor #menu-appearance,
+.wp-admin.role-editor #menu-plugins,
+.wp-admin.role-editor #menu-tools,
+.wp-admin.role-editor #menu-settings,
+.wp-admin.role-editor #toplevel_page_juxtalearn_hub,
+.wp-admin.role-editor #wp-admin-bar-new-page,
+.wp-admin.role-editor #dashboard_right_now #wp-version-message,
+.wp-admin.role-editor #dashboard_quick_press,
+.wp-admin.role-editor #dashboard_recent_comments,
+.wp-admin.role-editor #dashboard_incoming_links,
+.wp-admin.role-editor #dashboard_primary,
+.wp-admin.role-editor #dashboard_secondary,
+.wp-admin.role-editor #postexcerpt {
+  display: none;
+}
+
