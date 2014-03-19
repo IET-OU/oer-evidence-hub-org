@@ -2,7 +2,7 @@
 /*
 Plugin Name: My Custom Functions
 Plugin URI:  https://gist.github.com/nfreear/9049532
-Description: A simple plugin for little utility functions, inc. admin UI simplifications for teachers/editors.
+Description: A simple plugin for little utility functions, inc. admin UI simplifications for teachers/editors [JuxtaLearn].
     I use them to make my site work <a href=
 "http://wphidedash.org/2011/04/best-practice-for-adding-custom-functions/">my way.</a>
 Author:  Nick Freear

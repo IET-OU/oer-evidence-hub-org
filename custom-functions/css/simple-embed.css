@@ -1,0 +1,18 @@
+
+.simple-embed .site > header,
+.simple-embed .site > footer,
+#wpadminbar,
+#secondary {
+  display: none;
+}
+
+body.custom-background.simple-embed {
+  background: none;
+}
+
+html body.simple-embed .site {
+  margin: 0;
+  padding: 1em;
+  box-shadow: none;
+  max-width: 100%;
+}
