@@ -15,27 +15,30 @@ class Wp_JuxtaLearn_Quiz {
 
   const PREFIX = '_juxtalearn_quiz__';
 
-  protected $is_quiz = FALSE;
+  protected $is_quiz_edit_pg = FALSE;
 
 
   public function __construct() {
     //TODO: check whether Slick Quiz is enabled -- is_plugin_active() ?
 
-    $this->is_quiz = isset($_GET['page']) &&
+    $this->is_quiz_edit_pg = isset($_GET['page']) &&
         preg_match('/slickquiz-(new|edit)/', $_GET['page']);
 
     add_action('wp_ajax_juxtalearn_quiz_edit', array(&$this, 'ajax_juxtalearn_quiz_edit'));
-    add_action('admin_init', array(&$this, 'admin_init'));
+    //add_action('admin_init', array(&$this, 'admin_init'));
 
-    if ($this->is_quiz) {
-      add_filter('slickquiz_admin_options', array(&$this, 'custom_admin_options'));
-    
+    if ($this->is_quiz_edit_pg) {
+      //add_filter('slickquiz_admin_options', array(&$this, 'custom_admin_options'));
+
       add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
+
+      add_action('admin_print_footer_scripts', array(&$this, 'admin_quiz_footer')); #, 50);
     }
   }
 
   public function admin_init() {
     @header('X-JuxtaLearn-Quiz: admin_init');
+    echo " admin_init ";
   }
 
   public function ajax_juxtalearn_quiz_edit() {
@@ -43,21 +46,18 @@ class Wp_JuxtaLearn_Quiz {
     if ('juxtalearn_quiz_edit' != $action) {
       header('X-JuxtaLearn-Quiz: no-ajax');
       die('No');
-      return;
     }
 
-    $quiz_id = isset($_GET['id']) ? intval($_GET['id']) : NULL;
+    $quiz = $this->get_data('quiz');
 
-    #$quiz = $this->get_last_quiz_by_user( get_current_user_id() );
-
-    header('X-JuxtaLearn-Quiz: ajax; quiz_id='. $quiz_id);
+    header('X-JuxtaLearn-Quiz: ajax; quiz_id='. $quiz->id);
 
     $data = json_decode(stripcslashes( $_POST['json'] ));
 
     var_dump($quiz_id);
 
-    $this->update_data('quiz_tt', array($quiz_id => $data->trickytopic_id));
-    $this->update_data('quiz_sb', array($quiz_id => $data->stumbling_blocks));
+    $this->update_data('quiz_tt', array($quiz->id => $data->trickytopic_id));
+    $this->update_data('quiz_sb', array($quiz->id => $data->stumbling_blocks));
 
     die('Yes');
   }
@@ -68,14 +68,17 @@ class Wp_JuxtaLearn_Quiz {
     ), array('jquery')); #, false, $in_footer = TRUE);
   }
 
-  public function custom_admin_options( $options ) {
+  public function admin_quiz_footer() {
+  //public function custom_admin_options( $options ) {
+    //var_dump($GLOBALS['hook_suffix']); 'admin_page_slickquiz-edit'
 
-    if (!$this->is_quiz) return;
+    if (!$this->is_quiz_edit_pg) return;
 
     $tricky_topics = $this->get_data('tricky_topics');
     $quiz_tt = $this->get_data('quiz_tt');
+    $quiz = $this->get_data('quiz');
 ?>
-    <div class="jlq-template jlq-t-t" data-sel=".slickQuiz .QuizTitle" style="display:none" >
+    <script type="text/template" class="jlq-template jlq-t-t" data-sel=".slickQuiz .QuizTitle">
 
     <div class="question JL-Quiz-TrickyTopic">
       <label for=jlq-trickytopic >Trick topic</label>
@@ -84,14 +87,15 @@ class Wp_JuxtaLearn_Quiz {
         <option></option>
       <?php foreach ($tricky_topics as $post): #setup_postdata($topic); ?>
         <option value="<?php echo $post->ID ?>"
-          <?php echo in_array($post->ID, $quiz_tt) ? 'selected' : '' ?>
+          <?php echo isset($quiz_tt['x'. $quiz->id])
+             && $post->ID == $quiz_tt['x'. $quiz->id] ? 'selected' : '' ?>
           ><?php echo $post->post_title ?></option>
       <?php endforeach; ?>
       </select>
     </div>
 
-    </div>
-    <div class="jlq-template jlq-t-s" data-sel=".question.actual" style="display:none">
+    </script>
+    <script type="text/template" class="jlq-template jlq-t-s" data-sel=".question.actual">
 
     <div class="question JL-Quiz-Stumbles">
       <label class=main >Stumbling blocks</label>
@@ -120,29 +124,46 @@ class Wp_JuxtaLearn_Quiz {
           'order' => 'ASC',
         ));
       break;
+      case 'quiz':
+        //$quiz = $this->get_last_quiz_by_user( get_current_user_id() );
+        $quiz_id = isset($_GET['id']) ? intval($_GET['id']) : NULL;
+        $result = (object) array('id' => $quiz_id);
+      break;
       case 'quiz_tt':
         $result = get_option(self::PREFIX .'tt', array());
       break;
       case 'quiz_sb':
         $result = get_option(self::PREFIX .'sb', array());
+      break;
       default:
         die("Unexpected 'get_data' call.");
+      break;
     }
     return $result;
   }
 
   protected function update_data($key, $values) {
     $result = $this->get_data($key);
+    $new_values = array();
+    foreach ($values as $id => $value) {
+      if (is_numeric($id)) {
+        $new_values['x'. $id] = $value;
+      } else {
+        $new_values[$id] = $value;
+      }
+    }
     switch ($key) {
       case 'quiz_tt':
-        $result = array_merge($result, $values);
+        $result = array_merge($result, $new_values);
         update_option(self::PREFIX . 'tt', $result);
       break;
       case 'quiz_sb':
-        $result = array_merge($result, $values);
+        $result = array_merge($result, $new_values);
         update_option(self::PREFIX .'sb', $result);
+      break;
       default:
         die("Unexpected 'update_data' call.");
+      break;
     }
     return $result;
   }
