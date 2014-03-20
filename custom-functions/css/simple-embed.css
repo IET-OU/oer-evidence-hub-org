@@ -1,4 +1,5 @@
-
+/* Tested with Tiny Forge theme for WordPress.
+*/
 .simple-embed .site > header,
 .simple-embed .site > footer,
 #wpadminbar,
@@ -7,12 +8,27 @@
 }
 
 body.custom-background.simple-embed {
-  background: none;
+  background: #fcfcfc;
+}
+
+html.simple-embed {
+  margin: 0 !important;
 }
 
 html body.simple-embed .site {
   margin: 0;
-  padding: 1em;
+  padding: 5px; /*1em*/
   box-shadow: none;
   max-width: 100%;
+  background: transparent;
+}
+
+.simple-embed .site-content {
+  margin: 0;
+  float: none;
+  width: 100%;
+}
+
+.se-no-comments #comments {
+  display: none;
 }
