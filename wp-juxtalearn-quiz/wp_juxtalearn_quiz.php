@@ -11,11 +11,14 @@ define('JUXTALEARN_QUIZ_REGISTER_FILE',
     preg_replace('@\/var\/www\/[^\/]+@', '', __FILE__) # Linux
 ));
 
-class Wp_JuxtaLearn_Quiz {
+require_once 'php/juxtalearn_quiz_model.php';
 
-  const PREFIX = '_juxtalearn_quiz__';
+
+class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
 
   protected $is_quiz_edit_pg = FALSE;
+  protected $is_quiz_view_pg = FALSE;
+  protected $quiz;
 
 
   public function __construct() {
@@ -24,7 +27,13 @@ class Wp_JuxtaLearn_Quiz {
     $this->is_quiz_edit_pg = isset($_GET['page']) &&
         preg_match('/slickquiz-(new|edit)/', $_GET['page']);
 
-    add_action('wp_ajax_juxtalearn_quiz_edit', array(&$this, 'ajax_juxtalearn_quiz_edit'));
+    add_filter('the_content', array(&$this, 'slickquiz_view_filter'));
+    add_action('wp_enqueue_scripts', array(&$this, 'front_enqueue_scripts'));
+
+    $AJAX_ACT = 'wp_ajax_juxtalearn_quiz_';
+    add_action($AJAX_ACT . 'edit', array(&$this, 'ajax_post_quiz_edit'));
+    add_action($AJAX_ACT . 'stumbling_blocks', array(&$this, 'ajax_get_stumbles'));
+    //add_action($AJAX_ACT . 'scores', array(&$this, 'ajax_post_scores'));
     //add_action('admin_init', array(&$this, 'admin_init'));
 
     if ($this->is_quiz_edit_pg) {
@@ -36,17 +45,47 @@ class Wp_JuxtaLearn_Quiz {
     }
   }
 
+  public function slickquiz_view_filter( $body ) {
+
+    if (preg_match('@\[slickquiz id=(\d+)\]@', $body, $matches)) {
+      $quiz_id = $matches[1];
+
+      $this->is_quiz_view_pg = TRUE;
+      $this->quiz = (object) array('id' => $quiz_id);
+
+      $body .= '<script>juxtalearn_quiz = { id: '. $quiz_id .' };</script>';
+    }
+    return $body;
+  }
+
   public function admin_init() {
     @header('X-JuxtaLearn-Quiz: admin_init');
     echo " admin_init ";
   }
 
-  public function ajax_juxtalearn_quiz_edit() {
-    $action = isset($_POST['action']) ? $_POST['action'] : NULL;
-    if ('juxtalearn_quiz_edit' != $action) {
-      header('X-JuxtaLearn-Quiz: no-ajax');
-      die('No');
+  #wordpress/wp-admin/admin-ajax.php?action=juxtalearn_quiz_stumbling_blocks&tricky_topic=79
+  public function ajax_get_stumbles() {
+    $tricky_topic_id = isset($_GET['tricky_topic']) ? intval($_GET['tricky_topic']) : NULL;
+    $post = get_post($tricky_topic_id);
+    $stumbling_blocks = $this->get_data('sb', $tricky_topic_id);
+    $html = '';
+    foreach ($stumbling_blocks as $tm) {
+      $html .= '<label><input type=checkbox value="'. $tm->term_id .'">'. $tm->name .'</label>';
     }
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(array(
+      'tricky_topic_id' => $post->ID,
+      'tricky_topic_title' => $post->post_title,
+      #'tricky_topic_body' => $post->body,
+      'post_type' => $post->post_type,
+      'stumbling_blocks' => $stumbling_blocks,
+      'html' => $html,
+    ));
+    die(0);
+  }
+
+  # POST wordpress/wp-admin/admin-ajax.php?action=juxtalearn_quiz_edit&id=1
+  public function ajax_post_quiz_edit() {
 
     $quiz = $this->get_data('quiz');
 
@@ -66,6 +105,12 @@ class Wp_JuxtaLearn_Quiz {
     wp_enqueue_script('quiz-scaffold', plugins_url(
       'js/juxtalearn-quiz-scaffold.js', JUXTALEARN_QUIZ_REGISTER_FILE
     ), array('jquery')); #, false, $in_footer = TRUE);
+  }
+
+  public function front_enqueue_scripts() {
+    wp_enqueue_script('quiz-response', plugins_url(
+      'js/juxtalearn-quiz-response.js', JUXTALEARN_QUIZ_REGISTER_FILE
+    ), array('jquery'));
   }
 
   public function admin_quiz_footer() {
@@ -103,69 +148,11 @@ class Wp_JuxtaLearn_Quiz {
       <label ><input type=checkbox name="jlq-stumble[]" value=1 />Stumbling block 1</label>
       <label ><input type=checkbox name="jlq-stumble[]" value=2 />Stumbling block 2</label>
       <label ><input type=checkbox name="jlq-stumble[]" value=3 />Stumbling block 3 ...</label>
-      <p>[ MORE SCAFFOLDING..? ]
+      <p>[ TODO: More scaffolding -- display student problems for selected stumbling blocks?]
     </div>
 
     </div>
 <?php
-  }
-
-
-  /* ========== Data / model functions ============ */
-
-  protected function get_data($key) {
-    $result = array();
-    switch ($key) {
-      case 'tricky_topics':
-        $result = get_posts(array(
-          'post_type' => 'tricky_topic',
-          'post_per_page' => 10, //100,
-          'orderby' => 'title',
-          'order' => 'ASC',
-        ));
-      break;
-      case 'quiz':
-        //$quiz = $this->get_last_quiz_by_user( get_current_user_id() );
-        $quiz_id = isset($_GET['id']) ? intval($_GET['id']) : NULL;
-        $result = (object) array('id' => $quiz_id);
-      break;
-      case 'quiz_tt':
-        $result = get_option(self::PREFIX .'tt', array());
-      break;
-      case 'quiz_sb':
-        $result = get_option(self::PREFIX .'sb', array());
-      break;
-      default:
-        die("Unexpected 'get_data' call.");
-      break;
-    }
-    return $result;
-  }
-
-  protected function update_data($key, $values) {
-    $result = $this->get_data($key);
-    $new_values = array();
-    foreach ($values as $id => $value) {
-      if (is_numeric($id)) {
-        $new_values['x'. $id] = $value;
-      } else {
-        $new_values[$id] = $value;
-      }
-    }
-    switch ($key) {
-      case 'quiz_tt':
-        $result = array_merge($result, $new_values);
-        update_option(self::PREFIX . 'tt', $result);
-      break;
-      case 'quiz_sb':
-        $result = array_merge($result, $new_values);
-        update_option(self::PREFIX .'sb', $result);
-      break;
-      default:
-        die("Unexpected 'update_data' call.");
-      break;
-    }
-    return $result;
   }
 
 }

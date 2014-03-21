@@ -1,26 +1,20 @@
-/* JuxtaLearn Quiz scaffolding.
+/* JuxtaLearn Quiz - scaffolding for the SlickQuiz editor.
 */
+
+/*jslint indent: 2 */
+/*global jQuery:false, window:false, log:false, console:false */
 
 jQuery(function ($) {
-//$(function () {
-//setTimeout(function () {
 
-  var quiz = $('.slickQuiz'),
-      action = 'juxtalearn_quiz_edit';
+  'use strict';
 
-  var x = [ { a: 1 }, { a: "X" } ];
+  var qEdit = $('.wp-admin .slickQuiz'),
+    editAction = 'juxtalearn_quiz_edit',
+    sbAction = 'juxtalearn_stumbling_blocks';
 
-  console.log("Quiz scaffolding...", quiz, x);
+  log(">> Quiz scaffolding...", qEdit);
 
-/*
-  var template_1 = $("#juxtalearn-quiz-template .jlq-1").parent().clone().html();
-
-  console.log(template_1);
-  console.log($(".wp-admin .slickQuiz .QuizTitle"));
-
-  $(".wp-admin .slickQuiz .QuizTitle")
-    .after($("#juxtalearn-quiz-template .jlq-1").parent().clone().html())
-*/
+  // Quiz editor - insert scaffolding templates into page.
   $(".jlq-template").each(function (idx, el) {
     var selector = $(el).data("sel");
     $(selector).after($(el).html());
@@ -34,15 +28,17 @@ jQuery(function ($) {
   };
 
 
-  $('.addQuestion', quiz).on('click', function (e) {
-    $('.questionSet', quiz).each(function (i, el) {
+  // Quiz editor - insert from a template for each new question.
+  $('.addQuestion', qEdit).on('click', function (e) {
+    $('.questionSet', qEdit).each(function (i, el) {
       if ($('.JL-Quiz-Stumbles', $(el)).length === 0) {
         $(el).after($(".jlq-template.jlq-t-s").html());
       }
     });
   });
 
-  $('.publish', quiz).on('click', function (e) {
+  // Quiz editor - submit changes to scaffolding.
+  $('button.publish, .draft, .preview', qEdit).on('click', function (e) {
     e.preventDefault();
 
     var actionUrl = window.location.pathname
@@ -51,41 +47,50 @@ jQuery(function ($) {
           + window.location.search
           + '&_JUXTALEARN_=1';
 
-    var trickytopic = $('#jlq-trickytopic option:selected', quiz);
-    var stumbles = [];
-    $('.questionSet', quiz).each(function (i, el) {
-      var q = $('[name = question]', $(el)).val();
-      var s = $('.JL-Quiz-Stumbles input:checked', $(el)).values();
-      //console.log(">> SBs", q, s);
+    var trickytopic = $('#jlq-trickytopic option:selected', qEdit),
+        stumbles = [];
+    $('.questionSet', qEdit).each(function (i, el) {
+      var q = $('[name = question]', $(el)).val(),
+        s = $('.JL-Quiz-Stumbles input:checked', $(el)).values();
+      //log(">> SBs", q, s);
       s = ["2", "3"];
       stumbles.push({ q: q, s: s });
     });
 
-    var formJSON = JSON.stringify({
+    var data = {
+      sub_action:       e.target.value,
       trickytopic_id:   trickytopic.val(),
       trickytopic_name: trickytopic.text(),
       stumbling_blocks: stumbles
-    });
-    //console.log(">> Publish?", trickytopic.text(), stumbles);
+    };
+    //log(">> Publish?", trickytopic.text(), stumbles);
 
     $.ajax({
       type: 'POST',
       url:  actionUrl,
       data: {
-        action: action,
-        json: formJSON
+        action: editAction,
+        json: JSON.stringify(data)
       },
-      dataType:'text',
+      dataType: 'text',
       async:   false, // for Safari
       success: function (data) {
-        console.log(">> Success!");
+        log(">> Ajax success!");
       }
     });
 
-    console.log(">> Publish");
-
+    log(">> Saving:", e.target.value);
   });
 
 });
-//}, 1000);
-    
+
+
+// usage: log('inside coolFunc',this,arguments);
+// http://paulirish.com/2009/log-a-lightweight-wrapper-for-consolelog/
+window.log = function () {
+  log.history = log.history || [];   // store logs to an array for reference
+  log.history.push(arguments);
+  if (this.console) {
+    console.log( Array.prototype.slice.call(arguments) );
+  }
+};
