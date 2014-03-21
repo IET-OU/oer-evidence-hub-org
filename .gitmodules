@@ -19,3 +19,9 @@
 [submodule "jetpack"]
 	path = jetpack
 	url = https://github.com/wp-plugins/jetpack.git
+[submodule "feedwordpress"]
+	path = feedwordpress
+	url = https://github.com/wp-plugins/feedwordpress.git
+[submodule "google-sitemap-generator"]
+	path = google-sitemap-generator
+	url = https://github.com/wp-plugins/google-sitemap-generator.git

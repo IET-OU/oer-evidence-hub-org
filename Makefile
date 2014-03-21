@@ -1,5 +1,8 @@
 # GNU Make file for OER Evidence Hub/ Juxtalearn/ ..
 
+# Environment.
+PLUGIN_DIR=wordpress/wp-content/plugins
+
 
 help:
 	@echo OER Evidence Hub/ Juxtalearn installer.
@@ -11,8 +14,8 @@ help:
 
 sym-links:
 	#cd oer_evidence_hub/
-	ln -sf ../../../wordpress-importer/trunk wordpress/wp-content/plugins/wordpress-importer
-	ln -sf  ../../../wpmail-smtp  wordpress/wp-content/plugins/wpmail-smtp
+	ln -sf ../../../wordpress-importer/trunk $(PLUGIN_DIR)/wordpress-importer
+	ln -sf  ../../../wpmail-smtp  $(PLUGIN_DIR)/wpmail-smtp
 	#cd ../themes
 	ln -sf  ../../../tiny-forge/1.5.4.2  wordpress/wp-content/themes/tiny-forge
 
@@ -26,15 +29,24 @@ install-cmn: sym-links
 install-oer: install-cmn
 	@echo Installing OER Evidence Hub...
 	cp  ./wp-config-OER-TEMPLATE.php  wordpress/wp-config.php
-	ln -sf  ../../../social-connect  wordpress/wp-content/plugins/social-connect
-	ln -sf  ../../../jetpack  wordpress/wp-content/plugins/jetpack
-	ln -sf  ../../../wp-evidence-hub  wordpress/wp-content/plugins/wp-evidence-hub
+	ln -sf  ../../../social-connect  $(PLUGIN_DIR)/social-connect
+	#Bug: ln -sf  ../../../jetpack  $(PLUGIN_DIR)/jetpack
+	cp -r  jetpack  $(PLUGIN_DIR)/jetpack
+	ln -sf ../../../feedwordpress  $(PLUGIN_DIR)/feedwordpress
+	ln -sf ../../../google-sitemap-generator $(PLUGIN_DIR)/google-sitemap-generator
+	ln -sf  ../../../wp-evidence-hub  $(PLUGIN_DIR)/wp-evidence-hub
 
 install-juxta: install-cmn
 	@echo Installing Juxtalearn...
 	cp  ./wp-config-JUXTA-TEMPLATE.php  wordpress/wp-config.php
-	ln -sf  ../../../custom-functions   wordpress/wp-content/plugins/custom-functions
-	ln -sf  ../../../wp-juxtalearn-hub  wordpress/wp-content/plugins/wp-juxtalearn-hub
+	ln -sf  ../../../custom-functions   $(PLUGIN_DIR)/custom-functions
+	ln -sf  ../../../wp-juxtalearn-hub  $(PLUGIN_DIR)/wp-juxtalearn-hub
+
+
+test-2:
+	ln -sf ../../../feedwordpress  $(PLUGIN_DIR)/feedwordpress
+	ln -sf ../../../google-sitemap-generator $(PLUGIN_DIR)/google-sitemap-generator
+
 
 test:
 	grep -v -q apache /etc/passwd && chown -R apache:apache  wordpress/wp-content/files/
