@@ -33,8 +33,15 @@ install-oer: install-cmn
 install-juxta: install-cmn
 	@echo Installing Juxtalearn...
 	cp  ./wp-config-JUXTA-TEMPLATE.php  wordpress/wp-config.php
+	git clone https://github.com/wp-plugins/slickquiz.git slickquiz
+	cp -r slickquiz  wordpress/wp-content/plugins/slickquiz
 	ln -sf  ../../../custom-functions   wordpress/wp-content/plugins/custom-functions
 	ln -sf  ../../../wp-juxtalearn-hub  wordpress/wp-content/plugins/wp-juxtalearn-hub
+	ln -sf  ../../../wp-juxtalearn-quiz wordpress/wp-content/plugins/wp-juxtalearn-quiz
+
+	# git submodule update --init
+	# git checkout quiz/CR1/scaffold
+	# git push origin quiz/CR1/scaffold:quiz/CR1/scaffold
 
 test:
 	grep -v -q apache /etc/passwd && chown -R apache:apache  wordpress/wp-content/files/
