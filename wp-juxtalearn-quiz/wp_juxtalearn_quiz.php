@@ -159,6 +159,24 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
 //upload.wikimedia.org/wikipedia/commons/5/5e/Throbber_allbackgrounds_cyanblue.gif
     ) no-repeat center;
 }
+
+.jlq-stumbles-inner, .jlq-scaffold-wrap {
+  float: left;
+  width: 47%;
+  x-border: 1px solid #ccc;
+  margin-bottom: 1em;
+  min-height: 140px;
+}
+.jlq-scaffold-wrap {
+  float: right;
+}
+.jlq-clear, .slickQuiz .question.correct { clear: both; }
+
+.wp-admin .slickQuiz .quizFormWrapper small.desc {
+  font-size: .95em;
+  color: #888;
+  margin-bottom: 14px;
+}
 </style>
 
     <div class="question JL-Quiz-TrickyTopic">
@@ -190,11 +208,12 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
       </div>
 
       <div class=jlq-scaffold-wrap >
-      <h3>Student problems</h3>
+      <h4>Student problems</h4>
       <div class=jlq-scaffold-inner ><p>[ TODO: More scaffolding -- display student problems for selected stumbling
        blocks? ]</div>
       </div>
     </div>
+    <div class=jlq-clear ></div>
 
     </div>
 <?php

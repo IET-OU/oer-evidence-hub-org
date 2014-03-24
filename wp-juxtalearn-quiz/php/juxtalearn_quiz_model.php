@@ -23,19 +23,22 @@ function clone_array($copied_array) {
 
 class JuxtaLearn_Quiz_Model {
 
-  const PREFIX = '_juxtalearn_quiz__';
+  const DB_PREFIX = '_juxtalearn_quiz__';
+  const HUB_TAXONOMY = 'juxtalearn_hub_sb';
 
 
+// BUG: This doesn't appear to filter based on stumbling blocks?!
   protected function get_student_problems($stumbling_blocks) {
     $sb = is_array($stumbling_blocks) ? intval($stumbling_blocks[ 0 ]) : NULL;
     $posts = get_posts(array(
       'post_type' => 'student_problem',
       'tax_query' => array(
-        'taxonomy' => 'juxtalearn_hub_sb',
+        'taxonomy' => self::HUB_TAXONOMY,
         'field' => 'id', #'slug',
         'terms' => $sb,
       ),
     ));
+    // Remove unnecessary fields.
     $b_ok = array_walk($posts, function ($post, $idx) {
           unset($post->post_date);
           unset($post->comment_status);
@@ -66,13 +69,10 @@ class JuxtaLearn_Quiz_Model {
       break;
       case 'stumbling_blocks':
       case 'sb':
-        $terms = wp_get_post_terms($id, 'juxtalearn_hub_sb',
+        $terms = wp_get_post_terms($id, self::HUB_TAXONOMY,
           array('fields' => 'all'));
-        /*$filt = array_filter($terms, function ($term) {
-        return array('id' => $term->term_id, 'name' => $term->name);
-        });*/
-        // Best do a deep clone.
         $result = $terms;
+        // Maybe, best do a deep clone.
         #$filter_terms = clone_array($terms);
         $b_ok = array_walk($result, function ($term, $idx) {
           unset($term->slug);
@@ -90,10 +90,10 @@ class JuxtaLearn_Quiz_Model {
         $result = (object) array('id' => $quiz_id);
       break;
       case 'quiz_tt':
-        $result = get_option(self::PREFIX .'tt', array());
+        $result = get_option(self::DB_PREFIX .'tt', array());
       break;
       case 'quiz_sb':
-        $result = get_option(self::PREFIX .'sb', array());
+        $result = get_option(self::DB_PREFIX .'sb', array());
       break;
       default:
         die("Unexpected 'get_data' call.");
@@ -115,11 +115,11 @@ class JuxtaLearn_Quiz_Model {
     switch ($key) {
       case 'quiz_tt':
         $result = array_merge($result, $new_values);
-        update_option(self::PREFIX . 'tt', $result);
+        update_option(self::DB_PREFIX . 'tt', $result);
       break;
       case 'quiz_sb':
         $result = array_merge($result, $new_values);
-        update_option(self::PREFIX .'sb', $result);
+        update_option(self::DB_PREFIX .'sb', $result);
       break;
       default:
         die("Unexpected 'update_data' call.");

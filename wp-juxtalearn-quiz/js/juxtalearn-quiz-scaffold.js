@@ -109,6 +109,8 @@ jQuery(function ($) {
 
 
   $(".jlq-stumbles-inner").on("click", "input", function (e) { //"click, change"?
+    loading();
+
     var $wrapper = $(this).closest(".jlq-stumbles-inner");
     var stumbles = $(":checked", $wrapper).val(); //$("input:checked", $wrapper).values();
 
@@ -116,16 +118,18 @@ jQuery(function ($) {
 
     $.getJSON(ajax_url(), { stumbling_blocks: stumbles, action: problemsAction })
       .done(function (data, stat, jqXHR) {
-        if ("success" === stat) {
-          var $outer = $wrapper.closest(".JL-Quiz-Stumbles");
-          var $scaffold = $(".jlq-scaffold-inner");
+        var $outer = $wrapper.closest(".JL-Quiz-Stumbles"),
+          $scaffold = $(".jlq-scaffold-inner", $outer);
 
-          $scaffold.html(data.html);
+        if ("success" === stat) {
+
+          // Temporary artificial delay.
+          setTimeout(function () { $scaffold.html(data.html); }, 250);
         }
         log(">> Get student problems, done:", stat, data);
       })
       .always(function () {
-        loading_end();
+        setTimeout(function () { loading_end(); }, 250);
       });
   });
 
