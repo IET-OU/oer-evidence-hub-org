@@ -26,6 +26,32 @@ class JuxtaLearn_Quiz_Model {
   const PREFIX = '_juxtalearn_quiz__';
 
 
+  protected function get_student_problems($stumbling_blocks) {
+    $sb = is_array($stumbling_blocks) ? intval($stumbling_blocks[ 0 ]) : NULL;
+    $posts = get_posts(array(
+      'post_type' => 'student_problem',
+      'tax_query' => array(
+        'taxonomy' => 'juxtalearn_hub_sb',
+        'field' => 'id', #'slug',
+        'terms' => $sb,
+      ),
+    ));
+    $b_ok = array_walk($posts, function ($post, $idx) {
+          unset($post->post_date);
+          unset($post->comment_status);
+          unset($post->ping_status);
+          unset($post->to_ping);
+          unset($post->pinged);
+          unset($post->post_modified);
+          unset($post->menu_order);
+          unset($post->post_mime_type);
+          unset($post->post_parent);
+          unset($post->post_password);
+          unset($post->comment_count);
+    });
+    return $posts;
+  }
+
   protected function get_data($key, $id = NULL) {
     $result = array();
     switch ($key) {
@@ -48,13 +74,14 @@ class JuxtaLearn_Quiz_Model {
         // Best do a deep clone.
         $result = $terms;
         #$filter_terms = clone_array($terms);
-        $b_ok = array_walk($result, function ($values, $idx) {
-          unset($values->slug);
-          unset($values->description);
-          unset($values->taxonomy);
-          unset($values->term_taxonomy_id);
-          unset($values->term_group);
-          unset($values->parent);
+        $b_ok = array_walk($result, function ($term, $idx) {
+          unset($term->slug);
+          unset($term->description);
+          unset($term->taxonomy);
+          unset($term->term_taxonomy_id);
+          unset($term->term_group);
+          unset($term->parent);
+          unset($term->count);
         });
       break;
       case 'quiz':
@@ -99,6 +126,14 @@ class JuxtaLearn_Quiz_Model {
       break;
     }
     return $result;
+  }
+
+  protected function json_response($data, $quiz_id) {
+    header('Content-Type: application/json; charset=utf-8');
+    @header('X-JuxtaLearn-Quiz: ajax; quiz_id='. $quiz_id);
+    // PHP 5.4+, JSON_PRETTY_PRINT.
+    echo json_encode($data);
+    die(0);
   }
 
 }

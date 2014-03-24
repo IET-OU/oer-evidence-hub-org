@@ -10,7 +10,10 @@ jQuery(function ($) {
 
   var qEdit = $('.wp-admin .slickQuiz'),
     editAction = 'juxtalearn_quiz_edit',
-    sbAction = 'juxtalearn_stumbling_blocks';
+    stumblesAction = 'juxtalearn_quiz_stumbling_blocks',
+    problemsAction = 'juxtalearn_quiz_student_problems',
+    tricky_topic_id,
+    stumbling_blocks;
 
   log(">> Quiz scaffolding...", qEdit);
 
@@ -41,12 +44,6 @@ jQuery(function ($) {
   $('button.publish, .draft, .preview', qEdit).on('click', function (e) {
     e.preventDefault();
 
-    var actionUrl = window.location.pathname
-          .replace('admin.php', 'admin-ajax.php')
-          .replace('slickquiz-preview', 'slickquiz-publish')
-          + window.location.search
-          + '&_JUXTALEARN_=1';
-
     var trickytopic = $('#jlq-trickytopic option:selected', qEdit),
         stumbles = [];
     $('.questionSet', qEdit).each(function (i, el) {
@@ -67,7 +64,7 @@ jQuery(function ($) {
 
     $.ajax({
       type: 'POST',
-      url:  actionUrl,
+      url:  ajax_url(),
       data: {
         action: editAction,
         json: JSON.stringify(data)
@@ -75,12 +72,88 @@ jQuery(function ($) {
       dataType: 'text',
       async:   false, // for Safari
       success: function (data) {
-        log(">> Ajax success!");
+        log(">> Ajax success! POST", editAction);
       }
     });
 
     log(">> Saving:", e.target.value);
   });
+
+  $("select#jlq-trickytopic").on("change", function (e) {
+
+    var tt_id = $("#jlq-trickytopic :selected").val();
+
+    if (! tt_id) {
+      log(">> No valid tricky topic selected.");
+      return;
+    }
+    loading();
+
+    tricky_topic_id = tt_id;
+
+    $.getJSON(ajax_url(), { tricky_topic: tt_id, action: stumblesAction })
+      .done(function (data, stat, jqXHR) {
+        if ("success" === stat) {
+          stumbling_blocks = data;
+//TODO - react to "add question" click event.
+          $(".JL-Quiz-Stumbles .jlq-stumbles-inner").html(data.html);
+        }
+        log(">> Get stumbling blocks, done. TT id:", tt_id, stat, data);
+      })
+      .always(function () {
+        log(">> Get stumbling blocks, always. TT id:", tt_id);
+        loading_end();
+      });
+
+  }).trigger("change");
+
+
+  $(".jlq-stumbles-inner").on("click", "input", function (e) { //"click, change"?
+    var $wrapper = $(this).closest(".jlq-stumbles-inner");
+    var stumbles = $(":checked", $wrapper).val(); //$("input:checked", $wrapper).values();
+
+    log(">> Stumbling blocks change:", stumbles, e);
+
+    $.getJSON(ajax_url(), { stumbling_blocks: stumbles, action: problemsAction })
+      .done(function (data, stat, jqXHR) {
+        if ("success" === stat) {
+          var $outer = $wrapper.closest(".JL-Quiz-Stumbles");
+          var $scaffold = $(".jlq-scaffold-inner");
+
+          $scaffold.html(data.html);
+        }
+        log(">> Get student problems, done:", stat, data);
+      })
+      .always(function () {
+        loading_end();
+      });
+  });
+
+  loading_end();
+
+
+  function ajax_url() {
+    return window.location.pathname
+          .replace('admin.php', 'admin-ajax.php')
+          .replace('slickquiz-preview', 'slickquiz-publish')
+          + window.location.search
+          + '&_JUXTALEARN_=1';
+  }
+
+  function loading() {
+    $(".jlq-loading").show();
+    $("body").addClass("jlq-body-loading");
+    $("#jlq-tricktopic, .JL-Quiz-Stumbles input").prop("disabled", true);
+
+    log(">> Loading start...");
+  }
+  function loading_end() {
+    $(".jlq-loading").hide();
+    $("body").removeClass("jlq-body-loading");
+    $("#jlq-tricktopic, .JL-Quiz-Stumbles input").prop("disabled", false);
+
+    log(">> Loading end.");
+  }
 
 });
 

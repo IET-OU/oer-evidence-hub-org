@@ -33,6 +33,7 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
     $AJAX_ACT = 'wp_ajax_juxtalearn_quiz_';
     add_action($AJAX_ACT . 'edit', array(&$this, 'ajax_post_quiz_edit'));
     add_action($AJAX_ACT . 'stumbling_blocks', array(&$this, 'ajax_get_stumbles'));
+    add_action($AJAX_ACT . 'student_problems', array(&$this, 'ajax_get_student_problems'));
     //add_action($AJAX_ACT . 'scores', array(&$this, 'ajax_post_scores'));
     //add_action('admin_init', array(&$this, 'admin_init'));
 
@@ -53,7 +54,9 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
       $this->is_quiz_view_pg = TRUE;
       $this->quiz = (object) array('id' => $quiz_id);
 
-      $body .= '<script>juxtalearn_quiz = { id: '. $quiz_id .' };</script>';
+      $body .= '<script>juxtalearn_quiz = { ajaxurl: "'. esc_url(wp_nonce_url(
+        site_url('wp-admin/admin-ajax.php'), 'wp-admin/admin-ajax.php')
+        ) .'" };</script>';  //'id: '.$quiz_id
     }
     return $body;
   }
@@ -66,39 +69,53 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
   #wordpress/wp-admin/admin-ajax.php?action=juxtalearn_quiz_stumbling_blocks&tricky_topic=79
   public function ajax_get_stumbles() {
     $tricky_topic_id = isset($_GET['tricky_topic']) ? intval($_GET['tricky_topic']) : NULL;
+    $quiz = $this->get_data('quiz');
     $post = get_post($tricky_topic_id);
     $stumbling_blocks = $this->get_data('sb', $tricky_topic_id);
     $html = '';
     foreach ($stumbling_blocks as $tm) {
       $html .= '<label><input type=checkbox value="'. $tm->term_id .'">'. $tm->name .'</label>';
     }
-    header('Content-Type: application/json; charset=utf-8');
-    echo json_encode(array(
+    $this->json_response(array(
+      'quiz_id' => $quiz->id,
       'tricky_topic_id' => $post->ID,
       'tricky_topic_title' => $post->post_title,
-      #'tricky_topic_body' => $post->body,
+      'tricky_topic_url' => $post->guid,
+      #'tricky_topic_body' => $post->post_content,
       'post_type' => $post->post_type,
+      'count' => count($stumbling_blocks),
       'stumbling_blocks' => $stumbling_blocks,
       'html' => $html,
-    ));
-    die(0);
+    ), $quiz->id);
+  }
+
+  public function ajax_get_student_problems() {
+    $stumbling_block_ids = isset($_GET['stumbling_blocks']) ? $_GET['stumbling_blocks'] : NULL;
+    $quiz = $this->get_data('quiz');
+    $student_problems = $this->get_student_problems($stumbling_block_ids);
+    $html = '<ul>';
+    foreach ($student_problems as $post) {
+      $html .= "<li data-sp='$post->ID'><a href='$post->guid'>$post->post_title</a>: $post->post_content</li>";
+    }
+    $this->json_response(array(
+      'quiz_id' => $quiz->id,
+      'stumbling_block_ids' => $stumbling_block_ids,
+      'count' => count($student_problems),
+      'student_problems' => $student_problems,
+      'html' => $html . '</ul>',
+    ), $quiz->id);
   }
 
   # POST wordpress/wp-admin/admin-ajax.php?action=juxtalearn_quiz_edit&id=1
   public function ajax_post_quiz_edit() {
-
     $quiz = $this->get_data('quiz');
 
-    header('X-JuxtaLearn-Quiz: ajax; quiz_id='. $quiz->id);
-
     $data = json_decode(stripcslashes( $_POST['json'] ));
-
-    var_dump($quiz_id);
 
     $this->update_data('quiz_tt', array($quiz->id => $data->trickytopic_id));
     $this->update_data('quiz_sb', array($quiz->id => $data->stumbling_blocks));
 
-    die('Yes');
+    $this->json_response(array('quiz_id' => $quiz->id), $quiz->id);
   }
 
   public function admin_enqueue_scripts() {
@@ -125,7 +142,28 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
 ?>
     <script type="text/template" class="jlq-template jlq-t-t" data-sel=".slickQuiz .QuizTitle">
 
+<style>
+/* http://commons.wikimedia.org/wiki/File:Throbber_allbackgrounds_cyanblue.gif */
+.jlq-body-loading, .jlq-loading { cursor: progress; }
+.jlq-loading {
+  border: 1px solid #bbb;
+  padding: 8px;
+  font-size: 1.3em;
+}
+.jlq-loading > i {
+  display: inline-block;
+  vertical-align: middle;
+  width:  40px;
+  height: 20px;
+  background: url(
+//upload.wikimedia.org/wikipedia/commons/5/5e/Throbber_allbackgrounds_cyanblue.gif
+    ) no-repeat center;
+}
+</style>
+
     <div class="question JL-Quiz-TrickyTopic">
+      <p class=jlq-loading ><span>Loading scaffolding...</span> <i></i></p>
+
       <label for=jlq-trickytopic >Trick topic</label>
       <small class=desc >What tricky topic should this quiz be linked to?</small>
       <select id=jlq-trickytopic name=jlq-trickytopic placeholder="Choose...">
@@ -143,12 +181,19 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
     <script type="text/template" class="jlq-template jlq-t-s" data-sel=".question.actual">
 
     <div class="question JL-Quiz-Stumbles">
+      <p class=jlq-loading ><span>Loading scaffolding...</span> <i></i></p>
+
       <label class=main >Stumbling blocks</label>
-      <small class=desc >Choose some stumbling blocks.</small>
-      <label ><input type=checkbox name="jlq-stumble[]" value=1 />Stumbling block 1</label>
-      <label ><input type=checkbox name="jlq-stumble[]" value=2 />Stumbling block 2</label>
-      <label ><input type=checkbox name="jlq-stumble[]" value=3 />Stumbling block 3 ...</label>
-      <p>[ TODO: More scaffolding -- display student problems for selected stumbling blocks?]
+      <small class=desc >Which stumbling blocks should we test with this question?</small>
+      <div class=jlq-stumbles-inner >
+        <label><input type=checkbox name="jlq-s[]" class=dummy />[ Stumbling block ]</label>
+      </div>
+
+      <div class=jlq-scaffold-wrap >
+      <h3>Student problems</h3>
+      <div class=jlq-scaffold-inner ><p>[ TODO: More scaffolding -- display student problems for selected stumbling
+       blocks? ]</div>
+      </div>
     </div>
 
     </div>

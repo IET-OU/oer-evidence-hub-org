@@ -9,28 +9,26 @@ jQuery(function ($) {
 
   'use strict';
 
-  var qView = $(".entry-content .slickQuizWrapper"),
-    action = 'juxtalearn_quiz_scores';
-    //JQ = window.juxtalearn_quiz || {};
+  var $qView = $(".entry-content .slickQuizWrapper"),
+    action = 'juxtalearn_quiz_scores',
+    JQ = window.juxtalearn_quiz || {};
 
-  log("Quiz response: ", qView);
+  log("Quiz response: ", $qView);
 
-  $(".button.startQuiz", qView).on("click", function () {
+  $(".X--button.startQuiz", $qView).on("click", function () {
     alert("Start click");
   });
 
+  $qView.on("click", ".button.checkAnswer:last", function (e) {
 
-//BUG ?!
-  $(".button.checkAnswer").last().on("click", function (e) {
+    //alert("Check click");
+    log("Check-answer click: ", $qView);
 
-    alert("Check click");
-    log("Check click: ", qView);
-    
-    var the_qz = $(this).closest(".slickQuizWrapper"); //$(e.target)..
+    var $the_qz = $(this).closest(".slickQuizWrapper"); //$(e.target)..
 
     setTimeout(function () {
-      var quiz_id = the_qz.attr("id").replace("slickQuiz"),
-          quiz_name = $(".quizName", the_qz).text(),
+      var quiz_id = $the_qz.attr("id").replace("slickQuiz", ""),
+          quiz_name = $(".quizName", $the_qz).text(),
           responses = [];
 
       $("#slickQuiz" + quiz_id +" .question").each(function (q_num, el) {
@@ -42,25 +40,26 @@ jQuery(function ($) {
       });
 
       var data = {
-        user_id:   '?',  //Or, user name for not logged in users
+        user_id:   '? todo ?',  //Or, user name for not logged in users
         quiz_id:   quiz_id,
         quiz_name: quiz_name,
         responses: responses
       };
 
-      alert("Responses: " + quiz_name);
-      log(">> Responses: ", data, the_q);
+      log(">> Quiz responses: ", data, $the_qz);
 
-      /*$.ajax({
-        type: "POST",
-        url: <?php esc_url( wp_nonce( site_url("wp-admin/admin-ajax.php"), ..
-        data: { action: action, json: JSON.stringify(data) },
-        success: function () { log("Ajax success"); }
-      });*/
+      $.post(ajax_url(), { action: action, json: JSON.stringify(data) })
+        .done(function (data, stat, jqXHR) {
+          log(">> Scores submitted, done:", stat);
+        });
 
-    }, 2000);
+    }, 2200);
 
   });
+
+  function ajax_url() {
+    return JQ.ajaxurl + '&_JUXTALEARN_=1';
+  }
 
 });
 
