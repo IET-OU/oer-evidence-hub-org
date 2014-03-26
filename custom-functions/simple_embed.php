@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Simple Embed
+Plugin Name: JuxtaLearn Simple Embed
 Plugin URI:  https://github.com/IET-OU/oer-evidence-hub-org/#Juxtalearn
 Description: Remove the "chrome" from any Wordpress page, making it embeddable '/page?embed=1&comments=0' [JuxtaLearn].
 Author:  Nick Freear

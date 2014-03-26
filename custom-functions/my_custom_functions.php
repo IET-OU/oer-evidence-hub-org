@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: My Custom Functions
+Plugin Name: JuxtaLearn Custom Functions
 Plugin URI:  https://gist.github.com/nfreear/9049532
-Description: A simple plugin for little utility functions, inc. admin UI simplifications for teachers/editors [JuxtaLearn].
+Description: Search user-interface hack; admin UI simplifications for teachers/editors [JuxtaLearn].
     I use them to make my site work <a href=
 "http://wphidedash.org/2011/04/best-practice-for-adding-custom-functions/">my way.</a>
 Author:  Nick Freear
@@ -37,6 +37,7 @@ class My_Custom_Functions {
   public function __construct() {
     add_filter('admin_body_class', array(&$this, 'admin_body_class'));
     add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
+    add_action('wp_enqueue_scripts', array(&$this, 'front_enqueue_scripts'));
   }
 
 
@@ -53,6 +54,13 @@ class My_Custom_Functions {
     wp_enqueue_style('my-custom-functions-admin', plugins_url(
       'css/custom-admin.css', CUSTOM_FUNC_REGISTER_FILE
     ));
+  }
+
+
+  public function front_enqueue_scripts() {
+    wp_enqueue_script('my-custom-functions-front', plugins_url(
+      'js/facetious-hack.js', CUSTOM_FUNC_REGISTER_FILE
+    ), array('jquery'));
   }
 }
 

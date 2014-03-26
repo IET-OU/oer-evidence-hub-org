@@ -17,7 +17,7 @@ html.simple-embed {
 
 html body.simple-embed .site {
   margin: 0;
-  padding: 5px; /*1em*/
+  padding: 2px; /*1em*/
   box-shadow: none;
   max-width: 100%;
   background: transparent;
