@@ -38,6 +38,8 @@ class My_Custom_Functions {
     add_filter('admin_body_class', array(&$this, 'admin_body_class'));
     add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
     add_action('wp_enqueue_scripts', array(&$this, 'front_enqueue_scripts'));
+
+    $this->security_remove_wp_links();
   }
 
 
@@ -60,7 +62,17 @@ class My_Custom_Functions {
   public function front_enqueue_scripts() {
     wp_enqueue_script('my-custom-functions-front', plugins_url(
       'js/facetious-hack.js', CUSTOM_FUNC_REGISTER_FILE
-    ), array('jquery'));
+    ), array('jquery'), false, $in_footer = TRUE);
+  }
+
+
+  protected function security_remove_wp_links() {
+    remove_action('wp_head', 'rsd_link');  #'EditURL' /xmlrpc.php?rsd
+    remove_action('wp_head', 'wlwmanifest_link');
+    remove_action('wp_head', 'wp_shortlink_wp_head');
+    remove_action('wp_head', 'wp_generator'); # <meta name="generator" content="WordPress 3.8.1">
+
+    #? remove_action('wp_head', 'pingback_link');
   }
 }
 
