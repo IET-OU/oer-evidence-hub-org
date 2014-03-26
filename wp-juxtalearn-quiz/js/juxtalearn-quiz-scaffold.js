@@ -15,7 +15,7 @@ jQuery(function ($) {
     tricky_topic_id,
     stumbling_blocks;
 
-  log(">> Quiz scaffolding...", qEdit);
+  log(">> JuxtaLearn Quiz scaffold.", qEdit);
 
   // Quiz editor - insert scaffolding templates into page.
   $(".jlq-template").each(function (idx, el) {

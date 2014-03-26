@@ -1,0 +1,42 @@
+
+/* http://commons.wikimedia.org/wiki/File:Throbber_allbackgrounds_cyanblue.gif */
+.jlq-body-loading, .jlq-loading {
+  cursor: progress;
+}
+.jlq-loading {
+  border: 1px solid #bbb;
+  padding: 8px;
+  font-size: 1.3em;
+}
+.jlq-loading > i {
+  display: inline-block;
+  vertical-align: middle;
+  width:  40px;
+  height: 20px;
+  background: url(
+//upload.wikimedia.org/wikipedia/commons/5/5e/Throbber_allbackgrounds_cyanblue.gif
+    ) no-repeat center;
+}
+
+.JL-Quiz-Stumbles h4 {
+  margin: 4px 0;
+}
+.jlq-stumbles-inner, .jlq-scaffold-wrap {
+  float: left;
+  width: 47%;
+  x-border: 1px solid #ccc;
+  margin-bottom: 1em;
+  min-height: 140px;
+}
+.jlq-scaffold-wrap {
+  float: right;
+}
+.jlq-clear, .slickQuiz .question.correct {
+  clear: both;
+}
+
+.wp-admin .slickQuiz .quizFormWrapper small.desc {
+  font-size: .95em;
+  color: #888;
+  margin-bottom: 14px;
+}

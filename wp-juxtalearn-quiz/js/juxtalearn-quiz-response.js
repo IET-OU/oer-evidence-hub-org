@@ -14,19 +14,19 @@ jQuery(function ($) {
 
   var $qView = $(".entry-content .slickQuizWrapper"),
     action = 'juxtalearn_quiz_scores',
-    start_time,
+    time_start,
     JQ = window.juxtalearn_quiz || {};
 
-  log("Quiz response: ", $qView);
+  log(">> JuxtaLearn Quiz response.", $qView);
 
   $qView.on("click", ".button.startQuiz", function () {
-    start_time = new Date();
-    log("Start click:", start_time);
+    time_start = new Date();
+    log("Start click:", time_start);
   });
 
 //Bug ?!
   $qView.on("click", ".button.checkAnswer:last", function () {
-    var end_time = new Date(),
+    var time_end = new Date(),
       $the_qz = $(this).closest(".slickQuizWrapper"); //$(e.target)..
 
     log("Check-answer click: ", $qView);
@@ -52,8 +52,9 @@ jQuery(function ($) {
         user_email: user_email,
         quiz_id:    quiz_id,
         quiz_name:  quiz_name,
-        start_time: start_time.toUTCString(), //toISOString() - IE > 8.
-        end_time:   end_time.toUTCString(),
+        time_start: time_start.toUTCString(), //toISOString() - IE > 8.
+        time_end:   time_end.toUTCString(),
+        time_diff_ms: time_end - time_start,
         responses:  responses
       };
 

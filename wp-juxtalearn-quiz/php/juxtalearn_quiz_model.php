@@ -1,7 +1,9 @@
 <?php
 /**
- * Database model for JuxtaLearn Quiz plugin.
+ * Database and API models for JuxtaLearn Quiz plugin.
  *
+ * @copyright 2014 The Open University (IET).
+ * @author Nick Freear.
  * @package JuxtaLearn_Quiz
  */
 
@@ -25,16 +27,20 @@ class JuxtaLearn_Quiz_Model {
 
   const DB_PREFIX = '_juxtalearn_quiz__';
   const HUB_TAXONOMY = 'juxtalearn_hub_sb';
+  const NONCE_ACTION = 'wp-admin/admin-ajax.php';
 
 
 // BUG: This doesn't appear to filter based on stumbling blocks?!
   protected function get_student_problems($stumbling_blocks) {
-    $sb = is_array($stumbling_blocks) ? intval($stumbling_blocks[ 0 ]) : NULL;
+    #$sb = is_array($stumbling_blocks) ? $stumbling_blocks : array($stumbling_blocks);
+    $sb = is_array($stumbling_blocks) ? intval($stumbling_blocks[ 0 ]) : $stumbling_blocks;
+
     $posts = get_posts(array(
       'post_type' => 'student_problem',
+      #self::HUB_TAXONOMY => $sb,
       'tax_query' => array(
         'taxonomy' => self::HUB_TAXONOMY,
-        'field' => 'id', #'slug',
+        #'field' => 'id', #'slug',
         'terms' => $sb,
       ),
     ));
@@ -128,12 +134,41 @@ class JuxtaLearn_Quiz_Model {
     return $result;
   }
 
-  protected function json_response($data, $quiz_id) {
-    header('Content-Type: application/json; charset=utf-8');
+
+  /* =========== JSON API ============= */
+
+  protected function json_response($data, $success = TRUE) {
+    $data = is_string($data) ? array('msg' => $data) : $data;
+    $data['stat'] = $success ? 'ok' : 'fail';
+    $quiz_id = isset($data['quiz_id']) ? $data['quiz_id'] : NULL;
+
+    @header('Content-Type: application/json; charset=utf-8');
+    @header('X-JuxtaLearn-Quiz-Stat: '. $data['stat']);
     @header('X-JuxtaLearn-Quiz: ajax; quiz_id='. $quiz_id);
     // PHP 5.4+, JSON_PRETTY_PRINT.
     echo json_encode($data);
     die(0);
   }
 
+  protected function check_post_json() {
+    if (!isset($_POST['json'])) {
+      $this->json_response('Missing {json}.', false);
+    }
+    return json_decode(stripcslashes( $_POST['json'] ));
+  }
+
+  protected function check_ajax_referer() {
+    $valid_ref = check_ajax_referer(self::NONCE_ACTION, false, $die = FALSE);
+    $valid_nonce = wp_verify_nonce($_REQUEST['_wpnonce'], self::NONCE_ACTION);
+
+    if (!$valid_ref) {
+      $this->json_response('Invalid referer nonce.', false);
+    }
+  }
+
+  protected function ajax_url() {
+    return esc_url(wp_nonce_url(
+        site_url('wp-admin/admin-ajax.php'), self::NONCE_ACTION)
+    );
+  }
 }
