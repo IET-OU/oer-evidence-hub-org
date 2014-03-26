@@ -59,7 +59,7 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
       'count' => count($stumbling_blocks),
       'stumbling_blocks' => $stumbling_blocks,
       'html' => $html,
-    ), $quiz->id);
+    ));
   }
 
   public function ajax_get_student_problems() {
@@ -76,7 +76,7 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
       'count' => count($student_problems),
       'student_problems' => $student_problems,
       'html' => $html . '</ul>',
-    ), $quiz->id);
+    ));
   }
 
   # POST wordpress/wp-admin/admin-ajax.php?action=juxtalearn_quiz_edit&id=1
@@ -120,10 +120,9 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
       <select id=jlq-trickytopic name=jlq-trickytopic placeholder="Choose...">
         <option></option>
       <?php foreach ($tricky_topics as $post): #setup_postdata($topic); ?>
-        <option value="<?php echo $post->ID ?>"
-          <?php echo isset($quiz_tt['x'. $quiz->id])
-             && $post->ID == $quiz_tt['x'. $quiz->id] ? 'selected' : '' ?>
-          ><?php echo $post->post_title ?></option>
+        <option value="<?php echo $post->ID ?>" <?php
+          $this->form_selected($post, $quiz_tt, $quiz->id) ?>><?php
+          echo $post->post_title ?></option>
       <?php endforeach; ?>
       </select>
     </div>

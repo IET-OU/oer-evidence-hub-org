@@ -27,6 +27,15 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
     $editor_scaffold = new JuxtaLearn_Quiz_Scaffold();
 
 
+    $this->plugin_name = basename( dirname( __FILE__ ) ) . '/' . basename( __FILE__ );
+
+    // Activate for New Installs
+    register_activation_hook( $this->plugin_name, array( &$this, 'activate' ) );
+
+    // Activate for Updates
+    add_action( 'plugins_loaded', array( &$this, 'activate' ) );
+
+
     add_filter('the_content', array(&$this, 'slickquiz_view_filter'));
     add_action('wp_enqueue_scripts', array(&$this, 'front_enqueue_scripts'));
 
@@ -35,14 +44,17 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
   }
 
   public function ajax_post_scores() {
-    $this->check_ajax_referer();
+    $is_valid_referer = $this->check_ajax_referer();
 
     $data = $this->check_post_json();
 
+    $slickquiz_score = $this->save_score($data);
+
     $this->json_response(array(
-      'ref_ok' => $valid_ref,
-      'nonce_ok' => $valid_nonce,
+      'referer_ok' => $is_valid_referer,
+      #'nonce_ok' => $valid_nonce,
       'input' => $data,
+      'slickquiz_score' => $slickquiz_score,
     ));
   }
 
@@ -64,6 +76,14 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
     wp_enqueue_script('quiz-response', plugins_url(
       'js/juxtalearn-quiz-response.js', JUXTALEARN_QUIZ_REGISTER_FILE
     ), array('jquery', 'slickquiz_js'), false, $in_footer = TRUE);
+  }
+
+
+  // On Activation - Create JL Quiz database table.
+  public function activate() {
+
+    #$this->create_quiz_table();
+    $this->create_score_table();
   }
 
 }

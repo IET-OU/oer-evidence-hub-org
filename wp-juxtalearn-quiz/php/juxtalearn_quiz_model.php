@@ -25,10 +25,90 @@ function clone_array($copied_array) {
 
 class JuxtaLearn_Quiz_Model {
 
+  const DB_VERSION = '1.0';
   const DB_PREFIX = '_juxtalearn_quiz__';
   const HUB_TAXONOMY = 'juxtalearn_hub_sb';
   const NONCE_ACTION = 'wp-admin/admin-ajax.php';
 
+  /**
+  * Docs: https://codex.wordpress.org/Creating_Tables_with_Plugins
+  * create_score_table():
+  *   https://github.com/wp-plugins/slickquiz/blob/master/slickquiz.php#L234
+  * activate():
+  *   http://github.com/mhawksey/wp-juxtalearn-hub/blob/master/shortcodes/shortcode.php#L140
+  */
+  protected function create_score_table() {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . 'juxtalearn_quiz_scores';
+
+    $sql = "CREATE TABLE $table_name (
+          id bigint(20) NOT NULL AUTO_INCREMENT,
+          scoreJson longtext NULL,
+          score_id bigint(20) unsigned NOT NULL DEFAULT '0',
+          startDate datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+          endDate datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+          createdDate datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+          PRIMARY KEY  (id),
+          KEY score_id_index (score_id)
+          );";
+
+    require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+    dbDelta( $sql );
+
+    add_option( self::DB_PREFIX . 'db_version', self::DB_VERSION );
+  }
+
+  /**
+  * save_score()
+  *   https://github.com/wp-plugins/slickquiz/blob/master/php/slickquiz-model.php#L255
+  */
+    protected function save_score( $json, $user_id = null ) {
+        global $wpdb;
+        $db_name = $wpdb->prefix . 'juxtalearn_quiz_scores';
+
+        $data    = $json; //json_decode( stripcslashes( $json ) );
+        $set     = array();
+        #$now     = date( 'Y-m-d H:i:s' );
+        #$user_id = $user_id ? $user_id : get_current_user_id();
+        $quiz_id = intval($data->quiz_id);
+        $user_name = sanitize_text_field($data->user_name);
+
+        $slickquiz_score = $this->get_slickquiz_score($quiz_id, $user_name);
+
+        $set['scoreJson']   = json_encode($data->responses);
+        $set['score_id']    = intval($slickquiz_score->id);
+        #$set['quiz_id']     = $quiz_id;
+        $set['startDate']   = $this->toSQLDatetime($data->time_start);
+        $set['endDate']     = $this->toSQLDatetime($data->time_end);
+        $set['createdDate'] = $slickquiz_score->createdDate;
+
+        $wpdb->insert( $db_name, $set );
+
+        return $slickquiz_score;
+    }
+
+    protected function toSQLDatetime( $str = NULL ) {
+      $timestamp = $str ? strtotime( $str ) : time();
+      return date( 'Y-m-d H:i:s', $timestamp );
+    }
+
+    /**
+    * get_all_scores()
+    * https://github.com/wp-plugins/slickquiz/blob/master/php/slickquiz-model.php#L47
+    */
+    protected function get_slickquiz_score($quiz_id, $name, $order_by = '') {
+        global $wpdb;
+        $db_name = $wpdb->prefix . 'plugin_slickquiz_scores';
+
+        $order_by = $order_by ? $order_by : 'createdDate DESC';
+
+        //Was: $wpdb->get_results();
+        $scoreResult = $wpdb->get_row( "SELECT * FROM $db_name WHERE quiz_id = ".
+           $quiz_id . " AND name = '". esc_sql($name) ."' ORDER BY $order_by" );
+
+        return $scoreResult;
+    }
 
 // BUG: This doesn't appear to filter based on stumbling blocks?!
   protected function get_student_problems($stumbling_blocks) {
@@ -134,6 +214,11 @@ class JuxtaLearn_Quiz_Model {
     return $result;
   }
 
+  protected function form_selected($post, $quiz_tt, $quiz_id) {
+    echo isset($quiz_tt['x'. $quiz_id]) &&
+        $post->ID == $quiz_tt['x'. $quiz_id] ? 'selected' : '';
+  }
+
 
   /* =========== JSON API ============= */
 
@@ -164,6 +249,7 @@ class JuxtaLearn_Quiz_Model {
     if (!$valid_ref) {
       $this->json_response('Invalid referer nonce.', false);
     }
+    return $valid_ref;
   }
 
   protected function ajax_url() {

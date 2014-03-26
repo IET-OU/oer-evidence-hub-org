@@ -65,7 +65,7 @@ jQuery(function ($) {
           log(">> Scores submitted, done:", stat);
         });
 
-    }, 2200);
+    }, 2500); // SlickQuiz: 2000.
 
   });
 
