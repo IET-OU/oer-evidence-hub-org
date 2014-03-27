@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: JuxtaLearn Quiz
+Plugin Name: WP JuxtaLearn Quiz
 Plugin URI:  https://github.com/IET-OU/oer-evidence-hub-org/#Juxtalearn
 Description: Add scaffolding and results visualization to Slick Quiz quizzes [JuxtaLearn].
 Author:  Nick Freear
@@ -26,6 +26,10 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
     require_once 'php/juxtalearn_quiz_scaffold.php';
     $editor_scaffold = new JuxtaLearn_Quiz_Scaffold();
 
+    // Shortcodes.
+    require_once 'shortcodes/quiz_score.php';
+    $shortcode_score = new JuxtaLearn_Quiz_Shortcode_Score();
+
 
     $this->plugin_name = basename( dirname( __FILE__ ) ) . '/' . basename( __FILE__ );
 
@@ -48,13 +52,18 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
 
     $data = $this->check_post_json();
 
-    $slickquiz_score = $this->save_score($data);
+    $result = $this->save_score($data);
+    $url = site_url('juxtalearn-quiz-score/'. $result['jlq_score_id']);
+    $title = 'Visualize your score';
 
     $this->json_response(array(
       'referer_ok' => $is_valid_referer,
-      #'nonce_ok' => $valid_nonce,
       'input' => $data,
-      'slickquiz_score' => $slickquiz_score,
+      'slickquiz_score' => $result['parent_score'],
+      'jlq_score_id' => $result['jlq_score_id'],
+      'url'  => $url,
+      'title' => $title,
+      'html' => "<p class='jlq-visualize'><a href='$url'>$title</a></p>",
     ));
   }
 
@@ -69,6 +78,7 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
       $body .= '<script>juxtalearn_quiz = { ajaxurl: "'. $this->ajax_url()
           .'" };</script>';  //'id: '.$quiz_id
     }
+
     return $body;
   }
 

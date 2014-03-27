@@ -63,18 +63,23 @@ class JuxtaLearn_Quiz_Model {
   * save_score()
   *   https://github.com/wp-plugins/slickquiz/blob/master/php/slickquiz-model.php#L255
   */
-    protected function save_score( $json, $user_id = null ) {
+    protected function save_score( $data, $user_id = null ) {
         global $wpdb;
         $db_name = $wpdb->prefix . 'juxtalearn_quiz_scores';
 
-        $data    = $json; //json_decode( stripcslashes( $json ) );
         $set     = array();
-        #$now     = date( 'Y-m-d H:i:s' );
         #$user_id = $user_id ? $user_id : get_current_user_id();
         $quiz_id = intval($data->quiz_id);
         $user_name = sanitize_text_field($data->user_name);
 
         $slickquiz_score = $this->get_slickquiz_score($quiz_id, $user_name);
+        if (!$slickquiz_score) {
+          $this->error('No SlickQuiz score (race condition?)');
+        }
+        if (time() - strtotime($slickquiz_score->createdDate) > 30) {
+          $this->error('SlickQuiz score too old (race condition?): '
+              . $slickquiz_score->createdDate);
+        }
 
         $set['scoreJson']   = json_encode($data->responses);
         $set['score_id']    = intval($slickquiz_score->id);
@@ -83,9 +88,12 @@ class JuxtaLearn_Quiz_Model {
         $set['endDate']     = $this->toSQLDatetime($data->time_end);
         $set['createdDate'] = $slickquiz_score->createdDate;
 
-        $wpdb->insert( $db_name, $set );
-
-        return $slickquiz_score;
+        $success = $wpdb->insert( $db_name, $set );
+        if (!$success) {
+          $this->error('Failed to submit score');
+        }
+        return array('jlq_score_id' => $wpdb->insert_id,
+                'parent_score' => $slickquiz_score);
     }
 
     protected function toSQLDatetime( $str = NULL ) {
@@ -104,10 +112,64 @@ class JuxtaLearn_Quiz_Model {
         $order_by = $order_by ? $order_by : 'createdDate DESC';
 
         //Was: $wpdb->get_results();
-        $scoreResult = $wpdb->get_row( "SELECT * FROM $db_name WHERE quiz_id = ".
+        return $wpdb->get_row( "SELECT * FROM $db_name WHERE quiz_id = ".
            $quiz_id . " AND name = '". esc_sql($name) ."' ORDER BY $order_by" );
+    }
 
-        return $scoreResult;
+    public function get_score($jl_score_id, $offset = 0) {
+      global $wpdb;
+      $db_name = $wpdb->prefix . 'juxtalearn_quiz_scores';
+      $join_scores = $wpdb->prefix . 'plugin_slickquiz_scores';
+      $join_quiz = $wpdb->prefix . 'plugin_slickquiz';
+
+      $score = $wpdb->get_row( "SELECT *, $join_scores.name AS user_name,
+            $join_quiz.name AS quiz_name, $db_name.id AS jl_score_id,
+            $join_scores.createdBy AS user_id
+          FROM $db_name
+          JOIN $join_scores ON $join_scores.id = $db_name.score_id
+          JOIN $join_quiz ON $join_quiz.id = $join_scores.quiz_id
+          WHERE $db_name.id = ". intval($jl_score_id) );
+    /* SELECT *
+      FROM `wp_4_juxtalearn_quiz_scores` jqs
+      JOIN wp_4_plugin_slickquiz_scores  pss ON pss.id = jqs.score_id
+      JOIN wp_4_plugin_slickquiz  ps ON ps.id = pss.quiz_id;
+      WHERE jqs.id = 10
+      LIMIT 1;
+    */
+      return $this->process_score($score, $offset);
+    }
+
+    protected function process_score($score, $offset = 0) {
+      if (!is_object($score)) return $score;
+
+      $score->_scores = json_decode($score->scoreJson);
+      $score->_quiz = json_decode($score->publishedJson);
+
+      $score->tricky_topic_id = $this->get_tricky_topic($score->quiz_id);
+      $score->stumbling_block_ids = $this->get_stumbling_blocks($score->quiz_id);
+
+      $stumbles = array();
+      foreach ($score->stumbling_block_ids as $sb) {
+        $sb_ids = $sb->s;
+        $the_question = $sb->q;
+
+        foreach ($sb_ids as $sb_id) {
+          $the_sb = $this->get_data('sb', $sb_id); # TODO / BUG ?
+          $stumbles[$sb_id] = array(
+            'score' => $offset, 'qs' => $the_question, 'sb' => $the_sb
+          );
+          foreach ($score->_scores as $qs) {
+            $cand_question = preg_replace('/^\d+\. /', '', $qs->q_text);
+            if ($cand_question == $the_question && $qs->is_correct) {
+              $stumbles[$sb_id]['score'] += 1;
+              $stumbles[$sb_id]['qs'][] = $the_question;
+            } 
+          }
+        }
+      }
+      $score->stumbling_blocks = $stumbles;
+
+      return $score;
     }
 
 // BUG: This doesn't appear to filter based on stumbling blocks?!
@@ -153,7 +215,7 @@ class JuxtaLearn_Quiz_Model {
           'order' => 'ASC',
         ));
       break;
-      case 'stumbling_blocks':
+      case 'stumbling_block':
       case 'sb':
         $terms = wp_get_post_terms($id, self::HUB_TAXONOMY,
           array('fields' => 'all'));
@@ -186,6 +248,15 @@ class JuxtaLearn_Quiz_Model {
       break;
     }
     return $result;
+  }
+
+  protected function get_tricky_topic($quiz_id) {
+    $quiz_tt = $this->get_data('quiz_tt');
+    return isset($quiz_tt['x'. $quiz_id]) ? $quiz_tt['x' . $quiz_id] : NULL;
+  }
+  protected function get_stumbling_blocks($quiz_id) {
+    $quiz_sb = $this->get_data('quiz_sb');
+    return isset($quiz_sb['x'. $quiz_id]) ? $quiz_sb['x' . $quiz_id] : NULL;
   }
 
   protected function update_data($key, $values) {
@@ -227,6 +298,9 @@ class JuxtaLearn_Quiz_Model {
     $data['stat'] = $success ? 'ok' : 'fail';
     $quiz_id = isset($data['quiz_id']) ? $data['quiz_id'] : NULL;
 
+    if (!$success) {
+      header('HTTP/1.1 400');
+    }
     @header('Content-Type: application/json; charset=utf-8');
     @header('X-JuxtaLearn-Quiz-Stat: '. $data['stat']);
     @header('X-JuxtaLearn-Quiz: ajax; quiz_id='. $quiz_id);
@@ -235,9 +309,13 @@ class JuxtaLearn_Quiz_Model {
     die(0);
   }
 
+  protected function error($msg) {
+    return $this->json_response($msg, false);
+  }
+
   protected function check_post_json() {
     if (!isset($_POST['json'])) {
-      $this->json_response('Missing {json}.', false);
+      $this->error('Missing {json} in POST request.');
     }
     return json_decode(stripcslashes( $_POST['json'] ));
   }
@@ -247,7 +325,7 @@ class JuxtaLearn_Quiz_Model {
     $valid_nonce = wp_verify_nonce($_REQUEST['_wpnonce'], self::NONCE_ACTION);
 
     if (!$valid_ref) {
-      $this->json_response('Invalid referer nonce.', false);
+      $this->error('Invalid referer nonce.');
     }
     return $valid_ref;
   }

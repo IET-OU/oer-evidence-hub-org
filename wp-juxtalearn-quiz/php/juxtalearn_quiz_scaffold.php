@@ -75,6 +75,7 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
       'stumbling_block_ids' => $stumbling_block_ids,
       'count' => count($student_problems),
       'student_problems' => $student_problems,
+      'title' => 'Student Problems',
       'html' => $html . '</ul>',
     ));
   }

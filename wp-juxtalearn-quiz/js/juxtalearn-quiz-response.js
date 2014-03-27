@@ -12,7 +12,7 @@ jQuery(function ($) {
 
   'use strict';
 
-  var $qView = $(".entry-content .slickQuizWrapper"),
+  var $qView = $(".entry-content .slickQuizWrapper .quizArea"),
     action = 'juxtalearn_quiz_scores',
     time_start,
     JQ = window.juxtalearn_quiz || {};
@@ -27,6 +27,7 @@ jQuery(function ($) {
 //Bug ?!
   $qView.on("click", ".button.checkAnswer:last", function () {
     var time_end = new Date(),
+      $post = $(this).closest("article"),
       $the_qz = $(this).closest(".slickQuizWrapper"); //$(e.target)..
 
     log("Check-answer click: ", $qView);
@@ -34,6 +35,7 @@ jQuery(function ($) {
     setTimeout(function () {
       var quiz_id = $the_qz.attr("id").replace("slickQuiz", ""),
         quiz_name = $(".quizName", $the_qz).text(),
+        post_id = $post.attr("id").replace("post-", ""),
         user_name = $(".nameLabel input", $the_qz).val(),
         user_email = $(".emailLabel input", $the_qz).val(),
         data = {},
@@ -52,6 +54,7 @@ jQuery(function ($) {
         user_email: user_email,
         quiz_id:    quiz_id,
         quiz_name:  quiz_name,
+        post_id:    post_id,
         time_start: time_start.toUTCString(), //toISOString() - IE > 8.
         time_end:   time_end.toUTCString(),
         time_diff_ms: time_end - time_start,
@@ -62,7 +65,11 @@ jQuery(function ($) {
 
       $.post(ajax_url(), { action: action, json: JSON.stringify(data) })
         .done(function (data, stat, jqXHR) {
-          log(">> Scores submitted, done:", stat);
+          log(">> Scores submitted, OK:", data.url, jqXHR);
+          $the_qz.append(data.html);
+        })
+        .fail(function (jqXHR, stat) {
+          log(">> Fail:", jqXHR.responseJSON.msg, jqXHR);
         });
 
     }, 2500); // SlickQuiz: 2000.
