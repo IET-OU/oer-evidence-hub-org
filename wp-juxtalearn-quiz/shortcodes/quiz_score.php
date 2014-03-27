@@ -26,8 +26,14 @@ class JuxtaLearn_Quiz_Shortcode_Score { #extends JuxtaLearn_Hub_Shortcode {
     if (!$b_continue) {
       return;
     }
-
-    var_dump($score);
+  ?>
+    <ul>
+    <li> Quiz title:  <?php echo $score->quiz_name ?>
+    <li> Quiz completed: <?php echo $score->endDate ?>
+    <li> User name:  <?php echo $score->user_name ?>
+    </ul>
+  <?php
+    var_dump($score->stumbling_blocks);
   }
 
 

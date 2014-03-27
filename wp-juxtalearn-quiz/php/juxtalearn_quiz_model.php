@@ -156,14 +156,13 @@ class JuxtaLearn_Quiz_Model {
         foreach ($sb_ids as $sb_id) {
           $the_sb = $this->get_data('sb', $sb_id); # TODO / BUG ?
           $stumbles[$sb_id] = array(
-            'score' => $offset, 'qs' => $the_question, 'sb' => $the_sb
+            'score' => $offset, 'qs' => $the_question, 'sb' => 'TODO' #$the_sb
           );
           foreach ($score->_scores as $qs) {
             $cand_question = preg_replace('/^\d+\. /', '', $qs->q_text);
             if ($cand_question == $the_question && $qs->is_correct) {
               $stumbles[$sb_id]['score'] += 1;
-              $stumbles[$sb_id]['qs'][] = $the_question;
-            } 
+            }
           }
         }
       }
