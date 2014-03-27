@@ -27,9 +27,13 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
     $editor_scaffold = new JuxtaLearn_Quiz_Scaffold();
 
     // Shortcodes.
+    require_once 'shortcodes/shortcode.php';
+
     require_once 'shortcodes/quiz_score.php';
     $shortcode_score = new JuxtaLearn_Quiz_Shortcode_Score();
 
+    #require_once 'shortcodes/juxtalearn_quiz.php';
+    #$shortcode_quiz = new JuxtaLearn_Quiz_Shortcode_Quiz();
 
     $this->plugin_name = basename( dirname( __FILE__ ) ) . '/' . basename( __FILE__ );
 

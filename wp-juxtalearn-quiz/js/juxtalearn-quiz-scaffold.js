@@ -25,9 +25,11 @@ jQuery(function ($) {
 
 // BUG ?!
   jQuery.fn.values = function () {
-    return $(this).map(function (i, el) {
-      return $(el).val();
+    var vals = [];
+    $(this).each(function (i, el) {
+      vals.push( $(el).val() );
     });
+    return vals;
   };
 
 
@@ -49,8 +51,8 @@ jQuery(function ($) {
     $('.questionSet', qEdit).each(function (i, el) {
       var q = $('[name = question]', $(el)).val(),
         s = $('.JL-Quiz-Stumbles input:checked', $(el)).values();
-      //log(">> SBs", q, s);
-      s = ["2", "3"];
+      log(">> SBs", q, s);
+      //s = ["2", "3"];
       stumbles.push({ q: q, s: s });
     });
 
