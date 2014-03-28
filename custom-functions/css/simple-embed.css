@@ -35,7 +35,7 @@ html body.simple-embed .site {
   padding: 0;
 }
 
-/* Hide comments in various ways.
+/* Selectively hide comments and headings - various ways.
 */
 .se-no-comments #comments,
 .shortcode-juxtalearn_quiz.simple-embed #comments,
@@ -44,6 +44,18 @@ html body.simple-embed .site {
   display: none;
 }
 
-.shortcode-juxtalearn_quiz.simple-embed h2.quizName {
-  margin-top: 0;
+.shortcode-juxtalearn_quiz.simple-embed h2.quizName,
+.shortcode-quiz_score.simple-embed .entry-header {
+  margin: 0 0 .4em;
+}
+
+
+/* TODO: move to separate stylesheet?!
+*/
+#jlq-score-table th {
+  font-size: 1.25em;
+}
+#jlq-score-meta {
+  font-size: .9em;
+  line-height: 1.4em;
 }

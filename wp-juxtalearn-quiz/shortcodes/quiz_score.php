@@ -59,7 +59,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     </div>
     </figure>
 
-    <ul>
+    <ul id=jlq-score-meta >
     <li> Quiz title:   <?php echo $score->quiz_name ?>
     <li> Quiz completed: <?php echo $score->endDate ?>
     <li> Tricky Topic: <a href="<?php echo $score->tricky_topic_url ?>"><?php
