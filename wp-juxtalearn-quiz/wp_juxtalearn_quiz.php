@@ -16,6 +16,9 @@ require_once 'php/juxtalearn_quiz_model.php';
 
 class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
 
+  // Was: 'juxtalearn-quiz-score/'
+  const SCORE_URL = 'quiz-score/%d/';
+
   protected $is_quiz_view_pg = FALSE;
   protected $quiz;
 
@@ -57,7 +60,7 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
     $data = $this->check_post_json();
 
     $result = $this->save_score($data);
-    $url = site_url('juxtalearn-quiz-score/'. $result['jlq_score_id']);
+    $url = site_url(sprintf(self::SCORE_URL, $result['jlq_score_id']));
     $title = 'Visualize your score';
 
     $this->json_response(array(
@@ -73,7 +76,7 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
 
   public function slickquiz_view_filter( $body ) {
 
-    if (preg_match('@\[slickquiz id=(\d+)\]@', $body, $matches)) {
+    if (preg_match('@\[slickquiz id=(\-?\d+|url|uri)\]@', $body, $matches)) {
       $quiz_id = $matches[1];
 
       $this->is_quiz_view_pg = TRUE;
@@ -81,6 +84,11 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
 
       $body .= '<script>juxtalearn_quiz = { ajaxurl: "'. $this->ajax_url()
           .'" };</script>';  //'id: '.$quiz_id
+      $body .= <<<HTML
+      <script>
+      document.documentElement.className += " shortcode-juxtalearn_quiz";
+      </script>
+HTML;
     }
 
     return $body;

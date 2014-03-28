@@ -41,7 +41,17 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
   <?php
 
   ?>
-    <div id=jlq-score-body ><div id=jlq-score-chart ></div></div>
+    <div id=jlq-score-body >
+        <div id=jlq-score-chart >
+<!--[if lte IE 8]>
+            <div class="jl-chart-no-js">
+            <p>Unfortunately, the chart doesn't work in older browsers. Please <a
+            href="http://whatbrowser.org/">try a different browser</a>.
+            </div>
+<![endif]-->
+            <div id="loading" class="jl-chart-loading">Loading chart...</div>
+        </div>
+    </div>
 
     <script src="<?php echo plugins_url('js/radar-charts-d3.js',
         JUXTALEARN_QUIZ_REGISTER_FILE) ?>"></script>
@@ -74,10 +84,17 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
   }
 
   protected function print_spider_javascript($score) {
-    # http://dl.dropbox.com/u/3203144/chartjs.html
     # http://bl.ocks.org/nbremer/6506614#RadarChart.js
     ?>
-(function () {
+jQuery(function ($) {
+
+  if (!window.d3) {
+    return;
+  }
+
+  console.log(">> Chart start - d3 exists.");
+
+  $(".jl-chart-loading").hide();
 
   var w = 500,
 	h = 500;
@@ -165,7 +182,9 @@ var legend = svg.append("g")
 	  .text(function(d) { return d; })
 	  ;
 
-})();
+  console.log(">> Chart end...");
+
+});
     <?php
   }
  
