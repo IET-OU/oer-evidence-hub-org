@@ -32,17 +32,20 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     if (!$b_continue) {
       return;
     }
-  ?>
-    <ul>
-    <li> Quiz title:   <?php echo $score->quiz_name ?>
-    <li> Quiz completed: <?php echo $score->endDate ?>
-    <li> Tricky Topic: <a href="<?php echo $score->tricky_topic_url ?>"><?php
-         echo $score->tricky_topic_title ?></a>
-    <li> User name:    <?php echo $score->user_name ?>
-    </ul>
-  <?php
 
+    $offset = $score->offset;
   ?>
+
+    <figure aria-labelledby="jlq-score-caption" role="img">
+    <figcaption id="jlq-score-caption">
+    <div>Spider or radar chart of cumulative quiz scores versus stumbling blocks,
+      for the <a href="<?php echo $score->tricky_topic_url ?>"><?php
+         echo $score->tricky_topic_title ?></a> tricky topic. <small>(Offset: <?php echo $offset ?>)</small></div>
+
+    <?php if (count($score->stumbling_blocks) < 3): ?>
+    <small class="warn low-sbs">(Note: we have less than 3 stumbling blocks, so the chart won't look great!)</small>
+  <?php endif; ?>
+    </figcaption>
     <div id=jlq-score-body >
         <div id=jlq-score-chart >
 <!--[if lte IE 8]>
@@ -54,12 +57,21 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
             <div id="loading" class="jl-chart-loading">Loading chart...</div>
         </div>
     </div>
+    </figure>
+
+    <ul>
+    <li> Quiz title:   <?php echo $score->quiz_name ?>
+    <li> Quiz completed: <?php echo $score->endDate ?>
+    <li> Tricky Topic: <a href="<?php echo $score->tricky_topic_url ?>"><?php
+         echo $score->tricky_topic_title ?></a>
+    <li> User name:    <?php echo $score->user_name ?>
+    </ul>
 
     <table id=jlq-score-table >
       <tr><th>Stumbling block</th> <th>Questions</th> <th>Scores</th></tr>
 
 <?php foreach ($score->stumbling_blocks as $sb_id => $sb): ?>
-      <tr><td>SB <?php echo $sb_id .': '. $sb['sb'] ?></td> <td><?php echo $sb['qs'] ?></td> <td><?php echo $sb['score'] ?></td></tr>
+      <tr><td>SB <?php echo $sb_id .': '. $sb['sb'] ?></td> <td><?php echo $sb['qs'] ?></td> <td><?php echo $sb['score'] - $offset ?></td></tr>
 <?php endforeach; ?>
     </table>
 
@@ -90,6 +102,8 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     # http://bl.ocks.org/nbremer/6506614#RadarChart.js
 
     $max = (float) $score->maximum_score;
+    $limit = count($score->stumbling_blocks);
+    $count = 0;
     ?>
 jQuery(function ($) {
 
@@ -119,10 +133,10 @@ var d = [
 		  [
 			//{axis:"Email",value:0.59},
 <?php foreach ($score->stumbling_blocks as $sb_id => $sb): ?>
-		{axis: "SB <?php echo $sb_id .': '. $sb['sb'] ?>", value: <?php
-		    echo $sb['score'] / $max ?> },
+		{axis: "<?php echo $sb['sb'] .' (SB:'. $sb_id .')' ?>", value: <?php
+		    echo $sb['score'] / $max ?> }<?php $count++; echo $count < $limit ? ',':''; ?>
+
 <?php endforeach; ?>
-		{}
 		  ],[
 		  ]
 		];

@@ -142,6 +142,7 @@ class JuxtaLearn_Quiz_Model {
     protected function process_score($score, $offset = 0) {
       if (!is_object($score)) return $score;
 
+      $score->offset = $offset;
       $score->_scores = json_decode($score->scoreJson);
       $score->_quiz = json_decode($score->publishedJson);
 
