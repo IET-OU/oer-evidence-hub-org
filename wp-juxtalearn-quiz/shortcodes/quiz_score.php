@@ -34,9 +34,11 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     }
   ?>
     <ul>
-    <li> Quiz title:  <?php echo $score->quiz_name ?>
+    <li> Quiz title:   <?php echo $score->quiz_name ?>
     <li> Quiz completed: <?php echo $score->endDate ?>
-    <li> User name:  <?php echo $score->user_name ?>
+    <li> Tricky Topic: <a href="<?php echo $score->tricky_topic_url ?>"><?php
+         echo $score->tricky_topic_title ?></a>
+    <li> User name:    <?php echo $score->user_name ?>
     </ul>
   <?php
 
@@ -53,19 +55,20 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
         </div>
     </div>
 
-    <script src="<?php echo plugins_url('js/radar-charts-d3.js',
-        JUXTALEARN_QUIZ_REGISTER_FILE) ?>"></script>
-    <script>
-    <?php $this->print_spider_javascript($score) ?>
-    </script>
-
     <table id=jlq-score-table >
       <tr><th>Stumbling block</th> <th>Questions</th> <th>Scores</th></tr>
 
 <?php foreach ($score->stumbling_blocks as $sb_id => $sb): ?>
-      <tr><td>SB <?php echo $sb_id ?></td> <td><?php echo $sb['qs'] ?></td> <td><?php echo $sb['score'] ?></td></tr>
+      <tr><td>SB <?php echo $sb_id .': '. $sb['sb'] ?></td> <td><?php echo $sb['qs'] ?></td> <td><?php echo $sb['score'] ?></td></tr>
 <?php endforeach; ?>
     </table>
+
+    <script src=
+    "<?php echo plugins_url('js/radar-charts-d3.js', JUXTALEARN_QUIZ_REGISTER_FILE) ?>"
+    ></script>
+    <script>
+    <?php $this->print_spider_javascript($score) ?>
+    </script>
 
     <script>
     document.documentElement.className += " shortcode-<?php echo self::SHORTCODE ?>";
@@ -85,6 +88,8 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
 
   protected function print_spider_javascript($score) {
     # http://bl.ocks.org/nbremer/6506614#RadarChart.js
+
+    $max = (float) $score->maximum_score;
     ?>
 jQuery(function ($) {
 
@@ -95,6 +100,8 @@ jQuery(function ($) {
   console.log(">> Chart start - d3 exists.");
 
   $(".jl-chart-loading").hide();
+
+  var max_score = <?php echo $max ?>;
 
   var w = 500,
 	h = 500;
@@ -112,7 +119,8 @@ var d = [
 		  [
 			//{axis:"Email",value:0.59},
 <?php foreach ($score->stumbling_blocks as $sb_id => $sb): ?>
-		{axis: "SB <?php echo $sb_id ?>", value: <?php echo $sb['score'] ?> },
+		{axis: "SB <?php echo $sb_id .': '. $sb['sb'] ?>", value: <?php
+		    echo $sb['score'] / $max ?> },
 <?php endforeach; ?>
 		{}
 		  ],[
@@ -185,7 +193,7 @@ var legend = svg.append("g")
   console.log(">> Chart end...");
 
 });
-    <?php
+<?php
   }
  
 }

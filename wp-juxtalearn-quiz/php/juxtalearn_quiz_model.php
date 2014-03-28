@@ -27,7 +27,7 @@ class JuxtaLearn_Quiz_Model {
 
   const DB_VERSION = '1.0';
   const DB_PREFIX = '_juxtalearn_quiz__';
-  const HUB_TAXONOMY = 'juxtalearn_hub_sb';
+  const HUB_SB_TAXONOMY = 'juxtalearn_hub_sb';
   const NONCE_ACTION = 'wp-admin/admin-ajax.php';
 
   /**
@@ -148,25 +148,34 @@ class JuxtaLearn_Quiz_Model {
       $score->tricky_topic_id = $this->get_tricky_topic($score->quiz_id);
       $score->stumbling_block_ids = $this->get_stumbling_blocks($score->quiz_id);
 
+      $post = get_post($score->tricky_topic_id);
+      $score->tricky_topic_title = $post->post_title;
+      $score->tricky_topic_url = site_url('trickytopic/'. $post->post_name);
+
       $stumbles = array();
+      $max_score = $offset;
       foreach ($score->stumbling_block_ids as $sb) {
         $sb_ids = $sb->s;
+        // TODO: are there multiple questions potentially?
         $the_question = $sb->q;
 
         foreach ($sb_ids as $sb_id) {
-          $the_sb = $this->get_data('sb', $sb_id); # TODO / BUG ?
+          $the_sb = get_term( $sb_id, self::HUB_SB_TAXONOMY );
           $stumbles[$sb_id] = array(
-            'score' => $offset, 'qs' => $the_question, 'sb' => 'TODO' #$the_sb
+            'score' => $offset, 'qs' => $the_question, 'sb_id' => $sb_id,
+            'sb' => isset($the_sb->name) ? $the_sb->name : '[unknown]',
           );
           foreach ($score->_scores as $qs) {
             $cand_question = preg_replace('/^\d+\. /', '', $qs->q_text);
             if ($cand_question == $the_question && $qs->is_correct) {
               $stumbles[$sb_id]['score'] += 1;
+              $max_score += $stumbles[$sb_id]['score'] > $max ? 1 : 0;
             }
           }
         }
       }
       $score->stumbling_blocks = $stumbles;
+      $score->maximum_score = $max_score;
 
       return $score;
     }
@@ -178,9 +187,9 @@ class JuxtaLearn_Quiz_Model {
 
     $posts = get_posts(array(
       'post_type' => 'student_problem',
-      #self::HUB_TAXONOMY => $sb,
+      #self::HUB_SB_TAXONOMY => $sb,
       'tax_query' => array(
-        'taxonomy' => self::HUB_TAXONOMY,
+        'taxonomy' => self::HUB_SB_TAXONOMY,
         #'field' => 'id', #'slug',
         'terms' => $sb,
       ),
@@ -216,7 +225,7 @@ class JuxtaLearn_Quiz_Model {
       break;
       case 'stumbling_block':
       case 'sb':
-        $terms = wp_get_post_terms($id, self::HUB_TAXONOMY,
+        $terms = wp_get_post_terms($id, self::HUB_SB_TAXONOMY,
           array('fields' => 'all'));
         $result = $terms;
         // Maybe, best do a deep clone.
