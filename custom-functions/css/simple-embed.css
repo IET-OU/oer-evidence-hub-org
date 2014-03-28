@@ -31,7 +31,8 @@ html body.simple-embed .site {
 }
 
 .simple-embed.page .site-content article.type-page {
-  margin-bottom: 0;
+  margin: 0;
+  padding: 0;
 }
 
 /* Hide comments in various ways.
