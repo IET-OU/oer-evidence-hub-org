@@ -1,5 +1,6 @@
 /* Tested with Tiny Forge theme for WordPress.
 */
+
 .simple-embed .site > header,
 .simple-embed .site > footer,
 #wpadminbar,
@@ -29,6 +30,19 @@ html body.simple-embed .site {
   width: 100%;
 }
 
-.se-no-comments #comments {
+.simple-embed.page .site-content article.type-page {
+  margin-bottom: 0;
+}
+
+/* Hide comments in various ways.
+*/
+.se-no-comments #comments,
+.shortcode-juxtalearn_quiz.simple-embed #comments,
+.shortcode-quiz_score.simple-embed #comments,
+.shortcode-juxtalearn_quiz.simple-embed .entry-header {
   display: none;
+}
+
+.shortcode-juxtalearn_quiz.simple-embed h2.quizName {
+  margin-top: 0;
 }
