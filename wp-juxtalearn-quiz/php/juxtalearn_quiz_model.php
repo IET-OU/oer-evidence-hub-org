@@ -6,58 +6,12 @@
  * @author Nick Freear.
  * @package JuxtaLearn_Quiz
  */
-
-//http://stackoverflow.com/questions/1532618/is-there-a-function-to-make-a-copy-of-a-php-array-to-another
-function clone_array($copied_array) {
-    return array_map(function($element) {
-        return (
-            ((is_array($element))
-                ? call_user_func(__FUNCTION__, $element)
-                : ((is_object($element))
-                    ? clone $element
-                    : $element
-                )
-            )
-        );
-    }, $copied_array);
-}
+require_once 'juxtalearn_quiz_create_table.php';
 
 
-class JuxtaLearn_Quiz_Model {
+class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
 
-  const DB_VERSION = '1.0';
-  const DB_PREFIX = '_juxtalearn_quiz__';
   const HUB_SB_TAXONOMY = 'juxtalearn_hub_sb';
-  const NONCE_ACTION = 'wp-admin/admin-ajax.php';
-
-  /**
-  * Docs: https://codex.wordpress.org/Creating_Tables_with_Plugins
-  * create_score_table():
-  *   https://github.com/wp-plugins/slickquiz/blob/master/slickquiz.php#L234
-  * activate():
-  *   http://github.com/mhawksey/wp-juxtalearn-hub/blob/master/shortcodes/shortcode.php#L140
-  */
-  protected function create_score_table() {
-    global $wpdb;
-
-    $table_name = $wpdb->prefix . 'juxtalearn_quiz_scores';
-
-    $sql = "CREATE TABLE $table_name (
-          id bigint(20) NOT NULL AUTO_INCREMENT,
-          scoreJson longtext NULL,
-          score_id bigint(20) unsigned NOT NULL DEFAULT '0',
-          startDate datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-          endDate datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-          createdDate datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-          PRIMARY KEY  (id),
-          KEY score_id_index (score_id)
-          );";
-
-    require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-    dbDelta( $sql );
-
-    add_option( self::DB_PREFIX . 'db_version', self::DB_VERSION );
-  }
 
   /**
   * save_score()
@@ -299,49 +253,4 @@ class JuxtaLearn_Quiz_Model {
         $post->ID == $quiz_tt['x'. $quiz_id] ? 'selected' : '';
   }
 
-
-  /* =========== JSON API ============= */
-
-  protected function json_response($data, $success = TRUE) {
-    $data = is_string($data) ? array('msg' => $data) : $data;
-    $data['stat'] = $success ? 'ok' : 'fail';
-    $quiz_id = isset($data['quiz_id']) ? $data['quiz_id'] : NULL;
-
-    if (!$success) {
-      header('HTTP/1.1 400');
-    }
-    @header('Content-Type: application/json; charset=utf-8');
-    @header('X-JuxtaLearn-Quiz-Stat: '. $data['stat']);
-    @header('X-JuxtaLearn-Quiz: ajax; quiz_id='. $quiz_id);
-    // PHP 5.4+, JSON_PRETTY_PRINT.
-    echo json_encode($data);
-    die(0);
-  }
-
-  protected function error($msg) {
-    return $this->json_response($msg, false);
-  }
-
-  protected function check_post_json() {
-    if (!isset($_POST['json'])) {
-      $this->error('Missing {json} in POST request.');
-    }
-    return json_decode(stripcslashes( $_POST['json'] ));
-  }
-
-  protected function check_ajax_referer() {
-    $valid_ref = check_ajax_referer(self::NONCE_ACTION, false, $die = FALSE);
-    $valid_nonce = wp_verify_nonce($_REQUEST['_wpnonce'], self::NONCE_ACTION);
-
-    if (!$valid_ref) {
-      $this->error('Invalid referer nonce.');
-    }
-    return $valid_ref;
-  }
-
-  protected function ajax_url() {
-    return esc_url(wp_nonce_url(
-        site_url('wp-admin/admin-ajax.php'), self::NONCE_ACTION)
-    );
-  }
 }
