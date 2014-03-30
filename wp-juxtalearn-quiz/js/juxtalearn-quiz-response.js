@@ -45,7 +45,7 @@ jQuery(function ($) {
         responses.push({
           is_correct: $(el).hasClass("correctResponse"),
           q_text: $("h3", $(el)).text(),
-          q_num : q_num
+          q_num : q_num  //TODO: can we do better? A proper question ID.
         });
       });
 

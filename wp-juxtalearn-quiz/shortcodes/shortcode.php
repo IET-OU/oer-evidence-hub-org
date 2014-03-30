@@ -50,7 +50,7 @@ abstract class JuxtaLearn_Quiz_Shortcode {
   }
 
   protected function error_404($reason = NULL) {
-    @header("X-JuxtaLearn-Error: invalid score ID.");
+    @header("X-JuxtaLearn-Error: missing or invalid score ID.");
     status_header(404);
     nocache_headers();
 

@@ -17,6 +17,8 @@ jQuery(function ($) {
 
   log(">> JuxtaLearn Quiz scaffold.", qEdit);
 
+  form_defaults();
+
   // Quiz editor - insert scaffolding templates into page.
   $(".jlq-template").each(function (idx, el) {
     var selector = $(el).data("sel");
@@ -138,6 +140,8 @@ jQuery(function ($) {
   loading_end();
 
 
+  /* ========= Utilities ========= */
+
   function ajax_url() {
     return window.location.pathname
           .replace('admin.php', 'admin-ajax.php')
@@ -159,6 +163,27 @@ jQuery(function ($) {
     $("#jlq-tricktopic, .JL-Quiz-Stumbles input").prop("disabled", false);
 
     log(">> Loading end.");
+  }
+
+  function form_defaults() {
+    var defaults = {
+      MainCopy:   "Welcome! ...",
+      ResultCopy: "Well done! You've reached the end.",
+      Level1small81100Bestsmall:"Prodigy",
+      Level2small6180small:     "Boffin",
+      Level3small4160small:     "Mr/Mrs Average",
+      Level4small2140small:     "Woops!",
+      Level5small020Worstsmall: "Airhead",
+      correct:   "Correct!",
+      incorrect: "Woops, that's wrong."
+    }, key, $inp;
+
+    for (key in defaults) {
+      $inp = $("[name =" + key + "]");
+      if ("" === $inp.val()) {
+        $inp.val(defaults[key]);
+      }
+    }
   }
 
 });

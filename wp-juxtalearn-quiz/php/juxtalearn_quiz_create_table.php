@@ -22,6 +22,9 @@ class JuxtaLearn_Quiz_Create_Table {
 
     $table_name = $wpdb->prefix . 'juxtalearn_quiz_scores';
 
+    // scoreJson: [{"is_correct":false,"q_text":"1. What is 3 + 7?","q_num":0}]
+    // score_id:  This links to `wp_plugin_slickquiz_scores`.`id`
+    // endDate - startDate: How long has the attempt taken?
     $sql = "CREATE TABLE $table_name (
           id bigint(20) NOT NULL AUTO_INCREMENT,
           scoreJson longtext NULL,
