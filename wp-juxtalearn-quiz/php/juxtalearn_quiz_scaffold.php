@@ -20,18 +20,24 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
     add_action($AJAX_ACT . 'student_problems', array(&$this, 'ajax_get_student_problems'));
     //add_action('admin_init', array(&$this, 'admin_init'));
 
+    if ($this->is_quiz_admin_page()) {
+      add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
+    }
+
     if ($this->is_quiz_edit_page()) {
       //add_filter('slickquiz_admin_options', array(&$this, 'custom_admin_options'));
-
-      add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
 
       add_action('admin_print_footer_scripts', array(&$this, 'admin_quiz_footer')); #, 50);
     }
   }
 
+  protected function is_quiz_admin_page() {
+    return isset($_GET['page']) && preg_match('/^slickquiz/', $_GET['page']);
+  }
+
   protected function is_quiz_edit_page() {
     return isset($_GET['page']) &&
-            preg_match('/slickquiz-(new|edit)/', $_GET['page']);
+            preg_match('/^slickquiz-(new|edit)/', $_GET['page']);
   }
 
   public function admin_init() {

@@ -7,11 +7,14 @@
 *   https://github.com/wp-plugins/slickquiz/blob/master/slickquiz.php#L234 
 * activate():
 *   http://github.com/mhawksey/wp-juxtalearn-hub/blob/master/shortcodes/shortcode.php#L140
+*
+*
+* ALTER TABLE `wp_4_juxtalearn_quiz_scores` ADD COLUMN `permission` varchar(16) NULL;
 */
 require_once 'juxtalearn_quiz_api_helper.php';
 
 
-class JuxtaLearn_Quiz_Create_Table {
+class JuxtaLearn_Quiz_Create_Table extends JuxtaLearn_Quiz_API_Helper {
 
   const DB_VERSION = '1.0';
   const DB_PREFIX = '_juxtalearn_quiz__';
@@ -32,6 +35,7 @@ class JuxtaLearn_Quiz_Create_Table {
           startDate datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
           endDate datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
           createdDate datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+          permission varchar(16) NULL,
           PRIMARY KEY  (id),
           KEY score_id_index (score_id)
           );";
@@ -41,4 +45,5 @@ class JuxtaLearn_Quiz_Create_Table {
 
     add_option( self::DB_PREFIX . 'db_version', self::DB_VERSION );
   }
+
 }

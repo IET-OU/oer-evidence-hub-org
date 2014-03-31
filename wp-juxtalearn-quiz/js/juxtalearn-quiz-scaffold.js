@@ -17,7 +17,7 @@ jQuery(function ($) {
 
   log(">> JuxtaLearn Quiz scaffold.", qEdit);
 
-  form_defaults();
+  form_default_texts();
 
   // Quiz editor - insert scaffolding templates into page.
   $(".jlq-template").each(function (idx, el) {
@@ -150,6 +150,11 @@ jQuery(function ($) {
           + '&_JUXTALEARN_=1';
   }
 
+  // site_url(): Works in context of admin pages.
+  function site_url(path) {
+    return window.location.pathname.replace('wp-admin/admin.php', '') + path;
+  }
+
   function loading() {
     $(".jlq-loading").show();
     $("body").addClass("jlq-body-loading");
@@ -165,7 +170,7 @@ jQuery(function ($) {
     log(">> Loading end.");
   }
 
-  function form_defaults() {
+  function form_default_texts() {
     var defaults = {
       MainCopy:   "Welcome! ...",
       ResultCopy: "Well done! You've reached the end.",
@@ -185,6 +190,23 @@ jQuery(function ($) {
       }
     }
   }
+
+  (function add_admin_table_links() {
+    var $tbl_name = $("td.table_name", qEdit);
+
+    $tbl_name.each(function (j, el) {
+      var text = $(el).text(),
+        quiz_id = $(el).closest("tr").children(".table_id").text(),
+        url = site_url("juxtalearn-quiz/" + quiz_id + "/");
+
+      //if (!/^\d+/.test(quiz_id)) return;
+
+      $(el).html('<a href="' + url + '">' + text + '</a>' +
+          ' <a href="'+ url +'?embed=1" title="Embed '+ text +'">Embed</a>');
+      
+      log(">> Quiz admin table:", text, url)
+    });
+  })();
 
 });
 
