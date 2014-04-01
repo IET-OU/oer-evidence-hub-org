@@ -52,8 +52,8 @@ abstract class JuxtaLearn_Quiz_Shortcode {
     }
     status_header(403);
   ?>
-    <script> document.documentElement.className += " jlq-error 403 "; </script>
-    <p class=error >SORRY! (403) You don't have permission to access this page.</p>
+    <script> document.documentElement.className += " jl-q-error 403 "; </script>
+    <p class=jl-error-msg >SORRY! (403) You don't have permission to access this page.</p>
     <?php 
     return ! $b_continue;
   }
@@ -65,8 +65,8 @@ abstract class JuxtaLearn_Quiz_Shortcode {
 
     if (!$reason) $reason = 'missing score ID.';
   ?>
-    <script> document.documentElement.className += " jlq-error 404 "; </script>
-    <p class=error >ERROR (404). Reason: <?php echo $reason;
+    <script> document.documentElement.className += " jl-q-error 404 "; </script>
+    <p class=jl-error-msg >ERROR (404). Reason: <?php echo $reason;
     include( get_404_template() );
     exit;
   }
