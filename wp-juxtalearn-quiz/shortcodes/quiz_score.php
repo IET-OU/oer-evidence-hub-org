@@ -44,7 +44,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
       for the <a href="<?php echo $score->tricky_topic_url ?>"><?php
          echo $score->tricky_topic_title ?></a> tricky topic. <small>(Offset: <?php echo $offset ?>)</small></div>
 
-    <?php if (count($score->stumbling_blocks) < 5): ?>
+    <?php if (0 == count($score->stumbling_blocks)): ?>
     <p class="jl-error-msg no-sbs">ERROR. Sorry! I couldn't get any stumbling blocks. A bug maybe? :(
       <?php if (isset($score->warning)):?><small>(Warning: <?php echo $score->warning ?>)</small><?php endif;?>
     </p>
