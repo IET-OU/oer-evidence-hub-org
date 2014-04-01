@@ -71,19 +71,51 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
   public function ajax_get_student_problems() {
     $stumbling_block_ids = isset($_GET['stumbling_blocks']) ? $_GET['stumbling_blocks'] : NULL;
     $quiz = $this->get_data('quiz');
+    $inc_tax_tool = TRUE;
     $student_problems = $this->get_student_problems($stumbling_block_ids);
     $html = '<ul>';
     foreach ($student_problems as $post) {
-      $html .= "<li data-sp='$post->ID'><a href='$post->guid'>$post->post_title</a>: $post->post_content</li>";
+      $url = site_url($post->post_type .'/'. $post->post_name);
+      $html .= "<li data-sp='$post->ID'><a href='$url'>$post->post_title</a>: $post->post_content</li>";
     }
+    $tax_tool = $inc_tax_tool ? $this->get_hub_tax_tool( $student_problems ) : '';
+
     $this->json_response(array(
       'quiz_id' => $quiz->id,
       'stumbling_block_ids' => $stumbling_block_ids,
       'count' => count($student_problems),
       'student_problems' => $student_problems,
       'title' => 'Student Problems',
-      'html' => $html . '</ul>',
+      'html' => $html . '</ul> '. $tax_tool,
+      'activate_tax_tool' => $inc_tax_tool ? TRUE : FALSE,
     ));
+  }
+
+  /**
+    TODO: enqueue :: jquery-ui, tabs...
+    TODO: multiple student problems?!
+  */
+  protected function get_hub_tax_tool( $posts ) {
+	if (!$posts) return '';
+
+	$post = $posts[0];
+	$path = '../../wp-juxtalearn-hub/';
+
+	ob_start();
+    require_once $path . 'post-types/class-custom_post_type.php';
+    require_once $path . 'post-types/student_problem.php';
+    #$cpt = new Juxtalearn_Hub_CustomPostType();
+    $sp = new Student_Problem_Template( $as_wp_plugin = false );
+    #$sp->admin_init();
+    $sp->set_options();
+    #$options = $sp->options; #$sp->get_options();
+
+    $sp->add_inner_meta_boxes_tax_tool( $post );
+    #require_once "../../wp-juxtalearn-hub/post-types/taxonomy-tool.php";
+    ?>
+    <script> //JL_quiz_scaffold_tax_tabs( jQuery ); </script>
+    <?php
+    return ob_get_clean();
   }
 
   # POST wordpress/wp-admin/admin-ajax.php?action=juxtalearn_quiz_edit&id=1
@@ -99,9 +131,10 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
   }
 
   public function admin_enqueue_scripts() {
+    $scripts = array('jquery', 'post', 'jquery-ui-core', 'jquery-ui-tabs'); #'jquery-ui-autocomplete');
     wp_enqueue_script('quiz-scaffold', plugins_url(
       'js/juxtalearn-quiz-scaffold.js', JUXTALEARN_QUIZ_REGISTER_FILE
-    ), array('jquery')); #, false, $in_footer = TRUE);
+    ), $scripts, false, $in_footer = TRUE);
     wp_enqueue_style('quiz-scaffold', plugins_url(
       'css/juxtalearn-quiz-scaffold.css', JUXTALEARN_QUIZ_REGISTER_FILE
     ));

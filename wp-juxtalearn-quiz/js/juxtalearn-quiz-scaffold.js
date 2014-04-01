@@ -12,12 +12,14 @@ jQuery(function ($) {
     editAction = 'juxtalearn_quiz_edit',
     stumblesAction = 'juxtalearn_quiz_stumbling_blocks',
     problemsAction = 'juxtalearn_quiz_student_problems',
+    quiz_url = 'juxtalearn-quiz/%d/',
     tricky_topic_id,
     stumbling_blocks;
 
   log(">> JuxtaLearn Quiz scaffold.", qEdit);
 
   form_default_texts();
+  add_admin_table_links();
 
   // Quiz editor - insert scaffolding templates into page.
   $(".jlq-template").each(function (idx, el) {
@@ -44,7 +46,7 @@ jQuery(function ($) {
     });
   });
 
-  // Quiz editor - submit changes to scaffolding.
+  // Quiz editor - SAVE changes to scaffolding.
   $('button.publish, .draft, .preview', qEdit).on('click', function (e) {
     e.preventDefault();
 
@@ -83,6 +85,7 @@ jQuery(function ($) {
     log(">> Saving:", e.target.value);
   });
 
+  // Get stumbling block tags.
   $("select#jlq-trickytopic").on("change", function (e) {
 
     var tt_id = $("#jlq-trickytopic :selected").val();
@@ -112,6 +115,7 @@ jQuery(function ($) {
   }).trigger("change");
 
 
+  // Get student problems - main scaffold.
   $(".jlq-stumbles-inner").on("click", "input", function (e) { //"click, change"?
     loading();
 
@@ -125,15 +129,18 @@ jQuery(function ($) {
         var $outer = $wrapper.closest(".JL-Quiz-Stumbles"),
           $scaffold = $(".jlq-scaffold-inner", $outer);
 
-        if ("success" === stat) {
+        if ("success" === stat && "ok" === data.stat) {
 
           // Temporary artificial delay.
-          setTimeout(function () { $scaffold.html(data.html); }, 250);
+          setTimeout(function () {
+            $scaffold.html(data.html);
+            if (data.activate_tax_tool) { activate_tax_tool(); }
+          }, 100);
         }
         log(">> Get student problems, done:", stat, data);
       })
       .always(function () {
-        setTimeout(function () { loading_end(); }, 250);
+        setTimeout(function () { loading_end(); }, 150);
       });
   });
 
@@ -191,25 +198,54 @@ jQuery(function ($) {
     }
   }
 
-  (function add_admin_table_links() {
+  function add_admin_table_links() {
     var $tbl_name = $("td.table_name", qEdit);
 
     $tbl_name.each(function (j, el) {
       var text = $(el).text(),
         quiz_id = $(el).closest("tr").children(".table_id").text(),
-        url = site_url("juxtalearn-quiz/" + quiz_id + "/");
+        url = site_url(quiz_url).replace("%d", quiz_id);
 
       //if (!/^\d+/.test(quiz_id)) return;
 
       $(el).html('<a href="' + url + '">' + text + '</a>' +
           ' <a href="'+ url +'?embed=1" title="Embed '+ text +'">Embed</a>');
-      
+
       log(">> Quiz admin table:", text, url)
     });
-  })();
+  }
+
+  function activate_tax_tool() {
+    var $tabs = $("#juxtalearn_hub_tax_tabs", qEdit);
+
+    if (!$tabs.tabs) {
+      log("Error, jQuery UI tabs() not available");
+    }
+    log(">> Activate tax tool");
+
+    // wp-juxtalearn-hub/js/admin.js#L46
+    $tabs.tabs({
+        activate: function (ev, ui) {
+            $('.tax_term').hide();
+            $('.tax_term').hide();
+            $('div[class$="desc"]').show();
+        }
+    }).css("min-height", "150px");
+	$tabs.find('label').hover(function () {
+		$('.tax_term').hide();
+		$(this).css('text-decoration', 'underline');
+		var labelName = $(this).attr('for');
+		$('.tax_term.'+labelName).fadeIn(500);
+	}, function () {
+		$('.tax_term').hide();
+		$('div[class$="desc"]').fadeIn(500);
+		$(this).css('text-decoration');
+	});
+	$("input[type=checkbox]", $tabs).prop("disabled", "disabled");
+	$tabs.show();
+  }
 
 });
-
 
 // usage: log('inside coolFunc',this,arguments);
 // http://paulirish.com/2009/log-a-lightweight-wrapper-for-consolelog/

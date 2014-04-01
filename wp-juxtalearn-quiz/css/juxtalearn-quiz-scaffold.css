@@ -23,13 +23,14 @@
 }
 .jlq-stumbles-inner, .jlq-scaffold-wrap {
   float: left;
-  width: 47%;
+  width: 25%;
   x-border: 1px solid #ccc;
   margin-bottom: 1em;
   min-height: 140px;
 }
 .jlq-scaffold-wrap {
   float: right;
+  width: 74%;
 }
 .jlq-clear, .slickQuiz .question.correct {
   clear: both;
@@ -39,6 +40,18 @@
   font-size: .95em;
   color: #888;
   margin-bottom: 14px;
+}
+
+/* TODO: Taxonomy tool.
+*/
+.jlq-scaffold-inner #juxtalearn_hub_tax_tabs {
+  float: none;
+  clear: both;
+  min-height: 150px;
+  position: relative;
+  min-width: 50em; /*680px*/
+  left: -200px;
+  font-size: .95em;
 }
 
 
@@ -53,4 +66,19 @@
 }
 .slickQuiz .quizFormWrapper .questionSet .actual textarea {
   height: 3.5em;
+}
+
+
+/*Quiz list: {WP}/wp-admin/admin.php?page=slickquiz
+  {WP}/wp-includes/css/dashicons.css;
+*/
+.wp-admin .slickQuiz .table_name a[href *= embed] {
+  font-size: .9em;
+  color: red;
+}
+.wp-admin .slickQuiz .table_name a[href *= embed]:before {
+  content: "<>";
+  font: 1.1em Consolas,monospace;
+  x-content:"\f328"; /*.dashicons-smiley*/
+  x-font-family: "dashicons";
 }
