@@ -14,6 +14,7 @@ jQuery(function ($) {
 
   var $qView = $(".entry-content .slickQuizWrapper .quizArea"),
     action = 'juxtalearn_quiz_scores',
+    time_click = 2000 + 1000, //SlickQuiz: 2000ms.
     time_start,
     JQ = window.juxtalearn_quiz || {};
 
@@ -72,7 +73,7 @@ jQuery(function ($) {
           log(">> Fail:", jqXHR.responseJSON.msg, jqXHR);
         });
 
-    }, 2500); // SlickQuiz: 2000.
+    }, time_click);
 
   });
 
