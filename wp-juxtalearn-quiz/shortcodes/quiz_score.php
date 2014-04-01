@@ -27,8 +27,9 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     $jlq_score_id = $this->url_parse_id($attrs);
 
     $score = $this->model_get_score($jlq_score_id, $offset = 1);
+    $permission = isset($score->permission) ? $score->permission : NULL;
 
-    $b_continue = $this->authenticate($score->createdBy);
+    $b_continue = $this->auth_permitted($score->createdBy, $permission, $auth_reason);
     if (!$b_continue) {
       return;
     }
@@ -36,6 +37,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     $offset = $score->offset;
   ?>
 
+    <!--AUTH: <?php echo $auth_reason ?> -->
     <figure aria-labelledby="jlq-score-caption" role="img">
     <figcaption id="jlq-score-caption">
     <div>Spider or radar chart of cumulative quiz scores versus stumbling blocks,

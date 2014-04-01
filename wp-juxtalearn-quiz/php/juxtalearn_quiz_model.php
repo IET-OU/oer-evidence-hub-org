@@ -137,10 +137,11 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
 
 // BUG: This doesn't appear to filter based on stumbling blocks?!
   protected function get_student_problems($stumbling_blocks) {
+    global $wpdb;
     #$sb = is_array($stumbling_blocks) ? $stumbling_blocks : array($stumbling_blocks);
     $sb = is_array($stumbling_blocks) ? intval($stumbling_blocks[ 0 ]) : $stumbling_blocks;
 
-    $posts = get_posts(array(
+    /*BUG? $posts = get_posts(array(
       'post_type' => 'student_problem',
       #self::HUB_SB_TAXONOMY => $sb,
       'tax_query' => array(
@@ -148,9 +149,18 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
         #'field' => 'id', #'slug',
         'terms' => $sb,
       ),
-    ));
+    ));*/
+    $fields = 'p.ID,p.post_title,p.post_name,p.post_type,p.post_content';
+    $posts = $wpdb->get_results("SELECT $fields FROM `$wpdb->posts` p
+      JOIN $wpdb->term_relationships tr ON tr.object_id = p.ID
+      JOIN $wpdb->term_taxonomy tt ON tt.term_taxonomy_id = tr.term_taxonomy_id
+      WHERE p.post_type = 'student_problem'
+      AND tt.taxonomy = 'juxtalearn_hub_sb'
+      AND tt.term_id = $sb"); //Test 297; Diffusion 282;
     // Remove unnecessary fields.
-    $b_ok = array_walk($posts, function ($post, $idx) {
+    $filter = false;
+    if ($filter) {
+      $b_ok = array_walk($posts, function ($post, $idx) {
           unset($post->post_date);
           unset($post->comment_status);
           unset($post->ping_status);
@@ -162,7 +172,8 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
           unset($post->post_parent);
           unset($post->post_password);
           unset($post->comment_count);
-    });
+      });
+    }
     return $posts;
   }
 

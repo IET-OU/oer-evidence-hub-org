@@ -11,7 +11,7 @@
  * @author Nick Freear.
  * @package JuxtaLearn_Quiz
  */
- 
+
 abstract class JuxtaLearn_Quiz_Shortcode {
 
   protected function url_parse_id($attrs = array()) {
@@ -31,17 +31,26 @@ abstract class JuxtaLearn_Quiz_Shortcode {
     return $the_id;
   }
 
-  protected function authenticate($user_id) {
+  /** Was: authenticate()
+  */
+  protected function auth_permitted($user_id, $permission = NULL, &$reason = NULL) {
     $b_continue = TRUE;
     $current_user = wp_get_current_user();
 
+    if ('public' == $permission) {
+      $reason = 'permission public';
+      return $b_continue;
+    }
     if ($user_id && $current_user->ID == $user_id) {
+      $reason = 'current user';
       return $b_continue;
     }
     // Admin or editor (teacher).
     if (current_user_can('edit_pages')) {
+      $reason = 'is editor';
       return $b_continue;
     }
+    status_header(403);
   ?>
     <script> document.documentElement.className += " jlq-error 403 "; </script>
     <p class=error >SORRY! (403) You don't have permission to access this page.</p>
