@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP JuxtaLearn Quiz
 Plugin URI:  https://github.com/IET-OU/oer-evidence-hub-org/#Juxtalearn
-Description: Add scaffolding and results visualization to Slick Quiz quizzes [JuxtaLearn].
+Description: Add scaffolding and results visualization to Slick Quiz quizzes [Requires: SlickQuiz 1.3+, WP JuxtaLearn Hub].
 Author:  Nick Freear
 Author URI:  https://github.com/nfreear
 */

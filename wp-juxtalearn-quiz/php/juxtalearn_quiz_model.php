@@ -111,6 +111,9 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
       $max_score = $offset;
       foreach ($score->stumbling_block_ids as $sb) {
         $sb_ids = $sb->s;
+        if (0 == count($sb_ids)) {
+          $score->warning = 'at least one question has no stumbling blocks';
+        }
         // TODO: are there multiple questions potentially?
         $the_question = $sb->q;
 
