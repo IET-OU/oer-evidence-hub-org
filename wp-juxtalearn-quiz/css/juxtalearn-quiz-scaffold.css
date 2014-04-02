@@ -72,13 +72,18 @@
 /*Quiz list: {WP}/wp-admin/admin.php?page=slickquiz
   {WP}/wp-includes/css/dashicons.css;
 */
+.wp-admin .slickQuiz .table_scores a.jlq-v,
 .wp-admin .slickQuiz .table_name a[href *= embed] {
   font-size: .9em;
-  color: red;
+  color: #D54E22; /*orange*/
 }
 .wp-admin .slickQuiz .table_name a[href *= embed]:before {
   content: "<>";
   font: 1.1em Consolas,monospace;
   x-content:"\f328"; /*.dashicons-smiley*/
   x-font-family: "dashicons";
+}
+.wp-admin .slickQuiz .table_scores a.jlq-v:before {
+  content: "\f185"; /*.dashicons-chart-bar*/
+  font-family: "dashicons";
 }

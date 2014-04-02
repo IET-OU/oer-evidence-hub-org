@@ -216,7 +216,7 @@ jQuery(function ($) {
           ' <a href="'+ qz_url +'?embed=1" title="Embed quiz: '+ text +'">Embed</a>');
 
       $scores.append(' <a class=jlq-v href="' + sc_url +
-          '" title="Visualize scores"><small>Visualize</small></a>');
+          '" title="Visualize scores"><span>Visualize</span></a>');
 
       log(">> Quiz admin table:", text, qz_url)
     });
