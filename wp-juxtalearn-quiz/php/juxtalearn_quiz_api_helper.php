@@ -50,7 +50,7 @@ class JuxtaLearn_Quiz_API_Helper {
     return $valid_ref;
   }
 
-  protected function ajax_url() {
+  public function ajax_url() {
     return esc_url(wp_nonce_url(
         site_url('wp-admin/admin-ajax.php'), self::NONCE_ACTION)
     );

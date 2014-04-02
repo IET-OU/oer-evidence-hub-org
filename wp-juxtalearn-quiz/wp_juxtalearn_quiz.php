@@ -18,13 +18,6 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
 
   const LOC_DOMAIN = 'juxtalearn-quiz';
 
-  // Was: 'juxtalearn-quiz-score/'
-  const SCORE_URL = 'quiz-score/%d/';
-  const SLICKQUIZ_SC_RE = '@\[slickquiz id=(\-?\d+|url|uri)\]@';
-
-  protected $is_quiz_view_pg = FALSE;
-  protected $quiz;
-
 
   public function __construct() {
     //TODO: check whether Slick Quiz is enabled -- is_plugin_active() ?
@@ -38,6 +31,9 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
     require_once 'shortcodes/quiz_score.php';
     $shortcode_score = new JuxtaLearn_Quiz_Shortcode_Score();
 
+    require_once 'shortcodes/slickquiz_dummy.php';
+    $shortcode_sq = new JuxtaLearn_Quiz_Shortcode_SlickQuiz_Dummy();
+
     #require_once 'shortcodes/juxtalearn_quiz.php';
     #$shortcode_quiz = new JuxtaLearn_Quiz_Shortcode_Quiz();
 
@@ -49,58 +45,6 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
     // Activate for Updates
     add_action( 'plugins_loaded', array( &$this, 'activate' ) );
 
-
-    add_filter('the_content', array(&$this, 'slickquiz_view_filter'));
-    add_action('wp_enqueue_scripts', array(&$this, 'front_enqueue_scripts'));
-
-    $AJAX_ACT = 'wp_ajax_juxtalearn_quiz_';
-    add_action($AJAX_ACT . 'scores', array(&$this, 'ajax_post_scores'));
-  }
-
-  public function ajax_post_scores() {
-    $is_valid_referer = $this->check_ajax_referer();
-
-    $data = $this->check_post_json();
-
-    $result = $this->save_score($data);
-    $url = site_url(sprintf(self::SCORE_URL, $result['jlq_score_id']));
-    $title = 'Visualize your score';
-
-    $this->json_response(array(
-      'referer_ok' => $is_valid_referer,
-      'input' => $data,
-      'slickquiz_score' => $result['parent_score'],
-      'jlq_score_id' => $result['jlq_score_id'],
-      'url'  => $url,
-      'title' => $title,
-      'html' => "<p class='jlq-visualize'><a href='$url'>$title</a></p>",
-    ));
-  }
-
-  public function slickquiz_view_filter( $body ) {
-
-    if (preg_match(self::SLICKQUIZ_SC_RE, $body, $matches)) {
-      $quiz_id = $matches[1];
-
-      $this->is_quiz_view_pg = TRUE;
-      $this->quiz = (object) array('id' => $quiz_id);
-
-      $body .= '<script>juxtalearn_quiz = { ajaxurl: "'. $this->ajax_url()
-          .'" };</script>';  //'id: '.$quiz_id
-      $body .= <<<HTML
-      <script>
-      document.documentElement.className += " shortcode-juxtalearn_quiz";
-      </script>
-HTML;
-    }
-
-    return $body;
-  }
-
-  public function front_enqueue_scripts() {
-    wp_enqueue_script('quiz-response', plugins_url(
-      'js/juxtalearn-quiz-response.js', JUXTALEARN_QUIZ_REGISTER_FILE
-    ), array('jquery', 'slickquiz_js'), false, $in_footer = TRUE);
   }
 
 

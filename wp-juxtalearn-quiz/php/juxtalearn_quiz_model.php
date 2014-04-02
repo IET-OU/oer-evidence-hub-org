@@ -234,7 +234,7 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
     return $result;
   }
 
-  protected function get_tricky_topic($quiz_id) {
+  public function get_tricky_topic($quiz_id) {
     $quiz_tt = $this->get_data('quiz_tt');
     return isset($quiz_tt['x'. $quiz_id]) ? $quiz_tt['x' . $quiz_id] : NULL;
   }

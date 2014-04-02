@@ -16,8 +16,12 @@ jQuery(function ($) {
     action = 'juxtalearn_quiz_scores',
     time_click = 2000 + 1000, //SlickQuiz: 2000ms.
     time_start,
-    JQ = window.juxtalearn_quiz || {};
+    JLQ = window.juxtalearn_quiz || {};
 
+  if (!JLQ.tt_id) {
+    log(">> Just a plain SlickQuiz.");
+    return;
+  }
   log(">> JuxtaLearn Quiz response.", $qView);
 
   $qView.on("click", ".button.startQuiz", function () {
@@ -55,6 +59,7 @@ jQuery(function ($) {
         user_email: user_email,
         quiz_id:    quiz_id,
         quiz_name:  quiz_name,
+        tt_id:      JLQ.tt_id,
         post_id:    post_id,
         time_start: time_start.toUTCString(), //toISOString() - IE > 8.
         time_end:   time_end.toUTCString(),
@@ -78,7 +83,7 @@ jQuery(function ($) {
   });
 
   function ajax_url() {
-    return JQ.ajaxurl + '&_JUXTALEARN_=1';
+    return JLQ.ajaxurl + '&_JUXTALEARN_=1';
   }
 
 });
