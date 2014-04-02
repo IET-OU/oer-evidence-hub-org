@@ -188,6 +188,7 @@ var mycfg = {
   w: w,
   h: h,
   maxValue: <?php echo $max_score //0.6 ?>,
+  format: '01.1f',
   levels: 6,
   ExtraWidthX: 300
 }
