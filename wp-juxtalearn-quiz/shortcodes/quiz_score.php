@@ -33,11 +33,36 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     if (!$b_continue) {
       return;
     }
+    ?>
+
+    <!--AUTH: <?php echo $auth_reason ?> -->
+    <?php if (!$score->tricky_topic_id): ?>
+      <p class="jl-error-msg no-sbs">Warning: <?php echo $score->warning ?></p>
+      <?php return; ?>
+    <?php endif;
+
+    $this->print_score_markup($score);
+    ?>
+
+    <script src=
+    "<?php echo plugins_url('js/radar-charts-d3.js', JUXTALEARN_QUIZ_REGISTER_FILE) ?>"
+    ></script>
+    <script>
+    <?php $this->print_spider_javascript(array($score)) ?>
+    </script>
+
+    <script>
+    document.documentElement.className += " shortcode-<?php echo self::SHORTCODE ?>";
+    </script>
+    <?php
+  }
+
+
+  protected function print_score_markup($score) {
 
     $offset = $score->offset;
   ?>
 
-    <!--AUTH: <?php echo $auth_reason ?> -->
     <figure aria-labelledby="jlq-score-caption" role="img">
     <figcaption id="jlq-score-caption">
     <div>Spider or radar chart of cumulative quiz scores versus stumbling blocks,
@@ -81,16 +106,6 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
 <?php endforeach; ?>
     </table>
 
-    <script src=
-    "<?php echo plugins_url('js/radar-charts-d3.js', JUXTALEARN_QUIZ_REGISTER_FILE) ?>"
-    ></script>
-    <script>
-    <?php $this->print_spider_javascript($score) ?>
-    </script>
-
-    <script>
-    document.documentElement.className += " shortcode-<?php echo self::SHORTCODE ?>";
-    </script>
     <?php
   }
 
@@ -104,12 +119,12 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     return $score;
   }
 
-  protected function print_spider_javascript($score) {
+  protected function print_spider_javascript($the_scores) {
     # http://bl.ocks.org/nbremer/6506614#RadarChart.js
 
-    $max = (float) $score->maximum_score;
-    $limit = count($score->stumbling_blocks);
-    $count = 0;
+    $num_scores = count($the_scores);
+    $max_score = (float) $the_scores[0]->maximum_score; #?
+
     ?>
 jQuery(function ($) {
 
@@ -121,7 +136,7 @@ jQuery(function ($) {
 
   $(".jl-chart-loading").hide();
 
-  var max_score = <?php echo $max ?>;
+  ///var max_score = <?php echo $max_score ?>;
 
   var w = 500,
 	h = 500;
@@ -129,29 +144,37 @@ jQuery(function ($) {
 var colorscale = d3.scale.category10();
 
 //Legend titles
-var LegendOptions = [ 'Smartphone', <?php /*'Quiz: <?php
-   #echo $score->quiz_name ?>/ <?php
-   #echo $score->user_name ?>/ <?php
-   #echo $score->endDate ?>',*/ ?> 'Tablet'];
+var LegendOptions = [
+<?php foreach ($the_scores as $j => $score): ?>
+<?php
+    $max_score = $score->maximum_score > $max_score ? $score->maximum_score : $max_score;
+    $sb_limit = count($score->stumbling_blocks);
+    $sb_count = 0; ?>
+    '<?php echo $score->user_name .' / '. $score->endDate
+            ?>'<?php echo $j < ($num_scores - 1) ? ',':'' ?>
+
+<?php endforeach; ?>
+];
 
 //Data
 var d = [
 		  [
-			//{axis:"Email",value:0.59},
-<?php foreach ($score->stumbling_blocks as $sb_id => $sb): ?>
+<?php foreach ($the_scores as $j => $score): ?>
+    <?php foreach ($score->stumbling_blocks as $sb_id => $sb): ?>
 		{axis: "<?php echo $sb['sb'] .' (SB:'. $sb_id .')' ?>", value: <?php
-		    echo $sb['score'] / $max ?> }<?php $count++; echo $count < $limit ? ',':''; ?>
+		    echo $sb['score'] / $max_score ?> }<?php $sb_count++; echo $sb_count < $sb_limit ? ',':''; ?>
+
+    <?php endforeach; ?>
+		  ]<?php echo $j < ($num_scores - 1) ? ',':'' ?>
 
 <?php endforeach; ?>
-		  ],[
-		  ]
 		];
 
 //Options for the Radar chart, other than default
 var mycfg = {
   w: w,
   h: h,
-  maxValue: 0.6,
+  maxValue: <?php echo $max_score //0.6 ?>,
   levels: 6,
   ExtraWidthX: 300
 }
@@ -178,7 +201,7 @@ var text = svg.append("text")
 	.attr("y", 10)
 	.attr("font-size", "12px")
 	.attr("fill", "#404040")
-	.text("What % of owners use a specific service in a week");
+	.text("Students who completed the quiz<?php //What % of owners use a specific service in a week ?>");
 
 //Initiate Legend
 var legend = svg.append("g")

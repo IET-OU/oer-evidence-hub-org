@@ -97,10 +97,15 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
       if (!is_object($score)) return $score;
 
       $score->offset = $offset;
+      $score->tricky_topic_id = $this->get_tricky_topic($score->quiz_id);
+      if (!$score->tricky_topic_id) {
+        $score->warning = 'not a JuxtaLearn quiz (no linked tricky topic).';
+        return $score;
+      }
+
       $score->_scores = json_decode($score->scoreJson);
       $score->_quiz = json_decode($score->publishedJson);
 
-      $score->tricky_topic_id = $this->get_tricky_topic($score->quiz_id);
       $score->stumbling_block_ids = $this->get_stumbling_blocks($score->quiz_id);
 
       $post = get_post($score->tricky_topic_id);

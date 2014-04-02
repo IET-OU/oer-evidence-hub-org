@@ -18,6 +18,7 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
 
   // Was: 'juxtalearn-quiz-score/'
   const SCORE_URL = 'quiz-score/%d/';
+  const SLICKQUIZ_SC_RE = '@\[slickquiz id=(\-?\d+|url|uri)\]@';
 
   protected $is_quiz_view_pg = FALSE;
   protected $quiz;
@@ -76,7 +77,7 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
 
   public function slickquiz_view_filter( $body ) {
 
-    if (preg_match('@\[slickquiz id=(\-?\d+|url|uri)\]@', $body, $matches)) {
+    if (preg_match(self::SLICKQUIZ_SC_RE, $body, $matches)) {
       $quiz_id = $matches[1];
 
       $this->is_quiz_view_pg = TRUE;
