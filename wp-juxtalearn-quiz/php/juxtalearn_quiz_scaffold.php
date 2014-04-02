@@ -10,6 +10,8 @@
 
 class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
 
+  const LOC_DOMAIN = Wp_JuxtaLearn_Quiz::LOC_DOMAIN;
+
   protected $quiz;
 
   public function __construct() {
@@ -106,9 +108,7 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
     require_once $path . 'post-types/student_problem.php';
     #$cpt = new Juxtalearn_Hub_CustomPostType();
     $sp = new Student_Problem_Template( $as_wp_plugin = false );
-    #$sp->admin_init();
     $sp->set_options();
-    #$options = $sp->options; #$sp->get_options();
 
     $sp->add_inner_meta_boxes_tax_tool( $post );
     #require_once "../../wp-juxtalearn-hub/post-types/taxonomy-tool.php";
@@ -150,13 +150,16 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
     $quiz_tt = $this->get_data('quiz_tt');
     $quiz = $this->get_data('quiz');
 ?>
-    <script type="text/template" class="jlq-template jlq-t-t" data-sel=".slickQuiz .QuizTitle">
+    <!-- JuxtaLearn Quiz templates -->
+    <script type="text/html" class="jlq-template jlq-t-t" data-sel=".slickQuiz .QuizTitle">
 
     <div class="question JL-Quiz-TrickyTopic">
-      <p class=jlq-loading ><span>Loading scaffolding...</span> <i></i></p>
+      <p class=jlq-loading ><span><?php echo __('Loading scaffolding...', self::LOC_DOMAIN)
+          ?></span> <i></i></p>
 
-      <label for=jlq-trickytopic >Trick topic</label>
-      <small class=desc >What tricky topic should this quiz be linked to?</small>
+      <label for=jlq-trickytopic ><?php echo __('Trick topic', self::LOC_DOMAIN) ?></label>
+      <small class=desc ><?php echo
+      __('What tricky topic should this quiz be linked to?', self::LOC_DOMAIN) ?></small>
       <select id=jlq-trickytopic name=jlq-trickytopic placeholder="Choose...">
         <option></option>
       <?php foreach ($tricky_topics as $post): #setup_postdata($topic); ?>
@@ -171,16 +174,18 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
     <script type="text/template" class="jlq-template jlq-t-s" data-sel=".question.actual">
 
     <div class="question JL-Quiz-Stumbles">
-      <p class=jlq-loading ><span>Loading scaffolding...</span> <i></i></p>
+      <p class=jlq-loading ><span><?php echo __('Loading scaffolding...', self::LOC_DOMAIN)
+          ?></span> <i></i></p>
 
-      <label class=main >Stumbling blocks</label>
-      <small class=desc >Which stumbling blocks should we test with this question?</small>
+      <label class=main ><?php echo __('Stumbling blocks', self::LOC_DOMAIN) ?></label>
+      <small class=desc ><?php echo
+      __('Which stumbling blocks should we test with this question?', self::LOC_DOMAIN) ?></small>
       <div class=jlq-stumbles-inner >
         <label><input type=checkbox name="jlq-s[]" class=dummy />[ Stumbling block ]</label>
       </div>
 
       <div class=jlq-scaffold-wrap >
-      <h4>Student problems</h4>
+      <h4><?php echo __('Student problems', self::LOC_DOMAIN) ?></h4>
       <div class=jlq-scaffold-inner ><p>[ TODO: More scaffolding -- display student problems for selected stumbling
        blocks? ]</div>
       </div>

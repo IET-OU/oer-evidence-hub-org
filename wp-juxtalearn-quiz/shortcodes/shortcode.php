@@ -14,6 +14,9 @@
 
 abstract class JuxtaLearn_Quiz_Shortcode {
 
+  const LOC_DOMAIN = Wp_JuxtaLearn_Quiz::LOC_DOMAIN;
+
+
   protected function url_parse_id($attrs = array()) {
     #var_dump($sc_name, $sc_content, $attrs, get_the_ID());
 
@@ -53,7 +56,8 @@ abstract class JuxtaLearn_Quiz_Shortcode {
     status_header(403);
   ?>
     <script> document.documentElement.className += " jl-q-error 403 "; </script>
-    <p class=jl-error-msg >SORRY! (403) You don't have permission to access this page.</p>
+    <p class=jl-error-msg ><?php echo
+        __('SORRY! (403) You don\'t have permission to access this page.') ?></p>
     <?php 
     return ! $b_continue;
   }
@@ -63,10 +67,11 @@ abstract class JuxtaLearn_Quiz_Shortcode {
     status_header(404);
     nocache_headers();
 
-    if (!$reason) $reason = 'missing score ID.';
+    if (!$reason) $reason = __('missing score ID.', self::LOC_DOMAIN);
   ?>
     <script> document.documentElement.className += " jl-q-error 404 "; </script>
-    <p class=jl-error-msg >ERROR (404). Reason: <?php echo $reason;
+    <p class=jl-error-msg ><?php echo sprintf(
+        __('ERROR (404). Reason: %s', self::LOC_DOMAIN), $reason);
     include( get_404_template() );
     exit;
   }

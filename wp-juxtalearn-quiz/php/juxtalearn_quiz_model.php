@@ -99,7 +99,8 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
       $score->offset = $offset;
       $score->tricky_topic_id = $this->get_tricky_topic($score->quiz_id);
       if (!$score->tricky_topic_id) {
-        $score->warning = 'not a JuxtaLearn quiz (no linked tricky topic).';
+        $score->warning =
+          __('not a JuxtaLearn quiz (no linked tricky topic).', self::LOC_DOMAIN);
         return $score;
       }
 
@@ -117,7 +118,8 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
       foreach ($score->stumbling_block_ids as $sb) {
         $sb_ids = $sb->s;
         if (0 == count($sb_ids)) {
-          $score->warning = 'at least one question has no stumbling blocks';
+          $score->warning =
+            __('at least one question has no stumbling blocks', self::LOC_DOMAIN);
         }
         // TODO: are there multiple questions potentially?
         $the_question = $sb->q;

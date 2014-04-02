@@ -16,6 +16,8 @@ require_once 'php/juxtalearn_quiz_model.php';
 
 class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
 
+  const LOC_DOMAIN = 'juxtalearn-quiz';
+
   // Was: 'juxtalearn-quiz-score/'
   const SCORE_URL = 'quiz-score/%d/';
   const SLICKQUIZ_SC_RE = '@\[slickquiz id=(\-?\d+|url|uri)\]@';

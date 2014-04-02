@@ -37,7 +37,8 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
 
     <!--AUTH: <?php echo $auth_reason ?> -->
     <?php if (!$score->tricky_topic_id): ?>
-      <p class="jl-error-msg no-sbs">Warning: <?php echo $score->warning ?></p>
+      <p class="jl-error-msg no-sbs"><?php echo sprintf(
+        __('Warning: %s', self::LOC__DOMAIN), $score->warning) ?></p>
       <?php return; ?>
     <?php endif;
 
@@ -65,16 +66,20 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
 
     <figure aria-labelledby="jlq-score-caption" role="img">
     <figcaption id="jlq-score-caption">
-    <div>Spider or radar chart of cumulative quiz scores versus stumbling blocks,
-      for the <a href="<?php echo $score->tricky_topic_url ?>"><?php
-         echo $score->tricky_topic_title ?></a> tricky topic. <small>(Offset: <?php echo $offset ?>)</small></div>
+    <div><?php echo sprintf(
+    __('Spider or radar chart of cumulative quiz scores versus stumbling blocks,
+      for the <a %s >%s tricky topic</a>.', self::LOC_DOMAIN),
+         "href='$score->tricky_topic_url'", $score->tricky_topic_title) ?> <small>(Offset: <?php echo $offset ?>)</small></div>
 
     <?php if (0 == count($score->stumbling_blocks)): ?>
     <p class="jl-error-msg no-sbs">ERROR. Sorry! I couldn't get any stumbling blocks. A bug maybe? :(
-      <?php if (isset($score->warning)):?><small>(Warning: <?php echo $score->warning ?>)</small><?php endif;?>
+      <?php if (isset($score->warning)):?><small><?php echo sprintf(
+        __('Warning: %s', self::LOC__DOMAIN), $score->warning) ?></small><?php endif;?>
     </p>
     <?php elseif (count($score->stumbling_blocks) < 3): ?>
-    <small class="jl-warn-msg low-sbs">(Note: we have less than 3 stumbling blocks, so the chart won't look great!)</small>
+    <small class="jl-warn-msg low-sbs"><?php echo
+    __('(Note: we have less than 3 stumbling blocks, so the chart won\'t look great!)',
+        self::LOC_DOMAIN) ?></small>
   <?php endif; ?>
     </figcaption>
     <div id=jlq-score-body >
@@ -85,7 +90,8 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
             href="http://whatbrowser.org/">try a different browser</a>.
             </div>
 <![endif]-->
-            <div id="loading" class="jl-chart-loading">Loading chart...</div>
+            <div id="loading" class="jl-chart-loading"
+              ><?php echo __('Loading chart...', self::LOC_DOMAIN) ?></div>
         </div>
     </div>
     </figure>
@@ -114,7 +120,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     $model = new JuxtaLearn_Quiz_Model();
     $score = $model->get_score($score_id, $offset);
     if (!$score) {
-      $this->error_404('Invalid score ID: '. $score_id);
+      $this->error_404(__('Invalid score ID: ', self::LOC_DOMAIN) . $score_id);
     }
     return $score;
   }
@@ -201,7 +207,7 @@ var text = svg.append("text")
 	.attr("y", 10)
 	.attr("font-size", "12px")
 	.attr("fill", "#404040")
-	.text("Students who completed the quiz<?php //What % of owners use a specific service in a week ?>");
+	.text("<?php echo __('Students who completed the quiz', self::LOC_DOMAIN) ?>");
 
 //Initiate Legend
 var legend = svg.append("g")
