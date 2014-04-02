@@ -31,6 +31,9 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
     require_once 'shortcodes/quiz_score.php';
     $shortcode_score = new JuxtaLearn_Quiz_Shortcode_Score();
 
+    require_once 'shortcodes/all_quiz_scores.php';
+    $shortcode_all_scores = new JuxtaLearn_Quiz_Shortcode_All_Quiz_Scores();
+
     require_once 'shortcodes/slickquiz_dummy.php';
     $shortcode_sq = new JuxtaLearn_Quiz_Shortcode_SlickQuiz_Dummy();
 

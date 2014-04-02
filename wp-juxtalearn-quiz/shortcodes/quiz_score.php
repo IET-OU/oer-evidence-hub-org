@@ -1,6 +1,6 @@
 <?php
 /**
- * Wordpress shortcode to visualize JuxtaLearn quiz scores.
+ * Wordpress shortcode to visualize a JuxtaLearn quiz score for a single attempt.
  *
  * Usage:
  *   [quiz_score] - With `my-page/{SCORE ID}/`
@@ -35,10 +35,11 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     }
     ?>
 
-    <!--AUTH: <?php echo $auth_reason ?> -->
+    <!--JLQ AUTH: <?php echo $auth_reason ?> -->
     <?php if (!$score->tricky_topic_id): ?>
-      <p class="jl-error-msg no-sbs"><?php echo sprintf(
-        __('Warning: %s', self::LOC__DOMAIN), $score->warning) ?></p>
+      <p class="jl-error-msg no-tt"><?php echo sprintf(
+        __('Warning: %s', self::LOC_DOMAIN), $score->warning) ?>
+        <?php echo sprintf(__('Quiz ID: %d', self::LOC_DOMAIN), $score->quiz_id) ?></p>
       <?php return; ?>
     <?php endif;
 
@@ -59,17 +60,22 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
   }
 
 
-  protected function print_score_markup($score) {
+  protected function print_score_markup($score, $notes = NULL) {
 
     $offset = $score->offset;
   ?>
 
-    <figure aria-labelledby="jlq-score-caption" role="img">
-    <figcaption id="jlq-score-caption">
-    <div><?php echo sprintf(
+    <figure id=jlq-score-chart aria-labelledby="jlq-score-caption" role="img">
+    <figcaption>
+    <h2 id="jlq-score-caption"><?php echo sprintf(
     __('Spider or radar chart of cumulative quiz scores versus stumbling blocks,
       for the <a %s >%s tricky topic</a>.', self::LOC_DOMAIN),
-         "href='$score->tricky_topic_url'", $score->tricky_topic_title) ?> <small>(Offset: <?php echo $offset ?>)</small></div>
+         "href='$score->tricky_topic_url'", $score->tricky_topic_title) ?>
+    <small>(Offset: <?php echo $offset ?>)</small></h2>
+
+    <?php if ($notes): ?>
+      <p class=notes ><?php echo $notes ?></p>
+    <?php endif; ?>
 
     <?php if (0 == count($score->stumbling_blocks)): ?>
     <p class="jl-error-msg no-sbs">ERROR. Sorry! I couldn't get any stumbling blocks. A bug maybe? :(
@@ -81,6 +87,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     __('(Note: we have less than 3 stumbling blocks, so the chart won\'t look great!)',
         self::LOC_DOMAIN) ?></small>
   <?php endif; ?>
+
     </figcaption>
     <div id=jlq-score-body >
         <div id=jlq-score-chart >

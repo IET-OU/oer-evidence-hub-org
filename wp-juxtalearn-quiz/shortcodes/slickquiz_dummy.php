@@ -60,7 +60,7 @@ class JuxtaLearn_Quiz_Shortcode_SlickQuiz_Dummy extends JuxtaLearn_Quiz_Shortcod
       $tricky_topic_id = $model->get_tricky_topic($quiz_id);
 
       if (!$tricky_topic_id) {
-        return'<!--Not a JuxtaLearn quiz. -->' . $body;
+        return'<!--JLQ: Not a JuxtaLearn quiz. -->' . $body;
       }
 
       $this->is_quiz_view_pg = TRUE;

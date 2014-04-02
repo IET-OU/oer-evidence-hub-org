@@ -13,6 +13,7 @@ jQuery(function ($) {
     stumblesAction = 'juxtalearn_quiz_stumbling_blocks',
     problemsAction = 'juxtalearn_quiz_student_problems',
     quiz_url = 'juxtalearn-quiz/%d/',
+    scores_url = 'all-quiz-scores/%d/',
     tricky_topic_id,
     stumbling_blocks;
 
@@ -203,15 +204,21 @@ jQuery(function ($) {
 
     $tbl_name.each(function (j, el) {
       var text = $(el).text(),
-        quiz_id = $(el).closest("tr").children(".table_id").text(),
-        url = site_url(quiz_url).replace("%d", quiz_id);
+        $row = $(el).closest("tr"),
+        $scores = $row.children(".table_scores"),
+        quiz_id = $row.children(".table_id").text(),
+        qz_url = site_url(quiz_url).replace("%d", quiz_id),
+        sc_url = site_url(scores_url).replace("%d", quiz_id);
 
       //if (!/^\d+/.test(quiz_id)) return;
 
-      $(el).html('<a href="' + url + '">' + text + '</a>' +
-          ' <a href="'+ url +'?embed=1" title="Embed '+ text +'">Embed</a>');
+      $(el).html('<a class=jlq-q href="' + qz_url + '">' + text + '</a>' +
+          ' <a href="'+ qz_url +'?embed=1" title="Embed quiz: '+ text +'">Embed</a>');
 
-      log(">> Quiz admin table:", text, url)
+      $scores.append(' <a class=jlq-v href="' + sc_url +
+          '" title="Visualize scores"><small>Visualize</small></a>');
+
+      log(">> Quiz admin table:", text, qz_url)
     });
   }
 

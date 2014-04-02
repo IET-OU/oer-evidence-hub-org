@@ -70,19 +70,19 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
            $quiz_id . " AND name = '". esc_sql($name) ."' ORDER BY $order_by" );
     }
 
-    public function get_score($jl_score_id, $offset = 0) {
+    public function get_score($jlq_score_id, $offset = 0) {
       global $wpdb;
       $db_name = $wpdb->prefix . 'juxtalearn_quiz_scores';
       $join_scores = $wpdb->prefix . 'plugin_slickquiz_scores';
       $join_quiz = $wpdb->prefix . 'plugin_slickquiz';
 
       $score = $wpdb->get_row( "SELECT *, $join_scores.name AS user_name,
-            $join_quiz.name AS quiz_name, $db_name.id AS jl_score_id,
+            $join_quiz.name AS quiz_name, $db_name.id AS jlq_score_id,
             $join_scores.createdBy AS user_id
           FROM $db_name
           JOIN $join_scores ON $join_scores.id = $db_name.score_id
           JOIN $join_quiz ON $join_quiz.id = $join_scores.quiz_id
-          WHERE $db_name.id = ". intval($jl_score_id) );
+          WHERE $db_name.id = ". intval($jlq_score_id) );
     /* SELECT *
       FROM `wp_4_juxtalearn_quiz_scores` jqs
       JOIN wp_4_plugin_slickquiz_scores  pss ON pss.id = jqs.score_id
@@ -91,6 +91,28 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
       LIMIT 1;
     */
       return $this->process_score($score, $offset);
+    }
+
+    public function get_all_scores($quiz_id, $offset = 0) {
+      global $wpdb;
+      $db_name = $wpdb->prefix . 'juxtalearn_quiz_scores';
+      $join_scores = $wpdb->prefix . 'plugin_slickquiz_scores';
+      $join_quiz = $wpdb->prefix . 'plugin_slickquiz';
+
+      $all_scores = $wpdb->get_results( "SELECT *, $join_scores.name AS user_name,
+            $join_quiz.name AS quiz_name, $db_name.id AS jlq_score_id,
+            $join_scores.createdBy AS user_id
+          FROM $db_name
+          JOIN $join_scores ON $join_scores.id = $db_name.score_id
+          JOIN $join_quiz ON $join_quiz.id = $join_scores.quiz_id
+          WHERE $join_quiz.id = ". intval( $quiz_id ) ."
+            GROUP BY $join_scores.name
+            ORDER BY $db_name.endDate ASC" );
+
+      foreach ($all_scores as $j => $score) {
+        $all_scores[$j] = $this->process_score( $score, $offset );
+      }
+      return $all_scores;
     }
 
     protected function process_score($score, $offset = 0) {
