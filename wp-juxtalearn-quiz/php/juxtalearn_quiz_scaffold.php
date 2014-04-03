@@ -51,6 +51,9 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
   public function ajax_get_stumbles() {
     $tricky_topic_id = isset($_GET['tricky_topic']) ? intval($_GET['tricky_topic']) : NULL;
     $quiz = $this->get_data('quiz');
+    if (!$tricky_topic_id) {
+      $this->error('Missing tricky topic ID');
+    }
     $post = get_post($tricky_topic_id);
     $stumbling_blocks = $this->get_data('sb', $tricky_topic_id);
     $html = '';
@@ -73,6 +76,9 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
   public function ajax_get_student_problems() {
     $stumbling_block_ids = isset($_GET['stumbling_blocks']) ? $_GET['stumbling_blocks'] : NULL;
     $quiz = $this->get_data('quiz');
+    if (!$stumbling_block_ids || !$quiz->id) {
+      $this->error('Missing quiz ID or stumbling block IDs');
+    }
     $inc_tax_tool = TRUE;
     $student_problems = $this->get_student_problems($stumbling_block_ids);
     $html = '<ul>';

@@ -75,7 +75,8 @@ jQuery(function ($) {
           $the_qz.append(data.html);
         })
         .fail(function (jqXHR, stat) {
-          log(">> Fail:", jqXHR.responseJSON.msg, jqXHR);
+          //var msg = jqXHR.responseJSON.msg;
+          log(">> Fail:", stat, jqXHR);
         });
 
     }, time_click);

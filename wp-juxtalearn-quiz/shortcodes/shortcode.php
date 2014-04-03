@@ -12,7 +12,7 @@
  * @package JuxtaLearn_Quiz
  */
 
-abstract class JuxtaLearn_Quiz_Shortcode {
+abstract class JuxtaLearn_Quiz_Shortcode extends JuxtaLearn_Quiz_Model {
 
   const LOC_DOMAIN = Wp_JuxtaLearn_Quiz::LOC_DOMAIN;
 

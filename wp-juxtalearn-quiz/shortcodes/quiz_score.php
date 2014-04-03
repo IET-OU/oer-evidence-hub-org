@@ -138,8 +138,15 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     $num_scores = count($the_scores);
     $max_score = (float) $the_scores[0]->maximum_score; #?
 
+    $divisor = 1;   //$max_score
+
     ?>
+/*jslint devel: true, vars: true, white: true, indent: 2 */
+/*global jQuery:false, window:false, d3:false, RadarChart:false */
+
 jQuery(function ($) {
+
+  'use strict';
 
   if (!window.d3) {
     return;
@@ -148,8 +155,6 @@ jQuery(function ($) {
   console.log(">> Chart start - d3 exists.");
 
   $(".jl-chart-loading").hide();
-
-  ///var max_score = <?php echo $max_score ?>;
 
   var w = 500,
 	h = 500;
@@ -161,8 +166,7 @@ var LegendOptions = [
 <?php foreach ($the_scores as $j => $score): ?>
 <?php
     $max_score = $score->maximum_score > $max_score ? $score->maximum_score : $max_score;
-    $sb_limit = count($score->stumbling_blocks);
-    $sb_count = 0; ?>
+?>
     '<?php echo $score->user_name .' / '. $score->endDate
             ?>'<?php echo $j < ($num_scores - 1) ? ',':'' ?>
 
@@ -173,9 +177,13 @@ var LegendOptions = [
 var d = [
 		  [
 <?php foreach ($the_scores as $j => $score): ?>
+<?php
+    $sb_limit = count($score->stumbling_blocks);
+    $sb_count = 0;
+?>
     <?php foreach ($score->stumbling_blocks as $sb_id => $sb): ?>
 		{axis: "<?php echo $sb['sb'] .' (SB:'. $sb_id .')' ?>", value: <?php
-		    echo $sb['score'] / $max_score ?> }<?php $sb_count++; echo $sb_count < $sb_limit ? ',':''; ?>
+		    echo $sb['score'] / $divisor ?> }<?php $sb_count++; echo $sb_count < $sb_limit ? ',':''; ?>
 
     <?php endforeach; ?>
 		  ]<?php echo $j < ($num_scores - 1) ? ',':'' ?>
@@ -191,7 +199,7 @@ var mycfg = {
   format: '01.1f',
   levels: 6,
   ExtraWidthX: 300
-}
+};
 
 //Call function to draw the Radar chart
 //Will expect that data is in %'s
