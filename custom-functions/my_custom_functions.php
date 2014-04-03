@@ -39,6 +39,8 @@ class My_Custom_Functions {
     add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
     add_action('wp_enqueue_scripts', array(&$this, 'front_enqueue_scripts'));
 
+    add_action('wp_footer', array(&$this, 'footer_browser_sniff'));
+
     $this->security_remove_wp_links();
   }
 
@@ -73,6 +75,26 @@ class My_Custom_Functions {
     remove_action('wp_head', 'wp_generator'); # <meta name="generator" content="WordPress 3.8.1">
 
     #? remove_action('wp_head', 'pingback_link');
+  }
+
+
+  /** Some crude browser sniffing for SVG/ fullscreen API.
+  */
+  public function footer_browser_sniff() {
+    /* ?>
+<!--[if gte IE 9]>
+    <script> document.documentElement.className += " ie ie9p "; </script>
+<![endif]-->  */ ?>
+
+<!--[if !IE]>-->
+    <script> document.documentElement.className += " not-ie "; </script>
+<!--<![endif]-->
+    <script>
+    document.documentElement.setAttribute('data-ua', navigator.userAgent);
+    </script>
+    <?php /*
+    <script src="//cdn.jsdelivr.net/modernizr/2.7.1/modernizr.min.js"></script>
+    <?php */
   }
 }
 
