@@ -1,5 +1,11 @@
 # GNU Make file for OER Evidence Hub/ Juxtalearn/ ..
 
+# Environment
+XGETTEXT=/usr/local/bin/xgettext
+WORDPRESS=--language=PHP --keyword=__:1
+META=--copyright-holder="Copyright 2014 The Open University." \
+ --msgid-bugs-address=iet-webmaster@open.ac.uk --package-name
+
 
 help:
 	@echo OER Evidence Hub/ Juxtalearn installer.
@@ -7,6 +13,7 @@ help:
 	@echo "	Commands:"
 	@echo "		make install-oer"
 	@echo "		make install-juxta"
+	@echo "		make jl-quiz-pot"
 	@echo
 
 sym-links:
@@ -43,6 +50,19 @@ install-juxta: install-cmn
 	# git checkout quiz/CR1/scaffold
 	# git push origin quiz/CR1/scaffold:quiz/CR1/scaffold
 
+jl-quiz-pot:
+	find "wp-juxtalearn-quiz" -type f -name "*.php" \
+	| $(XGETTEXT) $(WORDPRESS) $(META)=JuxtaLearn-Quiz -f - \
+	--from-code=utf-8 --add-comments=/ -o juxtalearn-quiz.pot
+	more juxtalearn-quiz.pot
+
+jl-hub-pot:
+	find "wp-juxtalearn-hub" -type f -name "*.php" -and -not -path "*/lib/*" \
+	| $(XGETTEXT) $(WORDPRESS) $(META)=JuxtaLearn-Hub -f - \
+	--from-code=utf-8 --add-comments=/ -o juxtalearn-hub.pot
+	more juxtalearn-hub.pot
+
+
 test:
 	grep -v -q apache /etc/passwd && chown -R apache:apache  wordpress/wp-content/files/
 	#grep -v -q apache /etc/passwd && echo Hi
@@ -50,6 +70,6 @@ test:
 	@echo "Test ends."
 
 
-.PHONY: test install-juxta install-oer install-cmn sym-links
+.PHONY: test jl-quiz-pot jl-hub-pot install-juxta install-oer install-cmn sym-links
 
 #End.
