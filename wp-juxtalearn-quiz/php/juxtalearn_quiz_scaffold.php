@@ -76,8 +76,8 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
   public function ajax_get_student_problems() {
     $stumbling_block_ids = isset($_GET['stumbling_blocks']) ? $_GET['stumbling_blocks'] : NULL;
     $quiz = $this->get_data('quiz');
-    if (!$stumbling_block_ids || !$quiz->id) {
-      $this->error('Missing quiz ID or stumbling block IDs');
+    if (!$stumbling_block_ids) {  #|| !$quiz->id) {
+      $this->error('Missing stumbling block ID(s)');
     }
     $inc_tax_tool = TRUE;
     $student_problems = $this->get_student_problems($stumbling_block_ids);
@@ -86,7 +86,7 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
       $url = site_url($post->post_type .'/'. $post->post_name);
       $html .= "<li data-sp='$post->ID'><a href='$url'>$post->post_title</a>: $post->post_content</li>";
     }
-    $tax_tool = $inc_tax_tool ? $this->get_hub_tax_tool( $student_problems ) : '';
+    $tax_tool = $inc_tax_tool ? $this->get_hub_tax_tool( $student_problems, $as_html = FALSE ) : '';
 
     $this->json_response(array(
       'quiz_id' => $quiz->id,
@@ -94,7 +94,8 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
       'count' => count($student_problems),
       'student_problems' => $student_problems,
       'title' => 'Student Problems',
-      'html' => $html . '</ul> '. $tax_tool,
+      'html' => $html . '</ul> ',
+      'tax_tool' => $tax_tool,
       'activate_tax_tool' => $inc_tax_tool ? TRUE : FALSE,
     ));
   }
@@ -103,25 +104,33 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
     TODO: enqueue :: jquery-ui, tabs...
     TODO: multiple student problems?!
   */
-  protected function get_hub_tax_tool( $posts ) {
+  protected function get_hub_tax_tool( $posts, $as_html = TRUE ) {
 	if (!$posts) return '';
 
 	$post = $posts[0];
 	$path = '../../wp-juxtalearn-hub/';
 
-	ob_start();
     require_once $path . 'post-types/class-custom_post_type.php';
     require_once $path . 'post-types/student_problem.php';
     #$cpt = new Juxtalearn_Hub_CustomPostType();
     $sp = new Student_Problem_Template( $as_wp_plugin = false );
     $sp->set_options();
 
-    $sp->add_inner_meta_boxes_tax_tool( $post );
-    #require_once "../../wp-juxtalearn-hub/post-types/taxonomy-tool.php";
-    ?>
-    <script> //JL_quiz_scaffold_tax_tabs( jQuery ); </script>
-    <?php
-    return ob_get_clean();
+    if ($as_html) {
+      ob_start();
+      $sp->add_inner_meta_boxes_tax_tool( $post );
+      #require_once "../../wp-juxtalearn-hub/post-types/taxonomy-tool.php";
+      return ob_get_clean();
+    }
+
+    $sp_options = $sp->get_options();
+    $sp_c_tax = $sp_options['country']['options'][0]->taxonomy;  #'juxtalearn_hub_country'
+    unset($sp_options['country']['options']);
+
+    return array(
+      'labels' => $sp_options,
+      'tabs' => $sp->get_tax_tool_tabs(),
+    );
   }
 
   # POST wordpress/wp-admin/admin-ajax.php?action=juxtalearn_quiz_edit&id=1
@@ -163,7 +172,7 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
       <p class=jlq-loading ><span><?php echo __('Loading scaffolding...', self::LOC_DOMAIN)
           ?></span> <i></i></p>
 
-      <label for=jlq-trickytopic ><?php echo __('Trick topic', self::LOC_DOMAIN) ?></label>
+      <label for=jlq-trickytopic ><?php echo __('Tricky topic', self::LOC_DOMAIN) ?></label>
       <small class=desc ><?php echo
       __('What tricky topic should this quiz be linked to?', self::LOC_DOMAIN) ?></small>
       <select id=jlq-trickytopic name=jlq-trickytopic placeholder="Choose...">
