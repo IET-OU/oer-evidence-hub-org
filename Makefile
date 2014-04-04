@@ -51,6 +51,7 @@ install-juxta: install-cmn
 	# git push origin quiz/CR1/scaffold:quiz/CR1/scaffold
 
 jl-quiz-pot:
+	# Extract text for translation (i18n) to GetText POT templates.
 	find "wp-juxtalearn-quiz" -type f -name "*.php" \
 	| $(XGETTEXT) $(WORDPRESS) $(META)=JuxtaLearn-Quiz -f - \
 	--from-code=utf-8 --add-comments=/ -o juxtalearn-quiz.pot
