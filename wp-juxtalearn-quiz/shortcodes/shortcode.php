@@ -14,8 +14,6 @@
 
 abstract class JuxtaLearn_Quiz_Shortcode extends JuxtaLearn_Quiz_Model {
 
-  const LOC_DOMAIN = Wp_JuxtaLearn_Quiz::LOC_DOMAIN;
-
 
   protected function url_parse_id($attrs = array()) {
     #var_dump($sc_name, $sc_content, $attrs, get_the_ID());

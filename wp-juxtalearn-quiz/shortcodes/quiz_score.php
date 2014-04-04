@@ -67,10 +67,9 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
 
     <figure id=jlq-score-chart aria-labelledby="jlq-score-caption" role="img">
     <figcaption>
-    <h2 id="jlq-score-caption"><?php echo sprintf(
-    __('Spider or radar chart of cumulative quiz scores versus stumbling blocks,
-      for the <a %s >%s tricky topic</a>.', self::LOC_DOMAIN),
-         "href='$score->tricky_topic_url'", $score->tricky_topic_title) ?>
+    <h2 id="jlq-score-caption"><?php echo sprintf( __(
+'Spider or radar chart of cumulative quiz scores versus stumbling blocks, for the <a %s>%s tricky topic</a>.',
+        self::LOC_DOMAIN), "href='$score->tricky_topic_url'", $score->tricky_topic_title) ?>
     <small>(Offset: <?php echo $offset ?>)</small></h2>
 
     <?php if ($notes): ?>
