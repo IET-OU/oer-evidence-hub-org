@@ -35,6 +35,15 @@ html body.simple-embed .site {
   padding: 0;
 }
 
+.simple-embed .slickQuizWrapper .quizArea,
+.simple-embed .slickQuizWrapper .quizResults {
+  margin-bottom: 1em;
+}
+.simple-embed footer.entry-meta {
+  margin-top: 1em;
+}
+
+
 /* Selectively hide comments and headings - various ways.
 */
 .se-no-comments #comments,
@@ -76,4 +85,9 @@ html body.simple-embed .site {
 .entry-content #jlq-score-chart p {
   font-size: .9em;
   margin: .3em 0;
+}
+
+.page .entry-content .slickQuizWrapper p {
+  margin: 1em 0;
+  line-height: 1em;
 }
