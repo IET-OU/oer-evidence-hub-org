@@ -21,16 +21,16 @@
 .JL-Quiz-Stumbles h4 {
   margin: 4px 0;
 }
-.jlq-stumbles-inner, .jlq-scaffold-wrap {
+.jlq-stumbles-wrap, .jlq-scaffold-wrap {
   float: left;
-  width: 25%;
+  width: 20%;
   x-border: 1px solid #ccc;
   margin-bottom: 1em;
   min-height: 140px;
 }
 .jlq-scaffold-wrap {
   float: right;
-  width: 74%;
+  width: 79%;
 }
 .jlq-clear, .slickQuiz .question.correct {
   clear: both;
@@ -39,19 +39,36 @@
 .wp-admin .slickQuiz .quizFormWrapper small.desc {
   font-size: .95em;
   color: #888;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
+
 
 /* TODO: Taxonomy tool.
 */
-.jlq-scaffold-inner #juxtalearn_hub_tax_tabs {
-  float: none;
-  clear: both;
-  min-height: 150px;
-  position: relative;
-  min-width: 50em; /*680px*/
-  left: -200px;
-  font-size: .95em;
+.jlq-scaffold-inner .dummy {
+  text-align: center;
+  font-size: 1.1em;
+  color: #777;
+}
+.jlq-scaffold-inner {
+  border: 1px solid #bbb;
+  background: #fafafa;
+  padding: 1px 8px;
+  margin-right: 11px;
+  min-height: 4em;
+}
+.jlq-scaffold-inner h3 {
+  font-size: 1.2em;
+  font-weight: normal;
+  margin: .3em 0;
+}
+.jlq-scaffold-inner .tax .lbl:after {
+  display: inline-block;
+  content: ": ";
+}
+.X__jlq-scaffold-inner .tax .dsc:after {
+  display: inline-block;
+  content: ". ";
 }
 
 

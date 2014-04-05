@@ -31,7 +31,11 @@ class JuxtaLearn_Quiz_API_Helper {
     @header('X-JuxtaLearn-Quiz-Stat: '. $data['stat']);
     @header('X-JuxtaLearn-Quiz: ajax; quiz_id='. $quiz_id);
     // PHP 5.4+, JSON_PRETTY_PRINT.
-    echo json_encode($data);
+    if (isset($_GET['pretty'])) {
+      echo preg_replace('/,(["\{\[])/', ",\n$1", json_encode($data));
+    } else {
+      echo json_encode($data);
+    }
     die(0);
   }
 

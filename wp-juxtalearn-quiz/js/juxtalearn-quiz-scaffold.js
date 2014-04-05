@@ -35,7 +35,11 @@ jQuery(function ($) {
       vals.push( $(el).val() );
     });
     return vals;
-  };
+  }; /*jQuery.fn.values = function () {
+    return $(this).map(function (i, el) {
+      return $(el).val();
+    });
+  };*/
 
 
   // Quiz editor - insert from a template for each new question.
@@ -118,12 +122,15 @@ jQuery(function ($) {
 
   // Get student problems - main scaffold.
   $(".jlq-stumbles-inner").on("click", "input", function (e) { //"click, change"?
-    loading();
 
     var $wrapper = $(this).closest(".jlq-stumbles-inner");
     var stumbles = $(":checked", $wrapper).val(); //$("input:checked", $wrapper).values();
 
     log(">> Stumbling blocks change:", stumbles, e);
+
+    if (!stumbles) { return; }
+
+    loading();
 
     $.getJSON(ajax_url(), { stumbling_blocks: stumbles, action: problemsAction })
       .done(function (data, stat, jqXHR) {

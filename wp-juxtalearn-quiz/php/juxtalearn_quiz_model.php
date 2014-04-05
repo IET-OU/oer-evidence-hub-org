@@ -188,7 +188,8 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
       JOIN $wpdb->term_taxonomy tt ON tt.term_taxonomy_id = tr.term_taxonomy_id
       WHERE p.post_type = 'student_problem'
       AND tt.taxonomy = 'juxtalearn_hub_sb'
-      AND tt.term_id = $sb"); //Test 297; Diffusion 282;
+      AND tt.term_id = $sb
+      GROUP BY p.ID"); //Test 297; Diffusion 282;
     // Remove unnecessary fields.
     $filter = false;
     if ($filter) {
@@ -209,6 +210,19 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
     return $posts;
   }
 
+  protected function get_posts_meta($posts) {
+    global $wpdb;
+    $post_ids = array();
+    foreach ($posts as $post) {
+      $post_ids[] = $post->ID;
+    }
+    $like = 'juxtalearn_hub_%';
+    return $wpdb->get_results( "SELECT * FROM $wpdb->postmeta
+      WHERE post_id IN (". implode(',', $post_ids) .")
+      AND meta_key LIKE '$like'
+      GROUP BY meta_key" );
+  }
+
   protected function get_data($key, $id = NULL) {
     $result = array();
     switch ($key) {
@@ -216,7 +230,7 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
       case 'tt':
         $result = get_posts(array(
           'post_type' => 'tricky_topic',
-          'post_per_page' => 10, //100,
+          'posts_per_page' => -1, //100,
           'orderby' => 'title',
           'order' => 'ASC',
         ));

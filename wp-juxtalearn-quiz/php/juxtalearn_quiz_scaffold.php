@@ -5,6 +5,9 @@
  * @copyright 2014 The Open University (IET).
  * @author Nick Freear.
  * @package JuxtaLearn_Quiz
+ *
+ * SB:32:logic ; TT:545:Logical Planning.. ; TT:79:?
+/wordpress/wp-admin/admin-ajax.php?action=juxtalearn_quiz_student_problems&id=1&tricky_topic=79&stumbling_blocks=323&pretty=1
  */
 
 
@@ -51,8 +54,8 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
   public function ajax_get_stumbles() {
     $tricky_topic_id = isset($_GET['tricky_topic']) ? intval($_GET['tricky_topic']) : NULL;
     $quiz = $this->get_data('quiz');
-    if (!$tricky_topic_id) {
-      $this->error('Missing tricky topic ID');
+    if (!$tricky_topic_id || !$quiz->id) {
+      $this->error('Missing quiz ID or tricky topic ID');
     }
     $post = get_post($tricky_topic_id);
     $stumbling_blocks = $this->get_data('sb', $tricky_topic_id);
@@ -69,6 +72,7 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
       'post_type' => $post->post_type,
       'count' => count($stumbling_blocks),
       'stumbling_blocks' => $stumbling_blocks,
+      'quiz_sbs' => $this->get_data('quiz_sb', $quiz->id),
       'html' => $html,
     ));
   }
@@ -81,12 +85,24 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
     }
     $inc_tax_tool = TRUE;
     $student_problems = $this->get_student_problems($stumbling_block_ids);
-    $html = '<ul>';
+    $sp_html = '';
     foreach ($student_problems as $post) {
       $url = site_url($post->post_type .'/'. $post->post_name);
-      $html .= "<li data-sp='$post->ID'><a href='$url'>$post->post_title</a>: $post->post_content</li>";
+      $sp_html .= "<li data-sp='$post->ID'><a href='$url'>$post->post_title</a>: $post->post_content</li>";
     }
-    $tax_tool = $inc_tax_tool ? $this->get_hub_tax_tool( $student_problems, $as_html = FALSE ) : '';
+
+    $tax = $this->process_taxonomy( $student_problems );
+
+    $sp_label  = __('Student Problems', self::LOC_DOMAIN);
+    $tax_label = __('Taxonomy', self::LOC_DOMAIN);
+    $html = <<<HTML
+    <div class=sp ><h3>$sp_label</h3>
+      <ul>$sp_html</ul>
+    </div>
+    <div class=tax ><h3>$tax_label</h3>
+      <ul>$tax->html</ul>
+    </div>
+HTML;
 
     $this->json_response(array(
       'quiz_id' => $quiz->id,
@@ -94,10 +110,55 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
       'count' => count($student_problems),
       'student_problems' => $student_problems,
       'title' => 'Student Problems',
-      'html' => $html . '</ul> ',
-      'tax_tool' => $tax_tool,
-      'activate_tax_tool' => $inc_tax_tool ? TRUE : FALSE,
+      'html' => $html,
+      'tax_data' => $tax->data,
+      'meta' => $tax->m,
+      //'activate_tax_tool' => $inc_tax_tool ? TRUE : FALSE,
     ));
+  }
+
+  protected function process_taxonomy($student_problems) {
+    $tax_tool = $this->get_hub_tax_tool( $student_problems, $as_html = FALSE );
+    $meta = $this->get_posts_meta($student_problems);
+
+    $tax_data = array();
+    $tax_html = '';
+    $count = 0;
+    foreach ($meta as $m) {
+      if (preg_match('/_(term|pre|esn|bel)(\d+)/', $m->meta_key, $matches)) {
+        $count++;
+
+        $tax_id = $matches[1];
+        $tax_key = $tax_id . $matches[2];
+
+        $label = $tax_tool['labels'][$tax_key]['label'];
+
+        foreach ($tax_tool['tabs'] as $tab) {
+          if ($tax_id == $tab['id']) {
+            $name = $tab['name'];
+            $desc = $tab['description'];
+            $prompt = $tab['prompt'][$tax_key];
+          }
+        }
+        $tax_data[ $tax_key ] = array(
+          'name' => $name,
+          'label' => $label,
+          'desc' => $desc,
+          'prompt' => $prompt,
+          'id'  => $tax_id,
+          'key' => $tax_key,
+        );
+        $tax_html .= <<<HTML
+  <li data-tx=$tax_key ><h4>$name</h4><span class=lbl >$label</span>
+    <span class=dsc >$desc</span> <span class=prmt >$prompt</span></li>
+
+HTML;
+      }
+    }
+    if (!$count || 0 == count($meta)) {
+      $tax_html = '<li class=dummy>'. __('[ No taxonomy items selected ]', self::LOC_DOMAIN) .'</li>';
+    }
+    return (object) array('data' => $tax_data, 'html' => $tax_html, 'm' => $meta);
   }
 
   /**
@@ -186,23 +247,23 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
     </div>
 
     </script>
-    <script type="text/template" class="jlq-template jlq-t-s" data-sel=".question.actual">
+    <script type="text/html" class="jlq-template jlq-t-s" data-sel=".question.actual">
 
     <div class="question JL-Quiz-Stumbles">
       <p class=jlq-loading ><span><?php echo __('Loading scaffolding...', self::LOC_DOMAIN)
           ?></span> <i></i></p>
 
+      <div class=jlq-stumbles-wrap >
       <label class=main ><?php echo __('Stumbling blocks', self::LOC_DOMAIN) ?></label>
       <small class=desc ><?php echo
       __('Which stumbling blocks should we test with this question?', self::LOC_DOMAIN) ?></small>
       <div class=jlq-stumbles-inner >
-        <label><input type=checkbox name="jlq-s[]" class=dummy />[ Stumbling block ]</label>
+        <label class=dummy ><input type=checkbox /> [ Stumbling block ]</label>
+      </div>
       </div>
 
       <div class=jlq-scaffold-wrap >
-      <h4><?php echo __('Student problems', self::LOC_DOMAIN) ?></h4>
-      <div class=jlq-scaffold-inner ><p>[ TODO: More scaffolding -- display student problems for selected stumbling
-       blocks? ]</div>
+      <div class=jlq-scaffold-inner ><p class=dummy >[ Main scaffolding ]</div>
       </div>
     </div>
     <div class=jlq-clear ></div>
