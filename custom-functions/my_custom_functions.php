@@ -34,12 +34,19 @@ define('CUSTOM_FUNC_REGISTER_FILE',
 
 class My_Custom_Functions {
 
+  const DEV_SERVER_REGEX = '@(test|approval|acct|dev)@';
+
+
   public function __construct() {
     add_filter('admin_body_class', array(&$this, 'admin_body_class'));
     add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
     add_action('wp_enqueue_scripts', array(&$this, 'front_enqueue_scripts'));
 
     add_action('wp_footer', array(&$this, 'footer_browser_sniff'));
+
+    if (preg_match(self::DEV_SERVER_REGEX, $_SERVER['HTTP_HOST'])) {
+      add_filter( 'robots_txt', array(&$this, 'robots_txt'), 10, 2 );
+    }
 
     $this->security_remove_wp_links();
   }
@@ -77,6 +84,12 @@ class My_Custom_Functions {
     #? remove_action('wp_head', 'pingback_link');
   }
 
+  /** http://trepmal.com/2011/04/03/change-the-virtual-robots-txt-file
+  */
+  public function robots_txt( $output, $public ) {
+    $output .= 'Disallow: /' . PHP_EOL;
+    return $output;
+  }
 
   /** Some crude browser sniffing for SVG/ fullscreen API.
   */

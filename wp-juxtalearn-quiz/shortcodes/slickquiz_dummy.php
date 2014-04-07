@@ -31,7 +31,8 @@ class JuxtaLearn_Quiz_Shortcode_SlickQuiz_Dummy extends JuxtaLearn_Quiz_Shortcod
   }
 
   public function ajax_post_scores() {
-    //$model = new JuxtaLearn_Quiz_Model();
+    $this->api_init();
+
     $is_valid_referer = $this->check_ajax_referer();
 
     $data = $this->check_post_json();

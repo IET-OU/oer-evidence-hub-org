@@ -14,6 +14,12 @@ class JuxtaLearn_Quiz_API_Helper {
 
   protected $note;
 
+
+  protected function api_init() {
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+  }
+
   protected function json_response($data, $success = TRUE) {
     $data = is_string($data) ? array('msg' => $data) : $data;
     $data['stat'] = $success ? 'ok' : 'fail';

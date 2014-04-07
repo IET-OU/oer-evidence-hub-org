@@ -52,6 +52,8 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
 
   #wordpress/wp-admin/admin-ajax.php?action=juxtalearn_quiz_stumbling_blocks&tricky_topic=79
   public function ajax_get_stumbles() {
+    $this->api_init();
+
     $tricky_topic_id = isset($_GET['tricky_topic']) ? intval($_GET['tricky_topic']) : NULL;
     $quiz = $this->get_data('quiz');
     if (!$tricky_topic_id || !$quiz->id) {
@@ -78,6 +80,8 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
   }
 
   public function ajax_get_student_problems() {
+    $this->api_init();
+
     $stumbling_block_ids = isset($_GET['stumbling_blocks']) ? $_GET['stumbling_blocks'] : NULL;
     $quiz = $this->get_data('quiz');
     if (!$stumbling_block_ids) {  #|| !$quiz->id) {
@@ -196,6 +200,8 @@ HTML;
 
   # POST wordpress/wp-admin/admin-ajax.php?action=juxtalearn_quiz_edit&id=1
   public function ajax_post_quiz_edit() {
+    $this->api_init();
+
     $quiz = $this->get_data('quiz');
 
     $data = $this->check_post_json();
