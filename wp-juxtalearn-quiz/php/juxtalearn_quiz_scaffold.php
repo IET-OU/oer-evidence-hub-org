@@ -32,7 +32,7 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
     if ($this->is_quiz_edit_page()) {
       //add_filter('slickquiz_admin_options', array(&$this, 'custom_admin_options'));
 
-      add_action('admin_print_footer_scripts', array(&$this, 'admin_quiz_footer')); #, 50);
+      add_action('admin_print_footer_scripts', array(&$this, 'admin_footer_templates'));
     }
   }
 
@@ -216,7 +216,7 @@ HTML;
     ));
   }
 
-  public function admin_quiz_footer() {
+  public function admin_footer_templates() {
   //public function custom_admin_options( $options ) {
     //var_dump($GLOBALS['hook_suffix']); 'admin_page_slickquiz-edit'
 
@@ -249,7 +249,8 @@ HTML;
     </script>
     <script type="text/html" class="jlq-template jlq-t-s" data-sel=".question.actual">
 
-    <div class="question JL-Quiz-Stumbles">
+    <div class="question JL-Quiz-Stumbles" aria-live="polite" aria-relevant="additions"
+        aria-label="<?php echo __('Question stumbling blocks and scaffolding') ?>">
       <p class=jlq-loading ><span><?php echo __('Loading scaffolding...', self::LOC_DOMAIN)
           ?></span> <i></i></p>
 
