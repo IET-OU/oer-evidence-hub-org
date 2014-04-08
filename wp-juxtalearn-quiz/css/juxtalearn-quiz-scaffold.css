@@ -75,17 +75,18 @@
 /* Tweak SlickQuiz styles - reduce scrolling!
 */
 .slickQuiz .quizFormWrapper .question {
-  padding: 0 0 12px 0; /*0 0 20px 0*/
+  padding: 0 0 11px 0; /*0 0 20px 0*/
 }
 .slickQuiz .quizFormWrapper textarea {
-  height: 4em; /*100px*/
+  height: 3.7em; /*100px*/
   font-size: 1.1em;
+  line-height: 1.3em;
 }
 .slickQuiz .quizFormWrapper .questionSet textarea {
-  height: 2.1em; /*50px*/
+  height: 2em; /*50px*/
 }
 .slickQuiz .quizFormWrapper .questionSet .actual textarea {
-  height: 3.5em;
+  height: 3.4em;
 }
 
 .wp-admin .slickQuiz .quizFormWrapper .answer input[type=text] {

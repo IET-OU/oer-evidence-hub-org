@@ -269,7 +269,7 @@ HTML;
       <small class=desc ><?php echo
       __('Which stumbling blocks should we test with this question?', self::LOC_DOMAIN) ?></small>
       <div class=jlq-stumbles-inner >
-        <label class=dummy ><input type=checkbox /> [ Stumbling block ]</label>
+        <label class=dummy ><input type=checkbox disabled /> [ Stumbling block ]</label>
       </div>
       </div>
 
@@ -287,7 +287,7 @@ HTML;
     </script>
     <script type="text/html" class="jlq-template jlq-t-dummy stumbles" defer=defer >
 
-    <label class=dummy ><input type=checkbox /> [ Stumbling block ]</label>
+    <label class=dummy ><input type=checkbox disabled /> [ Stumbling block ]</label>
 
     </script>
 <?php
