@@ -94,11 +94,15 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
       $url = site_url($post->post_type .'/'. $post->post_name);
       $sp_html .= "<li data-sp='$post->ID'><a href='$url'>$post->post_title</a>: $post->post_content</li>";
     }
+    if (!$student_problems || 0 == count($student_problems)) {
+      $sp_html = '<li class="dummy no-sp">'.
+          __('[ No linked student problems found ]', self::LOC_DOMAIN) .'</li>';
+    }
 
     $tax = $this->process_taxonomy( $student_problems );
 
     $sp_label  = __('Student Problems', self::LOC_DOMAIN);
-    $tax_label = __('Taxonomy', self::LOC_DOMAIN);
+    $tax_label = __('Taxonomy: Why do students have this problem?', self::LOC_DOMAIN);
     $html = <<<HTML
     <div class=sp ><h3>$sp_label</h3>
       <ul>$sp_html</ul>
@@ -116,8 +120,7 @@ HTML;
       'title' => 'Student Problems',
       'html' => $html,
       'tax_data' => $tax->data,
-      'meta' => $tax->m,
-      //'activate_tax_tool' => $inc_tax_tool ? TRUE : FALSE,
+      'meta' => $tax->meta,
     ));
   }
 
@@ -160,9 +163,10 @@ HTML;
       }
     }
     if (!$count || 0 == count($meta)) {
-      $tax_html = '<li class=dummy>'. __('[ No taxonomy items selected ]', self::LOC_DOMAIN) .'</li>';
+      $tax_html = '<li class="dummy no-tx">'.
+          __('[ No taxonomy items selected in the student problems ]', self::LOC_DOMAIN) .'</li>';
     }
-    return (object) array('data' => $tax_data, 'html' => $tax_html, 'm' => $meta);
+    return (object) array('data' => $tax_data, 'html' => $tax_html, 'meta' => $meta);
   }
 
   /**
@@ -275,7 +279,17 @@ HTML;
     </div>
     <div class=jlq-clear ></div>
 
-    </div>
+    </script>
+    <script type="text/html" class="jlq-template jlq-t-dummy scaffold" defer=defer >
+
+    <p class=dummy >[ Main scaffolding ]</p>
+
+    </script>
+    <script type="text/html" class="jlq-template jlq-t-dummy stumbles" defer=defer >
+
+    <label class=dummy ><input type=checkbox /> [ Stumbling block ]</label>
+
+    </script>
 <?php
   }
 

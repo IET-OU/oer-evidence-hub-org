@@ -28,7 +28,7 @@ jQuery(function ($) {
     $(selector).after($(el).html());
   });
 
-// BUG ?!
+  // Utility
   jQuery.fn.values = function () {
     var vals = [];
     $(this).each(function (i, el) {
@@ -43,13 +43,24 @@ jQuery(function ($) {
 
 
   // Quiz editor - insert from a template for each new question.
-  $('.addQuestion', qEdit).on('click', function (e) {
-    $('.questionSet', qEdit).each(function (i, el) {
-      if ($('.JL-Quiz-Stumbles', $(el)).length === 0) {
-        $(el).after($(".jlq-template.jlq-t-s").html());
-      }
-    });
+  $('a.addQuestion', qEdit).on('click', function (e) {
+    setTimeout(function () {
+      log('>> Add question');
+      $('.questionSet', qEdit).each(function (i, el) {
+        if ($('.JL-Quiz-Stumbles', $(el)).length === 0) {
+
+          $('.actual', $(el)).after($(".jlq-template.jlq-t-s").html());
+
+          var $stumbles = $(".jlq-stumbles-inner", $(el));
+          if (stumbling_blocks) {
+            $stumbles.html(stumbling_blocks.html);
+          }
+        }
+      });
+      loading_end();
+    }, 400);
   });
+
 
   // Quiz editor - SAVE changes to scaffolding.
   $('button.publish, .draft, .preview', qEdit).on('click', function (e) {
@@ -95,8 +106,14 @@ jQuery(function ($) {
 
     var tt_id = $("#jlq-trickytopic :selected").val();
 
+    $(".jlq-scaffold-inner", qEdit).html(
+      $(".jlq-template.jlq-t-dummy.scaffold").html());
+
     if (! tt_id) {
       log(">> No valid tricky topic selected.");
+      $(".jlq-stumbles-inner", qEdit).html(
+        $(".jlq-template.jlq-t-dummy.stumbles").html());
+
       return;
     }
     loading();
@@ -107,7 +124,6 @@ jQuery(function ($) {
       .done(function (data, stat, jqXHR) {
         if ("success" === stat) {
           stumbling_blocks = data;
-//TODO - react to "add question" click event.
           $(".JL-Quiz-Stumbles .jlq-stumbles-inner").html(data.html);
         }
         log(">> Get stumbling blocks, done. TT id:", tt_id, stat, data);
@@ -120,11 +136,12 @@ jQuery(function ($) {
   }).trigger("change");
 
 
-  // Get student problems - main scaffold.
-  $(".jlq-stumbles-inner").on("click", "input", function (e) { //"click, change"?
+  // Get student problems - main scaffold (Delegated event).
+  //$(".jlq-stumbles-inner").on("click", "input", ..)
+  qEdit.on("click", ".jlq-stumbles-inner input", function (e) { //"click, change"?
 
     var $wrapper = $(this).closest(".jlq-stumbles-inner");
-    var stumbles = $(":checked", $wrapper).val(); //$("input:checked", $wrapper).values();
+    var stumbles = $(":checked", $wrapper).values();
 
     log(">> Stumbling blocks change:", stumbles, e);
 
@@ -142,7 +159,6 @@ jQuery(function ($) {
           // Temporary artificial delay.
           setTimeout(function () {
             $scaffold.html(data.html);
-            if (data.activate_tax_tool) { activate_tax_tool(); }
           }, 100);
         }
         log(">> Get student problems, done:", stat, data);
@@ -171,16 +187,18 @@ jQuery(function ($) {
   }
 
   function loading() {
-    $(".jlq-loading").show();
+    $(".jlq-loading", qEdit).show();
     $("body").addClass("jlq-body-loading");
     $("#jlq-tricktopic, .JL-Quiz-Stumbles input").prop("disabled", true);
+    $("[aria-live]", qEdit).attr("aria-busy", true); //".JL-Quiz-Stumbles"
 
     log(">> Loading start...");
   }
   function loading_end() {
-    $(".jlq-loading").hide();
+    $(".jlq-loading", qEdit).hide();
     $("body").removeClass("jlq-body-loading");
     $("#jlq-tricktopic, .JL-Quiz-Stumbles input").prop("disabled", false);
+    $("[aria-live]", qEdit).attr("aria-busy", false);
 
     log(">> Loading end.");
   }
@@ -227,36 +245,6 @@ jQuery(function ($) {
 
       log(">> Quiz admin table:", text, qz_url)
     });
-  }
-
-  function activate_tax_tool() {
-    var $tabs = $("#juxtalearn_hub_tax_tabs", qEdit);
-
-    if (!$tabs.tabs) {
-      log("Error, jQuery UI tabs() not available");
-    }
-    log(">> Activate tax tool");
-
-    // wp-juxtalearn-hub/js/admin.js#L46
-    $tabs.tabs({
-        activate: function (ev, ui) {
-            $('.tax_term').hide();
-            $('.tax_term').hide();
-            $('div[class$="desc"]').show();
-        }
-    }).css("min-height", "150px");
-	$tabs.find('label').hover(function () {
-		$('.tax_term').hide();
-		$(this).css('text-decoration', 'underline');
-		var labelName = $(this).attr('for');
-		$('.tax_term.'+labelName).fadeIn(500);
-	}, function () {
-		$('.tax_term').hide();
-		$('div[class$="desc"]').fadeIn(500);
-		$(this).css('text-decoration');
-	});
-	$("input[type=checkbox]", $tabs).prop("disabled", "disabled");
-	$tabs.show();
   }
 
 });
