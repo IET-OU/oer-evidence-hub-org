@@ -27,7 +27,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
 
   protected function set_score_options() {
     $this->offset = intval($this->_get('offset', 1));
-    $this->divisor = $this->_get('divisor', 1);  
+    $this->divisor = $this->_get('divisor', 'max_score');
   }
 
   public function quiz_score_shortcode($attrs, $content = '', $name) {
@@ -157,16 +157,19 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
 
     if ('max_score' == $this->divisor) {
       $divisor = $max_score;
+      $format = '%';
     } else {
       $divisor = floatval($this->divisor);
+      $format = '01.1f';
     }
-    if ($divisor < 1) {
+    if ($divisor <= 0) {
       $divisor = 1;
     }
     $meta = json_encode(array(
       'divisor' => $divisor,
       'max_score' => $max_score,
       'offset' => $this->offset,
+      'format' => $format,
     ));
 
     ?>
@@ -225,7 +228,7 @@ var mycfg = {
   w: w,
   h: h,
   maxValue: <?php echo $max_score //0.6 ?>,
-  format: '01.1f',
+  format: '<?php echo $format ?>',
   levels: 6,
   ExtraWidthX: 300
 };

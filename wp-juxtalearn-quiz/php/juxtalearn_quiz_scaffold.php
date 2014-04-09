@@ -52,7 +52,7 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
         'admin.php?page=slickquiz-options&SCROLL=save_scores#wpbody-content');
     ?>
     <div class=error ><p><?php echo sprintf( __(
-      'Error: the SlickQuiz option "<a %s>Save user scores</a>", required by JuxtaLearn is not set to "Yes".',
+      'Error: the SlickQuiz option "<a %s>Save user scores</a>", required by JuxtaLearn is NOT set to "Yes". Please fix me!',
       self::LOC_DOMAIN), ' href="'. $admin_url .'"') ?></div>
     <?php
     endif;
