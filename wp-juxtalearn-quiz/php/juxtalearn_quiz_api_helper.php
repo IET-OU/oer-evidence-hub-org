@@ -20,6 +20,10 @@ class JuxtaLearn_Quiz_API_Helper {
     ini_set('display_errors', 1);
   }
 
+  protected function _get($key, $default = NULL) {
+    return isset($_GET[$key]) ? $_GET[$key] : $default;
+  }
+
   protected function json_response($data, $success = TRUE) {
     $data = is_string($data) ? array('msg' => $data) : $data;
     $data['stat'] = $success ? 'ok' : 'fail';
@@ -37,7 +41,7 @@ class JuxtaLearn_Quiz_API_Helper {
     @header('X-JuxtaLearn-Quiz-Stat: '. $data['stat']);
     @header('X-JuxtaLearn-Quiz: ajax; quiz_id='. $quiz_id);
     // PHP 5.4+, JSON_PRETTY_PRINT.
-    if (isset($_GET['pretty'])) {
+    if ($this->_get('pretty')) {
       echo preg_replace('/,(["\{\[])/', ",\n$1", json_encode($data));
     } else {
       echo json_encode($data);

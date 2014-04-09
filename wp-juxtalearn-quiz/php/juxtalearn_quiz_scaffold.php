@@ -37,12 +37,11 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
   }
 
   protected function is_quiz_admin_page() {
-    return isset($_GET['page']) && preg_match('/^slickquiz/', $_GET['page']);
+    return preg_match('/^slickquiz/', $this->_get('page'));
   }
 
   protected function is_quiz_edit_page() {
-    return isset($_GET['page']) &&
-            preg_match('/^slickquiz-(new|edit)/', $_GET['page']);
+    return preg_match('/^slickquiz-(new|edit)/', $this->_get('page'));
   }
 
   public function admin_init() {
@@ -54,10 +53,11 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
   public function ajax_get_stumbles() {
     $this->api_init();
 
-    $tricky_topic_id = isset($_GET['tricky_topic']) ? intval($_GET['tricky_topic']) : NULL;
+    $tricky_topic_id = intval($this->_get('tricky_topic'));
+    // Note, new quizzes won't have a quiz ID.
     $quiz = $this->get_data('quiz');
-    if (!$tricky_topic_id || !$quiz->id) {
-      $this->error('Missing quiz ID or tricky topic ID');
+    if (!$tricky_topic_id) {
+      $this->error('Missing tricky topic ID');
     }
     $post = get_post($tricky_topic_id);
     $stumbling_blocks = $this->get_data('sb', $tricky_topic_id);
@@ -70,7 +70,6 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
       'tricky_topic_id' => $post->ID,
       'tricky_topic_title' => $post->post_title,
       'tricky_topic_url' => $post->guid,
-      #'tricky_topic_body' => $post->post_content,
       'post_type' => $post->post_type,
       'count' => count($stumbling_blocks),
       'stumbling_blocks' => $stumbling_blocks,
@@ -82,12 +81,12 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
   public function ajax_get_student_problems() {
     $this->api_init();
 
-    $stumbling_block_ids = isset($_GET['stumbling_blocks']) ? $_GET['stumbling_blocks'] : NULL;
+    $stumbling_block_ids = $this->_get('stumbling_blocks');
+    // Note, new quizzes won't have a quiz ID.
     $quiz = $this->get_data('quiz');
-    if (!$stumbling_block_ids) {  #|| !$quiz->id) {
+    if (!$stumbling_block_ids) {
       $this->error('Missing stumbling block ID(s)');
     }
-    $inc_tax_tool = TRUE;
     $student_problems = $this->get_student_problems($stumbling_block_ids);
     $sp_html = '';
     foreach ($student_problems as $post) {

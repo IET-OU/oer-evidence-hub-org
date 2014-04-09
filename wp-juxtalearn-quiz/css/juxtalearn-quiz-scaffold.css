@@ -26,7 +26,7 @@
   width: 20%;
   x-border: 1px solid #ccc;
   margin-bottom: 1em;
-  min-height: 140px;
+  min-height: 120px;
 }
 .jlq-scaffold-wrap {
   float: right;
@@ -83,14 +83,14 @@
   line-height: 1.3em;
 }
 .slickQuiz .quizFormWrapper .questionSet textarea {
-  height: 2em; /*50px*/
+  height: 1.8em; /*50px*/
 }
 .slickQuiz .quizFormWrapper .questionSet .actual textarea {
-  height: 3.4em;
+  height: 3.3em;
 }
 
 .wp-admin .slickQuiz .quizFormWrapper .answer input[type=text] {
-  font-size: 1.25em !important;
+  font-size: 1.1em !important;
 }
 
 
