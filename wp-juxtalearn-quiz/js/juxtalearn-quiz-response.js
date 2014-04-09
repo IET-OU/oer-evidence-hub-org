@@ -41,8 +41,8 @@ jQuery(function ($) {
       var quiz_id = $the_qz.attr("id").replace("slickQuiz", ""),
         quiz_name = $(".quizName", $the_qz).text(),
         post_id = $post.attr("id").replace("post-", ""),
-        user_name = $(".nameLabel input", $the_qz).val(),
-        user_email = $(".emailLabel input", $the_qz).val(),
+        user_name = $(".nameLabel input", $the_qz).val() || null,
+        user_email = $(".emailLabel input", $the_qz).val() || null,
         data = {},
         responses = [];
 
@@ -56,7 +56,7 @@ jQuery(function ($) {
 
       data = {
         user_name:  user_name,  //Or, user name for not logged in users
-        user_email: user_email,
+        user_email: user_email, //|| JLQ.user_email
         quiz_id:    quiz_id,
         quiz_name:  quiz_name,
         tt_id:      JLQ.tt_id,

@@ -65,9 +65,11 @@ jQuery(function ($) {
   // Quiz editor - SAVE changes to scaffolding.
   $('button.publish, .draft, .preview', qEdit).on('click', function (e) {
     e.preventDefault();
+    loading();
 
     var trickytopic = $('#jlq-trickytopic option:selected', qEdit),
         stumbles = [];
+
     $('.questionSet', qEdit).each(function (i, el) {
       var q = $('[name = question]', $(el)).val(),
         s = $('.JL-Quiz-Stumbles input:checked', $(el)).values();
@@ -77,12 +79,15 @@ jQuery(function ($) {
     });
 
     var data = {
-      sub_action:       e.target.value,
+      sub_action:       e.target.value || null, //"Publish", "Save Draft"
       trickytopic_id:   trickytopic.val(),
       trickytopic_name: trickytopic.text(),
       stumbling_blocks: stumbles
     };
     //log(">> Publish?", trickytopic.text(), stumbles);
+
+    //TODO: new quiz race? Quiz ID!
+    //setTimeout(function () {
 
     $.ajax({
       type: 'POST',
@@ -92,13 +97,19 @@ jQuery(function ($) {
         json: JSON.stringify(data)
       },
       dataType: 'text',
-      async:   false, // for Safari
-      success: function (data) {
-        log(">> Ajax success! POST", editAction);
-      }
-    });
+      async:   false // for Safari
+    })
+    .done(function (data) {
+      log(">> Ajax success! POST", editAction);
+    })
+    .fail(function () {
+      log(">> Save failed", editAction);
+    })
+    .always(loading_end);
 
-    log(">> Saving:", e.target.value);
+    //}, 800);
+
+    log(">> Saving:", e);
   });
 
   // Get stumbling block tags.

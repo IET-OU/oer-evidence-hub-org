@@ -27,6 +27,7 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
 
     if ($this->is_quiz_admin_page()) {
       add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
+      add_action('admin_notices', array(&$this, 'admin_notices'));
     }
 
     if ($this->is_quiz_edit_page()) {
@@ -44,9 +45,17 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
     return preg_match('/^slickquiz-(new|edit)/', $this->_get('page'));
   }
 
-  public function admin_init() {
-    @header('X-JuxtaLearn-Quiz: admin_init');
-    echo " admin_init ";
+  public function admin_notices() {
+    $save_scores = $this->get_slickquiz_option('save_scores');
+    if (!$save_scores):
+      $admin_url = admin_url(
+        'admin.php?page=slickquiz-options&SCROLL=save_scores#wpbody-content');
+    ?>
+    <div class=error ><p><?php echo sprintf( __(
+      'Error: the SlickQuiz option "<a %s>Save user scores</a>", required by JuxtaLearn is not set to "Yes".',
+      self::LOC_DOMAIN), ' href="'. $admin_url .'"') ?></div>
+    <?php
+    endif;
   }
 
   #wordpress/wp-admin/admin-ajax.php?action=juxtalearn_quiz_stumbling_blocks&tricky_topic=79

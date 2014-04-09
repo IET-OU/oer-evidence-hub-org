@@ -61,17 +61,29 @@ class JuxtaLearn_Quiz_Shortcode_SlickQuiz_Dummy extends JuxtaLearn_Quiz_Shortcod
       $model = new JuxtaLearn_Quiz_Model();
       $tricky_topic_id = $model->get_tricky_topic($quiz_id);
 
+      $save_scores = $model->get_slickquiz_option('save_scores');
+      if (!$save_scores) {
+        return '<!--JLQ: SlickQuiz option "save scores" is not set. -->' . $body;
+      }
+
       if (!$tricky_topic_id) {
-        return'<!--JLQ: Not a JuxtaLearn quiz. -->' . $body;
+        return '<!--JLQ: Not a JuxtaLearn quiz. -->' . $body;
       }
 
       $this->is_quiz_view_pg = TRUE;
       $this->quiz = (object) array('id' => $quiz_id);
-      $ajax_url = $model->ajax_url();
+      //$user = wp_get_current_user();
+
+      $json = json_encode(array(
+        'ajaxurl' => $model->ajax_url(),
+        'tt_id'   => $tricky_topic_id,
+        //'user_name' => $user->user_login,
+        //'user_email'=> $user->user_email,
+      ));
 
       $body .= <<<HTML
       <script>
-      juxtalearn_quiz = { ajaxurl: "$ajax_url", tt_id: $tricky_topic_id };
+      juxtalearn_quiz = $json;
       </script>
       <script>
       document.documentElement.className += " shortcode-juxtalearn_quiz";

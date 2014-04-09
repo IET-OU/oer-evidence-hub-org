@@ -70,6 +70,11 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
            $quiz_id . " AND name = '". esc_sql($name) ."' ORDER BY $order_by" );
     }
 
+    protected function get_slickquiz_option($option = 'save_scores') {
+      $all = get_option('slick_quiz_options');
+      return $option && isset($all[$option]) ? $all[$option] : $all;
+    }
+
     public function get_score($jlq_score_id, $offset = 0) {
       global $wpdb;
       $db_name = $wpdb->prefix . 'juxtalearn_quiz_scores';

@@ -22,6 +22,7 @@ class JuxtaLearn_Quiz_Shortcode_All_Quiz_Scores extends JuxtaLearn_Quiz_Shortcod
 
   public function all_scores_shortcode($attrs, $content = '', $name) {
     $quiz_id = $this->url_parse_id($attrs);
+    $this->set_score_options();
 
     $b_continue = $this->auth_permitted(NULL, NULL, $auth_reason);
     if (!$b_continue) {
@@ -42,7 +43,7 @@ class JuxtaLearn_Quiz_Shortcode_All_Quiz_Scores extends JuxtaLearn_Quiz_Shortcod
       <?php return; ?>
     <?php endif;
 
-    $all_scores = $model->get_all_scores($quiz_id, $offset = 1);
+    $all_scores = $model->get_all_scores($quiz_id, $this->offset);
 
     $warn = sprintf(__('no scores yet for this quiz, ID: %d', self::LOC_DOMAIN), $quiz_id);
     if (count($all_scores) < 1): ?>
@@ -65,10 +66,8 @@ class JuxtaLearn_Quiz_Shortcode_All_Quiz_Scores extends JuxtaLearn_Quiz_Shortcod
     <?php $this->print_spider_javascript($all_scores) ?>
     </script>
 
-    <script>
-    document.documentElement.className += " shortcode-<?php echo self::SHORTCODE ?>";
-    </script>
-    <?php
+<?php    
+    $this->print_utility_scripts($all_scores);
   }
 
 }

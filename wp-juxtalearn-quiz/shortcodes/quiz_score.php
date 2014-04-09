@@ -18,15 +18,23 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
 
   const SHORTCODE = 'quiz_score';
 
+  protected $offset;
+  protected $divisor;
+
   public function __construct() {
     add_shortcode(self::SHORTCODE, array(&$this, 'quiz_score_shortcode'));
   }
 
+  protected function set_score_options() {
+    $this->offset = intval($this->_get('offset', 1));
+    $this->divisor = $this->_get('divisor', 1);  
+  }
 
   public function quiz_score_shortcode($attrs, $content = '', $name) {
     $jlq_score_id = $this->url_parse_id($attrs);
+    $this->set_score_options();
 
-    $score = $this->model_get_score($jlq_score_id, $offset = 1);
+    $score = $this->model_get_score($jlq_score_id, $this->offset);
     $permission = isset($score->permission) ? $score->permission : NULL;
 
     $b_continue = $this->auth_permitted($score->createdBy, $permission, $auth_reason);
@@ -53,12 +61,22 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     <?php $this->print_spider_javascript(array($score)) ?>
     </script>
 
+<?php
+    $this->print_utility_scripts($score);
+  }
+
+  protected function print_utility_scripts($score) {
+    ?>
+    <script>
+    var JLQ_score_data = <?php echo json_encode($score) ?>;
+    window.console && console.log(">> Score data:", JLQ_score_data);
+    </script>
+
     <script>
     document.documentElement.className += " shortcode-<?php echo self::SHORTCODE ?>";
     </script>
-    <?php
+<?php
   }
-
 
   protected function print_score_markup($score, $notes = NULL) {
 
@@ -137,7 +155,19 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     $num_scores = count($the_scores);
     $max_score = (float) $the_scores[0]->maximum_score; #?
 
-    $divisor = 1;   //$max_score
+    if ('max_score' == $this->divisor) {
+      $divisor = $max_score;
+    } else {
+      $divisor = floatval($this->divisor);
+    }
+    if ($divisor < 1) {
+      $divisor = 1;
+    }
+    $meta = json_encode(array(
+      'divisor' => $divisor,
+      'max_score' => $max_score,
+      'offset' => $this->offset,
+    ));
 
     ?>
 /*jslint devel: true, vars: true, white: true, indent: 2 */
@@ -151,7 +181,7 @@ jQuery(function ($) {
     return;
   }
 
-  console.log(">> Chart start - d3 exists.");
+  console.log(">> Chart start - d3 exists. Meta-data:", <?php echo $meta ?> );
 
   $(".jl-chart-loading").hide();
 
