@@ -63,11 +63,11 @@ class JuxtaLearn_Quiz_Shortcode_SlickQuiz_Dummy extends JuxtaLearn_Quiz_Shortcod
 
       $save_scores = $model->get_slickquiz_option('save_scores');
       if (!$save_scores) {
-        return '<!--JLQ: SlickQuiz option "save scores" is not set. -->' . $body;
+        return $this->console_message('SlickQuiz option "save scores" is not set') . $body;
       }
 
       if (!$tricky_topic_id) {
-        return '<!--JLQ: Not a JuxtaLearn quiz. -->' . $body;
+        return $this->console_message('Not a JuxtaLearn quiz') . $body;
       }
 
       $this->is_quiz_view_pg = TRUE;

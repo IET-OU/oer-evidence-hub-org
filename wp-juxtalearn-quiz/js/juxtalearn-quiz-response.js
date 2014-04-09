@@ -19,7 +19,7 @@ jQuery(function ($) {
     JLQ = window.juxtalearn_quiz || {};
 
   if (!JLQ.tt_id) {
-    log(">> Just a plain SlickQuiz.");
+    log(">> Warning: just a plain SlickQuiz? No linked Tricky Topic.");
     return;
   }
   log(">> JuxtaLearn Quiz response.", $qView);

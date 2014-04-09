@@ -74,4 +74,13 @@ abstract class JuxtaLearn_Quiz_Shortcode extends JuxtaLearn_Quiz_Model {
     exit;
   }
 
+  protected function console_message($message) {
+    return <<<HTML
+    <!--JLQ: "$message" -->
+    <script>
+    window.console && console.log("> $message");
+    </script>
+HTML;
+  }
+
 }
