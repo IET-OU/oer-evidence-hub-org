@@ -82,6 +82,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
 
     $offset = $score->offset;
   ?>
+    <div id=jlq-score >
 
     <figure id=jlq-score-chart aria-labelledby="jlq-score-caption" role="img">
     <figcaption>
@@ -136,6 +137,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
 <?php endforeach; ?>
     </table>
 
+    </div>
     <?php
   }
 
