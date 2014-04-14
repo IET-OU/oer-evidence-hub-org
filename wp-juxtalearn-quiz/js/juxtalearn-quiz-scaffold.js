@@ -1,8 +1,8 @@
 /* JuxtaLearn Quiz - scaffolding for the SlickQuiz editor.
 */
 
-/*jslint indent: 2 */
-/*global jQuery:false, window:false, log:false, console:false */
+/*jslint indent:2, nomen:true, todo:true */
+/*global jQuery:false, window:false, log:false, console:false, setTimeout:false, _t:false, loading:false */
 
 jQuery(function ($) {
 
@@ -217,15 +217,15 @@ jQuery(function ($) {
   //Was: form_default_texts()
   function quiz_edit_default_texts() {
     var defaults = {
-      MainCopy:   "Welcome! ...",
-      ResultCopy: "Well done! You've reached the end.",
-      Level1small81100Bestsmall:"Prodigy",
+      MainCopy:   _t("Welcome! ..."),
+      ResultCopy: _t("Well done! You've reached the end."),
+      Level1small81100Bestsmall: _t("Prodigy"),
       Level2small6180small:     "Boffin",
       Level3small4160small:     "Mr/Mrs Average",
       Level4small2140small:     "Woops!",
       Level5small020Worstsmall: "Airhead",
-      correct:   "Correct!",
-      incorrect: "Woops, that's wrong."
+      correct:   _t("Correct!"),
+      incorrect: _t("Woops, that's wrong.")
     }, key, $inp;
 
     for (key in defaults) {
@@ -236,10 +236,10 @@ jQuery(function ($) {
     }
 
     //$("#toplevel_page_slickquiz [href...
-    $("#adminmenu [href $= 'slickquiz']").attr("title", "SlickQuiz/ JuxtaLearn quizzes");
+    $("#adminmenu [href $= 'slickquiz']").attr("title", _t("SlickQuiz/ JuxtaLearn quizzes"));
     var $hd = $("h2", qEdit),
       ht = $hd.text();
-    $hd.html(ht.replace("SlickQuiz", "SlickQuiz<i>/ JuxtaLearn</i>");
+    $hd.html(ht.replace("SlickQuiz", _t("SlickQuiz<i>/ JuxtaLearn</i>")));
   }
 
   //Was: add_admin_table_links()
@@ -257,14 +257,19 @@ jQuery(function ($) {
       //if (!/^\d+/.test(quiz_id)) return;
 
       $(el).html('<a class=jlq-q href="' + qz_url + '">' + text + '</a>' +
-          ' <a href="'+ qz_url +'?embed=1" title="Embed quiz: '+ text +'">Embed</a>');
+          ' <a href="' + qz_url + '?embed=1" title="' + _t("Embed quiz: %s")
+          .replace("%s", text) + '">' + _t("Embed") + '</a>');
 
       $scores.append(' <a class=jlq-v href="' + sc_url +
-          '" title="Visualize scores"><span>Visualize</span></a>');
+          '" title="' + _t("Visualize quiz scores") +
+          '"><span>' + _t("Visualize") + '</span></a>');
 
-      log(">> Quiz admin table:", text, qz_url)
+      log(">> Quiz admin table:", text, qz_url);
     });
   }
+
+  /* ========= I18n/ translation ========= */
+  function _t(s) { return s; }
 
 });
 
