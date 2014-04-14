@@ -1,9 +1,6 @@
 /* JuxtaLearn Quiz - scaffolding for the SlickQuiz editor.
 */
 
-/*jslint indent:2, nomen:true, todo:true */
-/*global jQuery:false, window:false, log:false, console:false, setTimeout:false, _t:false, loading:false */
-
 jQuery(function ($) {
 
   'use strict';
@@ -149,7 +146,7 @@ jQuery(function ($) {
 
   // Get student problems - main scaffold (Delegated event).
   //$(".jlq-stumbles-inner").on("click", "input", ..)
-  qEdit.on("click", ".jlq-stumbles-inner input", function (e) { //"click, change"?
+  qEdit.on("click", ".jlq-stumbles-inner input", function (e) { //click, change?
 
     var $wrapper = $(this).closest(".jlq-stumbles-inner");
     var stumbles = $(":checked", $wrapper).values();
@@ -187,9 +184,9 @@ jQuery(function ($) {
   function ajax_url() {
     return window.location.pathname
           .replace('admin.php', 'admin-ajax.php')
-          .replace('slickquiz-preview', 'slickquiz-publish')
-          + window.location.search
-          + '&_JUXTALEARN_=1';
+          .replace('slickquiz-preview', 'slickquiz-publish') +
+            window.location.search +
+            '&_JUXTALEARN_=1';
   }
 
   // site_url(): Works in context of admin pages.
@@ -236,7 +233,8 @@ jQuery(function ($) {
     }
 
     //$("#toplevel_page_slickquiz [href...
-    $("#adminmenu [href $= 'slickquiz']").attr("title", _t("SlickQuiz/ JuxtaLearn quizzes"));
+    $("#adminmenu [href $= 'slickquiz']")
+      .attr("title", _t("SlickQuiz/ JuxtaLearn quizzes"));
     var $hd = $("h2", qEdit),
       ht = $hd.text();
     $hd.html(ht.replace("SlickQuiz", _t("SlickQuiz<i>/ JuxtaLearn</i>")));

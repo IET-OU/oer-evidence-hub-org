@@ -5,9 +5,6 @@ https://github.com/wp-plugins/slickquiz/blob/master/php/slickquiz-front.php#L152
 https://github.com/jewlofthelotus/SlickQuiz
 */
 
-/*jslint indent: 2 */
-/*global jQuery:false, window:false, setTimeout:false, console:false, ajax_url:false, log:false */
-
 jQuery(function ($) {
 
   'use strict';

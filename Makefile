@@ -5,6 +5,7 @@ XGETTEXT=/usr/local/bin/xgettext
 WORDPRESS=--language=PHP --keyword=__:1
 META=--copyright-holder="Copyright 2014 The Open University." \
  --msgid-bugs-address=iet-webmaster@open.ac.uk --package-name
+JSHINT=../node_modules/jshint/bin/jshint
 
 
 help:
@@ -14,7 +15,9 @@ help:
 	@echo "		make install-oer"
 	@echo "		make install-juxta"
 	@echo "		make jl-quiz-pot"
+	@echo "		make jl-quiz-lint"
 	@echo
+
 
 sym-links:
 	#cd oer_evidence_hub/
@@ -63,6 +66,13 @@ jl-hub-pot:
 	--from-code=utf-8 --add-comments=/ -o juxtalearn-hub.pot
 	more juxtalearn-hub.pot
 
+install-dev:
+	npm install jshint
+
+jl-quiz-lint:
+	#$(JSHINT) wp-juxtalearn-quiz/js/juxtalearn-quiz-scaffold.js
+	find "wp-juxtalearn-quiz" -type f -name "*.js" -exec $(JSHINT) {} \;	
+
 
 test:
 	grep -v -q apache /etc/passwd && chown -R apache:apache  wordpress/wp-content/files/
@@ -71,6 +81,6 @@ test:
 	@echo "Test ends."
 
 
-.PHONY: test jl-quiz-pot jl-hub-pot install-juxta install-oer install-cmn sym-links
+.PHONY: test jl-quiz-pot jl-hub-pot install-juxta install-oer install-cmn sym-links install-dev jl-quiz-lint
 
 #End.
