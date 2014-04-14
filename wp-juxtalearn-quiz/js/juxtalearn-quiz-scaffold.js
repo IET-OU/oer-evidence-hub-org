@@ -19,8 +19,8 @@ jQuery(function ($) {
 
   log(">> JuxtaLearn Quiz scaffold.", qEdit);
 
-  form_default_texts();
-  add_admin_table_links();
+  quiz_edit_default_texts();
+  quiz_admin_table_links();
 
   // Quiz editor - insert scaffolding templates into page.
   $(".jlq-template").each(function (idx, el) {
@@ -214,7 +214,8 @@ jQuery(function ($) {
     log(">> Loading end.");
   }
 
-  function form_default_texts() {
+  //Was: form_default_texts()
+  function quiz_edit_default_texts() {
     var defaults = {
       MainCopy:   "Welcome! ...",
       ResultCopy: "Well done! You've reached the end.",
@@ -233,10 +234,17 @@ jQuery(function ($) {
         $inp.val(defaults[key]);
       }
     }
+
+    //$("#toplevel_page_slickquiz [href...
+    $("#adminmenu [href $= 'slickquiz']").attr("title", "SlickQuiz/ JuxtaLearn quizzes");
+    var $hd = $("h2", qEdit),
+      ht = $hd.text();
+    $hd.html(ht.replace("SlickQuiz", "SlickQuiz<i>/ JuxtaLearn</i>");
   }
 
-  function add_admin_table_links() {
-    var $tbl_name = $("td.table_name", qEdit);
+  //Was: add_admin_table_links()
+  function quiz_admin_table_links() {
+    var $tbl_name = $("table.quizzes td.table_name", qEdit);
 
     $tbl_name.each(function (j, el) {
       var text = $(el).text(),
