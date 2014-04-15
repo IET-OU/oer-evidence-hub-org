@@ -68,6 +68,8 @@ html body.simple-embed .site {
 
 
 /* TODO: move to separate stylesheet?!
+
+  Quiz score visualizations.
 */
 #jlq-score table th {
   font-size: 1.2em;
@@ -84,6 +86,25 @@ html body.simple-embed .site {
   font-size: .9em;
   line-height: 1.4em;
 }
+.simple-embed #jlq-score-meta {
+  position: absolute;
+  top: 2.5em;
+  left: 8px;
+  right: 8px;
+  background: #fff;
+  padding: 5px;
+  border: 2px solid #bbb;
+}
+body #jlq-score-bn { display: none; }
+.simple-embed #jlq-score-bn {
+  display: block;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+}
+
+#_jlq-score-chart svg { border: 1px solid #ccc; }
+.simple-embed #jlq-score-chart svg { width: 99%; }
 
 .entry-content #jlq-score-chart h2 {
   font-size: 1.1em;

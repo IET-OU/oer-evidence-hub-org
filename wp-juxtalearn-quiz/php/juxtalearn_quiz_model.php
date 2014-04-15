@@ -161,7 +161,7 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
             $cand_question = preg_replace('/^\d+\. /', '', $qs->q_text);
             if ($cand_question == $the_question && $qs->is_correct) {
               $stumbles[$sb_id]['score'] += 1;
-              $max_score += $stumbles[$sb_id]['score'] > $max ? 1 : 0;
+              $max_score += $stumbles[$sb_id]['score'] > $max_score ? 1 : 0;
             }
           }
         }

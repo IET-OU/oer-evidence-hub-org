@@ -20,6 +20,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
 
   protected $offset;
   protected $divisor;
+  protected $chart_size; //pixels
 
   public function __construct() {
     add_shortcode(self::SHORTCODE, array(&$this, 'quiz_score_shortcode'));
@@ -28,6 +29,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
   protected function set_score_options() {
     $this->offset = intval($this->_get('offset', 1));
     $this->divisor = $this->_get('divisor', 'max_score');
+    $this->chart_size = intval($this->_get('size', 500));
   }
 
   public function quiz_score_shortcode($attrs, $content = '', $name) {
@@ -83,6 +85,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     $offset = $score->offset;
   ?>
     <div id=jlq-score >
+    <style> #jlq-score-bn { display: none; } </style>
 
     <figure id=jlq-score-chart aria-labelledby="jlq-score-caption" role="img">
     <figcaption>
@@ -98,7 +101,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     <?php if (0 == count($score->stumbling_blocks)): ?>
     <p class="jl-error-msg no-sbs">ERROR. Sorry! I couldn't get any stumbling blocks. A bug maybe? :(
       <?php if (isset($score->warning)):?><small><?php echo sprintf(
-        __('Warning: %s', self::LOC__DOMAIN), $score->warning) ?></small><?php endif;?>
+        __('Warning: %s', self::LOC_DOMAIN), $score->warning) ?></small><?php endif;?>
     </p>
     <?php elseif (count($score->stumbling_blocks) < 3): ?>
     <small class="jl-warn-msg low-sbs"><?php echo
@@ -121,7 +124,9 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     </div>
     </figure>
 
-    <ul id=jlq-score-meta >
+    <button id=jlq-score-bn title="Show/ hide quiz data">Show</button>
+    <div id=jlq-score-meta >
+    <ul>
     <li> Quiz title:   <?php echo $score->quiz_name ?>
     <li> Quiz completed: <?php echo $score->endDate ?>
     <li> Tricky Topic: <a href="<?php echo $score->tricky_topic_url ?>"><?php
@@ -136,7 +141,19 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
       <tr><td>SB <?php echo $sb_id .': '. $sb['sb'] ?></td> <td><?php echo $sb['qs'] ?></td> <td><?php echo $sb['score'] - $offset ?></td></tr>
 <?php endforeach; ?>
     </table>
+    </div>
 
+    <script>
+    jQuery(function ($) {
+
+      var $meta = $(".simple-embed #jlq-score-meta");
+      $("#jlq-score-bn").click(function () {
+        $meta.toggle();
+      });
+      $meta.hide();
+
+    });
+    </script>
     </div>
     <?php
   }
@@ -190,8 +207,8 @@ jQuery(function ($) {
 
   $(".jl-chart-loading").hide();
 
-  var w = 500,
-	h = 500;
+  var w = <?php echo $this->chart_size ?>,
+	h = <?php echo $this->chart_size ?>;
 
 var colorscale = d3.scale.category10();
 
@@ -209,21 +226,21 @@ var LegendOptions = [
 
 //Data
 var d = [
-		  [
 <?php foreach ($the_scores as $j => $score): ?>
 <?php
     $sb_limit = count($score->stumbling_blocks);
     $sb_count = 0;
 ?>
+		[
     <?php foreach ($score->stumbling_blocks as $sb_id => $sb): ?>
 		{axis: "<?php echo $sb['sb'] .' (SB:'. $sb_id .')' ?>", value: <?php
 		    echo $sb['score'] / $divisor ?> }<?php $sb_count++; echo $sb_count < $sb_limit ? ',':''; ?>
 
     <?php endforeach; ?>
-		  ]<?php echo $j < ($num_scores - 1) ? ',':'' ?>
+		]<?php echo $j < ($num_scores - 1) ? ',':'' ?>
 
 <?php endforeach; ?>
-		];
+];
 
 //Options for the Radar chart, other than default
 var mycfg = {
