@@ -38,7 +38,8 @@ class JuxtaLearn_Quiz_Shortcode_SlickQuiz_Dummy extends JuxtaLearn_Quiz_Shortcod
     $data = $this->check_post_json();
 
     $result = $this->save_score($data);
-    $url = site_url(sprintf(self::SCORE_URL, $result['jlq_score_id']));
+    //Was: $result[ jlq_score_id ]
+    $url = site_url(sprintf(self::SCORE_URL, $result['sq_score_id']));
     $title = __('Visualize your score', self::LOC_DOMAIN);
 
     $this->json_response(array(

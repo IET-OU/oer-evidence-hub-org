@@ -3,8 +3,8 @@
  * Wordpress shortcode to visualize a JuxtaLearn quiz score for a single attempt.
  *
  * Usage:
- *   [quiz_score] - With `my-page/{SCORE ID}/`
- *   [quiz_score id={SCORE_ID}]
+ *   [quiz_score] - With `my-page/{SQ SCORE ID}/`
+ *   [quiz_score id={SQ SCORE ID}]
  *
  * @copyright RadarChart.js - Copyright 2013 Nadieh Bremer (@nbremer).
  * @link http://bl.ocks.org/nbremer/6506614#RadarChart.js
@@ -33,10 +33,11 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
   }
 
   public function quiz_score_shortcode($attrs, $content = '', $name) {
-    $jlq_score_id = $this->url_parse_id($attrs);
+    //Was: $jlq_score_id
+    $sq_score_id = $this->url_parse_id($attrs);
     $this->set_score_options();
 
-    $score = $this->model_get_score($jlq_score_id, $this->offset);
+    $score = $this->model_get_score($sq_score_id, $this->offset);
     $permission = isset($score->permission) ? $score->permission : NULL;
 
     $b_continue = $this->auth_permitted($score->createdBy, $permission, $auth_reason);
@@ -75,6 +76,16 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     </script>
 
     <script>
+    jQuery(function ($) {
+      var $meta = $(".simple-embed #jlq-score-meta");
+      $("#jlq-score .jlq-score-bn").click(function () {
+        $meta.toggle();
+      });
+      $meta.hide();
+    });
+    </script>
+
+    <script>
     document.documentElement.className += " shortcode-<?php echo self::SHORTCODE ?>";
     </script>
 <?php
@@ -85,7 +96,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     $offset = $score->offset;
   ?>
     <div id=jlq-score >
-    <style> #jlq-score-bn { display: none; } </style>
+    <style> .jlq-score-bn { display: none; } </style>
 
     <figure id=jlq-score-chart aria-labelledby="jlq-score-caption" role="img">
     <figcaption>
@@ -124,8 +135,9 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     </div>
     </figure>
 
-    <button id=jlq-score-bn title="Show/ hide quiz data">Show</button>
+    <button class=jlq-score-bn title="Show quiz data">Show</button>
     <div id=jlq-score-meta >
+    <button class=jlq-score-bn title="Hide quiz data">Hide</button>
     <ul>
     <li> Quiz title:   <?php echo $score->quiz_name ?>
     <li> Quiz completed: <?php echo $score->endDate ?>
@@ -143,17 +155,6 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     </table>
     </div>
 
-    <script>
-    jQuery(function ($) {
-
-      var $meta = $(".simple-embed #jlq-score-meta");
-      $("#jlq-score-bn").click(function () {
-        $meta.toggle();
-      });
-      $meta.hide();
-
-    });
-    </script>
     </div>
     <?php
   }

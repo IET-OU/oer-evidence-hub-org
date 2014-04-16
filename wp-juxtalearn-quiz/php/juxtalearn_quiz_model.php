@@ -47,6 +47,7 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
           $this->error('Failed to submit score');
         }
         return array('jlq_score_id' => $wpdb->insert_id,
+                'sq_score_id' => $slickquiz_score->id,
                 'parent_score' => $slickquiz_score);
     }
 
@@ -75,7 +76,7 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
       return $option && isset($all[$option]) ? $all[$option] : $all;
     }
 
-    public function get_score($jlq_score_id, $offset = 0) {
+    public function get_score($sq_score_id, $offset = 0) {
       global $wpdb;
       $db_name = $wpdb->prefix . 'juxtalearn_quiz_scores';
       $join_scores = $wpdb->prefix . 'plugin_slickquiz_scores';
@@ -87,7 +88,9 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
           FROM $db_name
           JOIN $join_scores ON $join_scores.id = $db_name.score_id
           JOIN $join_quiz ON $join_quiz.id = $join_scores.quiz_id
-          WHERE $db_name.id = ". intval($jlq_score_id) );
+          WHERE $join_scores.id = ". intval($sq_score_id) );
+          //-- WHERE $db_name.id = ". intval($jlq_score_id)
+
     /* SELECT *
       FROM `wp_4_juxtalearn_quiz_scores` jqs
       JOIN wp_4_plugin_slickquiz_scores  pss ON pss.id = jqs.score_id

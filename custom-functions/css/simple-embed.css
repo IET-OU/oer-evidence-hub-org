@@ -88,19 +88,20 @@ html body.simple-embed .site {
 }
 .simple-embed #jlq-score-meta {
   position: absolute;
-  top: 2.5em;
-  left: 8px;
-  right: 8px;
-  background: #fff;
+  top: 2px;
+  left: 7px;
+  right: 7px;
+  background: #f8f8f8;
   padding: 5px;
-  border: 2px solid #bbb;
+  border: 2px solid #ccc;
+  border-radius: 5px;
 }
-body #jlq-score-bn { display: none; }
-.simple-embed #jlq-score-bn {
+body .jlq-score-bn { display: none; }
+.simple-embed .jlq-score-bn {
   display: block;
   position: absolute;
-  top: 2px;
-  right: 2px;
+  top: 5px;
+  right: 9px;
 }
 
 #_jlq-score-chart svg { border: 1px solid #ccc; }
