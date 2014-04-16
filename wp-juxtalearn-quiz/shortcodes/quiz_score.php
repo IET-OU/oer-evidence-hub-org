@@ -125,8 +125,8 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     <li> Completion(s):  <?php echo count($all_scores) ?>
     <li> Who completed?
     <?php foreach ($all_scores as $sc): ?>
-      <i title="<?php echo $sc->endDate .' / Score ID: '. $sc->score_id ?>"
-          ><?php echo $sc->user_name ?>,</i>
+      <em title="<?php echo $sc->endDate .' / Score ID: '. $sc->score_id ?>"
+          ><?php echo $sc->user_name ?></em>,
     <?php endforeach; ?>
     </ul>
 

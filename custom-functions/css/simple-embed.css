@@ -83,6 +83,13 @@ html body.simple-embed .site {
   padding: 3px 10px 3px 0;
 }
 #jlq-score td i { display: none; }
+#jlq-score-meta em {
+  display: inline-block;
+  min-width: 1.3em;
+  border-bottom: 1px dotted gray;
+  text-align: center;
+  cursor: help;
+}
 #jlq-score-meta {
   font-size: .9em;
   line-height: 1.4em;
