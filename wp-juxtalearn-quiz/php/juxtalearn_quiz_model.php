@@ -13,6 +13,11 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
 
   const HUB_SB_TAXONOMY = 'juxtalearn_hub_sb';
 
+  // Was: 'juxtalearn-quiz-score/'
+  const SCORE_URL = 'quiz-score/%d/';
+  const QUIZ_URL  = 'juxtalearn-quiz/%d/';
+  const TT_URL    = 'trickytopic/%s/';
+
   /**
   * save_score()
   *   https://github.com/wp-plugins/slickquiz/blob/master/php/slickquiz-model.php#L255
@@ -141,7 +146,8 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
 
       $post = get_post($score->tricky_topic_id);
       $score->tricky_topic_title = $post->post_title;
-      $score->tricky_topic_url = site_url('trickytopic/'. $post->post_name);
+      $score->tricky_topic_url = site_url(sprintf(self::TT_URL, $post->post_name));
+      $score->quiz_url = site_url(sprintf(self::QUIZ_URL, $score->quiz_id));
 
       $stumbles = array();
       $max_score = $offset;

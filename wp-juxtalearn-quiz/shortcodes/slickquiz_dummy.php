@@ -13,8 +13,6 @@
 
 class JuxtaLearn_Quiz_Shortcode_SlickQuiz_Dummy extends JuxtaLearn_Quiz_Shortcode {
 
-  // Was: 'juxtalearn-quiz-score/'
-  const SCORE_URL = 'quiz-score/%d/';
   const SLICKQUIZ_SC_RE = '@\[slickquiz id=(\-?\d+|url|uri)\]@';
 
   protected $is_quiz_view_pg = FALSE;
