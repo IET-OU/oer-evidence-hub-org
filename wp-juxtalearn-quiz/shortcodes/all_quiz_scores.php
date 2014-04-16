@@ -56,7 +56,7 @@ class JuxtaLearn_Quiz_Shortcode_All_Quiz_Scores extends JuxtaLearn_Quiz_Shortcod
       __('%d students have attempted the quiz.', self::LOC_DOMAIN), count($all_scores))
       .' '. __('(Only the most recent attempt is shown per student.)', self::LOC_DOMAIN);
 
-    $this->print_score_markup($all_scores[0], $notes);
+    $this->print_score_markup($all_scores, $notes);
     ?>
 
     <script src=

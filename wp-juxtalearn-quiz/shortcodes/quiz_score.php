@@ -54,7 +54,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
       <?php return; ?>
     <?php endif;
 
-    $this->print_score_markup($score);
+    $this->print_score_markup(array($score));
     ?>
 
     <script src=
@@ -69,8 +69,9 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
   }
 
 
-  protected function print_score_markup($score, $notes = NULL) {
+  protected function print_score_markup($all_scores, $notes = NULL) {
 
+    $score = $all_scores[0];
     $offset = $score->offset;
   ?>
     <div id=jlq-score >
@@ -117,18 +118,29 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     <div id=jlq-score-meta >
     <button class=jlq-score-bn title="Hide quiz data">Hide</button>
     <ul>
-    <li> Quiz title:   <?php echo $score->quiz_name ?>
-    <li> Quiz completed: <?php echo $score->endDate ?>
+    <li> Quiz title:   <a href="<?php echo $score->quiz_url ?>"
+      ><?php echo $score->quiz_name ?></a>
     <li> Tricky Topic: <a href="<?php echo $score->tricky_topic_url ?>"><?php
          echo $score->tricky_topic_title ?></a>
-    <li> User name:    <?php echo $score->user_name ?>
+    <li> Completion(s):  <?php echo count($all_scores) ?>
+    <li> Who completed?
+    <?php foreach ($all_scores as $sc): ?>
+      <i title="<?php echo $sc->endDate .' / Score ID: '. $sc->score_id ?>"
+          ><?php echo $sc->user_name ?>,</i>
+    <?php endforeach; ?>
     </ul>
 
     <table id=jlq-score-table >
       <tr><th>Stumbling block</th> <th>Questions</th> <th>Scores</th></tr>
 
 <?php foreach ($score->stumbling_blocks as $sb_id => $sb): ?>
-      <tr><td>SB <?php echo $sb_id .': '. $sb['sb'] ?></td> <td><?php echo $sb['qs'] ?></td> <td><?php echo $sb['score'] - $offset ?></td></tr>
+      <tr><td title="SB <?php echo $sb_id ?>"><?php echo $sb['sb'] ?><i> (SB:<?php echo $sb_id ?>)</i></td>
+        <td><?php echo $sb['qs'] ?></td>
+        <td>
+        <?php foreach ($all_scores as $sc):
+            $scb = $sc->stumbling_blocks[$sb_id]; ?>
+            <em title="<?php echo $sc->user_name ?>"><?php echo $scb['score'] - $offset ?></em>,
+        <?php endforeach; ?></td></tr>
 <?php endforeach; ?>
     </table>
     </div>
