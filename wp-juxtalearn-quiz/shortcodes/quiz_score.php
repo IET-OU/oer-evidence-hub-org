@@ -29,7 +29,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
   protected function set_score_options() {
     $this->offset = intval($this->_get('offset', 1));
     $this->divisor = $this->_get('divisor', 'max_score');
-    $this->chart_size = intval($this->_get('size', 500));
+    $this->chart_size = intval($this->_get('chartsize', 500));
   }
 
   public function quiz_score_shortcode($attrs, $content = '', $name) {
@@ -65,31 +65,9 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     </script>
 
 <?php
-    $this->print_utility_scripts($score);
+    $this->print_utility_javascripts($score);
   }
 
-  protected function print_utility_scripts($score) {
-    ?>
-    <script>
-    var JLQ_score_data = <?php echo json_encode($score) ?>;
-    window.console && console.log(">> Score data:", JLQ_score_data);
-    </script>
-
-    <script>
-    jQuery(function ($) {
-      var $meta = $(".simple-embed #jlq-score-meta");
-      $("#jlq-score .jlq-score-bn").click(function () {
-        $meta.toggle();
-      });
-      $meta.hide();
-    });
-    </script>
-
-    <script>
-    document.documentElement.className += " shortcode-<?php echo self::SHORTCODE ?>";
-    </script>
-<?php
-  }
 
   protected function print_score_markup($score, $notes = NULL) {
 
@@ -312,5 +290,29 @@ var legend = svg.append("g")
 });
 <?php
   }
- 
+
+
+  protected function print_utility_javascripts($score) {
+    ?>
+    <script>
+    var JLQ_score_data = <?php echo json_encode($score) ?>;
+    window.console && console.log(">> Score data:", JLQ_score_data);
+    </script>
+
+    <script>
+    jQuery(function ($) {
+      var $meta = $(".simple-embed #jlq-score-meta");
+      $("#jlq-score .jlq-score-bn").click(function () {
+        $meta.toggle();
+      });
+      $meta.hide();
+    });
+    </script>
+
+    <script>
+    document.documentElement.className += " shortcode-<?php echo self::SHORTCODE ?>";
+    </script>
+<?php
+  }
+
 }

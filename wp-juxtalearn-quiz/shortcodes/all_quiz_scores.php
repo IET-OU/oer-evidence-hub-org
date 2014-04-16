@@ -67,7 +67,7 @@ class JuxtaLearn_Quiz_Shortcode_All_Quiz_Scores extends JuxtaLearn_Quiz_Shortcod
     </script>
 
 <?php    
-    $this->print_utility_scripts($all_scores);
+    $this->print_utility_javascripts($all_scores);
   }
 
 }
