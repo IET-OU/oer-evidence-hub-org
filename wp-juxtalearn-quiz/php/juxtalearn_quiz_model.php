@@ -260,10 +260,11 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
         $quiz_id = isset($_GET['id']) ? intval($_GET['id']) : NULL;
         $result = (object) array('id' => $quiz_id);
       break;
-      case 'quiz_tt':
+      // Legacy.
+      case 'X_quiz_tt':
         $result = get_option(self::DB_PREFIX .'tt', array());
       break;
-      case 'quiz_sb':
+      case 'X_quiz_sb':
         $result = get_option(self::DB_PREFIX .'sb', array());
       break;
       default:
@@ -274,14 +275,44 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
   }
 
   public function get_tricky_topic($quiz_id) {
+    global $wpdb;
+    $db_name = $wpdb->prefix . self::DB_SCAFFOLD;
+    return $wpdb->get_var( "SELECT tricky_topic_id FROM $db_name
+        WHERE quiz_id = ". intval($quiz_id) );
+    // Legacy.
     $quiz_tt = $this->get_data('quiz_tt');
     return isset($quiz_tt['x'. $quiz_id]) ? $quiz_tt['x' . $quiz_id] : NULL;
   }
+
   protected function get_stumbling_blocks($quiz_id) {
+    global $wpdb;
+    $db_name = $wpdb->prefix . self::DB_SCAFFOLD;
+    return json_decode($wpdb->get_var( "SELECT stumbling_blocks FROM $db_name
+        WHERE quiz_id = ". intval($quiz_id) ));
+    // Legacy.
     $quiz_sb = $this->get_data('quiz_sb');
     return isset($quiz_sb['x'. $quiz_id]) ? $quiz_sb['x' . $quiz_id] : NULL;
   }
 
+  protected function update_scaffold($quiz_id, $data) {
+    global $wpdb;
+    $db_name = $wpdb->prefix . self::DB_SCAFFOLD;
+    $tt_id = $this->get_tricky_topic($quiz_id);
+    if ($tt_id) {
+      return $wpdb->update( $db_name, array(
+        'tricky_topic_id' => $data->trickytopic_id, // No '_'
+        'stumbling_blocks'=> json_encode($data->stumbling_blocks),
+      ), array('quiz_id' => intval($quiz_id) ));
+    }
+    //ELSE insert..
+    return $wpdb->insert( $db_name, array(
+      'quiz_id' => $quiz_id,
+      'tricky_topic_id' => $data->trickytopic_id,
+      'stumbling_blocks'=> json_encode($data->stumbling_blocks),
+    ) );
+  }
+
+  // Legacy.
   protected function update_data($key, $values) {
     $result = $this->get_data($key);
     $new_values = array();
@@ -308,9 +339,14 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
     return $result;
   }
 
+  protected function form_selected($post, $tt_id) {
+    echo $post->ID == $tt_id ? 'selected' : '';
+  }
+
+  /*// Legacy.
   protected function form_selected($post, $quiz_tt, $quiz_id) {
     echo isset($quiz_tt['x'. $quiz_id]) &&
         $post->ID == $quiz_tt['x'. $quiz_id] ? 'selected' : '';
-  }
+  }*/
 
 }

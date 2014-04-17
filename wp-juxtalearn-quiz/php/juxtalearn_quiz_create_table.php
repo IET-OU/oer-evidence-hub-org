@@ -16,20 +16,48 @@ require_once 'juxtalearn_quiz_api_helper.php';
 
 class JuxtaLearn_Quiz_Create_Table extends JuxtaLearn_Quiz_API_Helper {
 
-  const DB_VERSION = '1.0';
+  const DB_VERSION = '1.2';
   const DB_PREFIX = '_juxtalearn_quiz__';
+  const DB_SCAFFOLD = 'juxtalearn_quiz_scaffold';
+  const DB_SCORES   = 'juxtalearn_quiz_scores';
 
+
+  /**
+  * Replaces '_juxtalearn_quiz__tt' & '_juxtalearn_quiz__sb' in `wp_options` option_names.
+  */
+  protected function create_scaffold_table() {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::DB_SCAFFOLD;
+
+    // quiz_id: Links to `wp_plugin_slickquiz`.`id`
+    // tricky_topic_id:  Links to `wp_posts`.id WHERE post_type=tricky_topic
+    // stumbling_blocks: JSON:  [{"q":"What is 33 + 72?","s":["278","281"]}]
+    $sql = "CREATE TABLE $table_name (
+            meta_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            quiz_id bigint(20) unsigned NOT NULL DEFAULT '0',
+            tricky_topic_id bigint(20) unsigned NOT NULL DEFAULT '0',
+            stumbling_blocks longtext NULL,
+            PRIMARY KEY  (meta_id),
+            KEY quiz_id_index (quiz_id)
+        );";
+
+    require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+    dbDelta( $sql );
+
+    update_option( self::DB_PREFIX . 'db_version', self::DB_VERSION );
+  }
 
   protected function create_score_table() {
     global $wpdb;
 
-    $table_name = $wpdb->prefix . 'juxtalearn_quiz_scores';
+    $table_name = $wpdb->prefix . self::DB_SCORES;
 
     // scoreJson: [{"is_correct":false,"q_text":"1. What is 3 + 7?","q_num":0}]
     // score_id:  This links to `wp_plugin_slickquiz_scores`.`id`
     // endDate - startDate: How long has the attempt taken?
     $sql = "CREATE TABLE $table_name (
-          id bigint(20) NOT NULL AUTO_INCREMENT,
+          id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
           scoreJson longtext NULL,
           score_id bigint(20) unsigned NOT NULL DEFAULT '0',
           startDate datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -43,7 +71,7 @@ class JuxtaLearn_Quiz_Create_Table extends JuxtaLearn_Quiz_API_Helper {
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
     dbDelta( $sql );
 
-    add_option( self::DB_PREFIX . 'db_version', self::DB_VERSION );
+    update_option( self::DB_PREFIX . 'db_version', self::DB_VERSION );
   }
 
 }

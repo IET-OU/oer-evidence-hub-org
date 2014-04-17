@@ -82,7 +82,7 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
       'post_type' => $post->post_type,
       'count' => count($stumbling_blocks),
       'stumbling_blocks' => $stumbling_blocks,
-      'quiz_sbs' => $this->get_data('quiz_sb', $quiz->id),
+      'quiz_sbs' => $this->get_stumbling_blocks($quiz->id),
       'html' => $html,
     ));
   }
@@ -218,10 +218,13 @@ HTML;
 
     $data = $this->check_post_json();
 
+    $result = $this->update_scaffold($quiz->id, $data);
+
+    // Legacy.
     $this->update_data('quiz_tt', array($quiz->id => $data->trickytopic_id));
     $this->update_data('quiz_sb', array($quiz->id => $data->stumbling_blocks));
 
-    $this->json_response(array('quiz_id' => $quiz->id));
+    $this->json_response(array('quiz_id' => $quiz->id, 'result' => $result ));
   }
 
   public function admin_enqueue_scripts() {
@@ -240,9 +243,14 @@ HTML;
 
     if (!$this->is_quiz_edit_page()) return;
 
-    $tricky_topics = $this->get_data('tricky_topics');
-    $quiz_tt = $this->get_data('quiz_tt');
     $quiz = $this->get_data('quiz');
+    $tricky_topics = $this->get_data('tricky_topics');
+
+    $tt_id = $this->get_tricky_topic($quiz->id);
+
+    // Legacy.
+    #$quiz_tt = $this->get_data('quiz_tt');
+
 ?>
     <!-- JuxtaLearn Quiz templates -->
     <script type="text/html" class="jlq-template jlq-t-t" data-sel=".slickQuiz .QuizTitle">
@@ -258,7 +266,7 @@ HTML;
         <option></option>
       <?php foreach ($tricky_topics as $post): #setup_postdata($topic); ?>
         <option value="<?php echo $post->ID ?>" <?php
-          $this->form_selected($post, $quiz_tt, $quiz->id) ?>><?php
+          $this->form_selected($post, $tt_id) ?>><?php
           echo $post->post_title ?></option>
       <?php endforeach; ?>
       </select>

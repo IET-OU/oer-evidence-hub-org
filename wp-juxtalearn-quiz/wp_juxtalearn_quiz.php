@@ -55,6 +55,7 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
   public function activate() {
 
     #$this->create_quiz_table();
+    $this->create_scaffold_table();
     $this->create_score_table();
   }
 
