@@ -48,9 +48,22 @@ class My_Custom_Functions {
       add_filter( 'robots_txt', array(&$this, 'robots_txt'), 10, 2 );
     }
 
+    add_filter('admin_body_class', array(&$this, 'debug_body_class'));
+    add_filter('body_class', array(&$this, 'debug_body_class'));
+
     $this->security_remove_wp_links();
   }
 
+  public function debug_body_class( $classes ) {
+    if (!isset($_GET['debug'])) return $classes;
+
+    if (is_array($classes)) {
+      $classes[] = 'debug';
+    } else {
+      $classes .= ' debug';  //'admin_body_class'
+    }
+    return $classes;
+  }
 
   // http://wordpress.stackexchange.com/questions/66834/how-to-target-with-css-admin-elem-
   public function admin_body_class( $classes ) {
