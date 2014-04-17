@@ -132,7 +132,24 @@ jQuery(function ($) {
       .done(function (data, stat, jqXHR) {
         if ("success" === stat) {
           stumbling_blocks = data;
-          $(".JL-Quiz-Stumbles .jlq-stumbles-inner").html(data.html);
+          $(".JL-Quiz-Stumbles .jlq-stumbles-inner", qEdit).html(data.html);
+
+          // Now, tick the appropriate checkboxes.
+          var quiz_sbs = data.quiz_sbs;
+          $(".questionSet", qEdit).each(function (idx, el) {
+            var qa = $(".actual textarea", $(el)).val(),
+              sb, it, values;
+
+            for (it in quiz_sbs) {
+              sb = quiz_sbs[it];
+              if (sb.q === qa) { // Trim?
+                values = "[value=" + sb.s.join("], [value=") + "]";
+                $(".jlq-stumbles-inner input", $(el))
+                  .filter(values).attr("checked", "");
+                break;
+              }
+            }
+          });
         }
         log(">> Get stumbling blocks, done. TT id:", tt_id, stat, data);
       })
