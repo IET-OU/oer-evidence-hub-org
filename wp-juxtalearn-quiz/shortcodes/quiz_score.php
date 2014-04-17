@@ -40,7 +40,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     $score = $this->model_get_score($sq_score_id, $this->offset);
     $permission = isset($score->permission) ? $score->permission : NULL;
 
-    $b_continue = $this->auth_permitted($score->createdBy, $permission, $auth_reason);
+    $b_continue = $this->auth_permitted($score->score_user_id, $permission, $auth_reason);
     if (!$b_continue) {
       return;
     }

@@ -89,7 +89,7 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
 
       $score = $wpdb->get_row( "SELECT *, $join_scores.name AS user_name,
             $join_quiz.name AS quiz_name, $db_name.id AS jlq_score_id,
-            $join_scores.createdBy AS user_id
+            $join_scores.createdBy AS score_user_id
           FROM $db_name
           JOIN $join_scores ON $join_scores.id = $db_name.score_id
           JOIN $join_quiz ON $join_quiz.id = $join_scores.quiz_id

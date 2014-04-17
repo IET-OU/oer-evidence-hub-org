@@ -14,6 +14,7 @@ body.custom-background.simple-embed {
 
 html.simple-embed {
   margin: 0 !important;
+  overflow: hidden;
 }
 
 html body.simple-embed .site {
