@@ -11,6 +11,7 @@ jQuery(function ($) {
     problemsAction = 'juxtalearn_quiz_student_problems',
     quiz_url = 'juxtalearn-quiz/%d/',
     scores_url = 'all-quiz-scores/%d/',
+    artificial_delay = 0, //Was: 100, 150ms.
     tricky_topic_id,
     stumbling_blocks;
 
@@ -68,11 +69,10 @@ jQuery(function ($) {
         stumbles = [];
 
     $('.questionSet', qEdit).each(function (i, el) {
-      var q = $('[name = question]', $(el)).val(),
-        s = $('.JL-Quiz-Stumbles input:checked', $(el)).values();
-      log(">> SBs", q, s);
-      //s = ["2", "3"];
-      stumbles.push({ q: q, s: s });
+      var question = $('[name = question]', $(el)).val(),
+        sb_ids = $('.JL-Quiz-Stumbles input:checked', $(el)).values();
+      log(">> SBs", question, sb_ids);
+      stumbles.push({ q: question, s: sb_ids });
     });
 
     var data = {
@@ -129,32 +129,37 @@ jQuery(function ($) {
     tricky_topic_id = tt_id;
 
     $.getJSON(ajax_url(), { tricky_topic: tt_id, action: stumblesAction })
-      .done(function (data, stat, jqXHR) {
-        if ("success" === stat) {
+      .done(function (data, status, jqXHR) {
+        if ("success" === status) {
           stumbling_blocks = data;
           $(".JL-Quiz-Stumbles .jlq-stumbles-inner", qEdit).html(data.html);
 
-          // Now, tick the appropriate checkboxes.
-          var quiz_sbs = data.quiz_sbs;
+          // Now, iterate through the questions...
+          var quiz_stumbling_blocks = data.quiz_sbs;
           $(".questionSet", qEdit).each(function (idx, el) {
-            var qa = $(".actual textarea", $(el)).val(),
+            var qn_actual = $(".actual textarea", $(el)).val(),
+              $checkboxes = $(".jlq-stumbles-inner input", $(el)),
               sb, it, values;
 
-            for (it in quiz_sbs) {
-              sb = quiz_sbs[it];
-              if (sb.q === qa) { // Trim?
+            $(el).attr("data-qn", qn_actual);
+
+            //...And, tick the appropriate Stumbling Block checkboxes.
+            for (it in quiz_stumbling_blocks) {
+              sb = quiz_stumbling_blocks[it];
+              if (sb.q === qn_actual) { // Trim?
                 values = "[value=" + sb.s.join("], [value=") + "]";
-                $(".jlq-stumbles-inner input", $(el))
-                  .filter(values).attr("checked", "");
+                $checkboxes.filter(values).prop("checked", true); //.attr("checked", "");
                 break;
               }
             }
+
+            $checkboxes.trigger("change");
           });
         }
-        log(">> Get stumbling blocks, done. TT id:", tt_id, stat, data);
+        log(">> Get stumbling blocks, done. TT id:", tt_id, status, data);
       })
       .always(function () {
-        log(">> Get stumbling blocks, always. TT id:", tt_id);
+        //log(">> Get stumbling blocks, always. TT id:", tt_id);
         loading_end();
       });
 
@@ -163,7 +168,7 @@ jQuery(function ($) {
 
   // Get student problems - main scaffold (Delegated event).
   //$(".jlq-stumbles-inner").on("click", "input", ..)
-  qEdit.on("click", ".jlq-stumbles-inner input", function (e) { //click, change?
+  qEdit.on("click, change", ".jlq-stumbles-inner input", function (e) { //click, change?
 
     var $wrapper = $(this).closest(".jlq-stumbles-inner");
     var stumbles = $(":checked", $wrapper).values();
@@ -175,21 +180,29 @@ jQuery(function ($) {
     loading();
 
     $.getJSON(ajax_url(), { stumbling_blocks: stumbles, action: problemsAction })
-      .done(function (data, stat, jqXHR) {
+      .done(function (data, status, jqXHR) {
         var $outer = $wrapper.closest(".JL-Quiz-Stumbles"),
           $scaffold = $(".jlq-scaffold-inner", $outer);
 
-        if ("success" === stat && "ok" === data.stat) {
+        if ("success" === status && "ok" === data.stat) {
 
           // Temporary artificial delay.
-          setTimeout(function () {
+          if (artificial_delay) {
+            setTimeout(function () {
+              $scaffold.html(data.html);
+            }, artificial_delay); //2 * ?
+          } else {
             $scaffold.html(data.html);
-          }, 100);
+          }
         }
-        log(">> Get student problems, done:", stat, data);
+        log(">> Get student problem scaffolding, done:", status, data);
       })
       .always(function () {
-        setTimeout(function () { loading_end(); }, 150);
+        if (artificial_delay) {
+          setTimeout(function () { loading_end(); }, artificial_delay);
+        } else {
+          loading_end();
+        }
       });
   });
 
