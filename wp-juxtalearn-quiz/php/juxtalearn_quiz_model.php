@@ -265,7 +265,7 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
           'name' => isset($country[0]) ? $country[0]->name : null,
         );
       break;
-      self::HUB_LOC_META:
+      case self::HUB_LOC_META:
       case 'location':
         $location_id = get_post_meta($id, self::HUB_LOC_META, true);
         $location = get_post($location_id);
@@ -275,9 +275,9 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
           'title'=> $location ? $location->post_title : null,
         );
       break;
-      self::HUB_EDU_TAXONOMY:  // Not for Tricky Topics!
+      case self::HUB_EDU_TAXONOMY:  // Not for Tricky Topics!
       case 'edu':
-        $result = wp_get_post_terms($id, self::HUB_EDU_TAXONOMY),
+        $result = wp_get_post_terms($id, self::HUB_EDU_TAXONOMY);
       break;
       case 'quiz':
         //$quiz = $this->get_last_quiz_by_user( get_current_user_id() );
