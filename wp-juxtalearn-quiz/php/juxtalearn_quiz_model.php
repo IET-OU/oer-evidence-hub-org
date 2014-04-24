@@ -12,6 +12,9 @@ require_once 'juxtalearn_quiz_create_table.php';
 class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
 
   const HUB_SB_TAXONOMY = 'juxtalearn_hub_sb';
+  const HUB_EDU_TAXONOMY = 'juxtalearn_hub_education_level';
+  const HUB_CNY_TAXONOMY = 'juxtalearn_hub_country';
+  const HUB_LOC_META = 'juxtalearn_hub_location_id';
 
   // Was: 'juxtalearn-quiz-score/'
   const SCORE_URL = 'quiz-score/%d/';
@@ -146,7 +149,7 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
 
       $post = get_post($score->tricky_topic_id);
       $score->tricky_topic_title = $post->post_title;
-      $score->tricky_topic_url = site_url(sprintf(self::TT_URL, $post->post_name));
+      $score->tricky_topic_url = get_permalink($post->ID); #Was: site_url(sprintf(self::TT_URL, $post->post_name));
       $score->quiz_url = site_url(sprintf(self::QUIZ_URL, $score->quiz_id));
 
       $stumbles = array();
@@ -246,7 +249,6 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
         // Maybe, best do a deep clone.
         #$filter_terms = clone_array($terms);
         $b_ok = array_walk($result, function ($term, $idx) {
-          unset($term->slug);
           unset($term->description);
           unset($term->taxonomy);
           unset($term->term_taxonomy_id);
@@ -254,6 +256,28 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
           unset($term->parent);
           unset($term->count);
         });
+      break;
+      case self::HUB_CNY_TAXONOMY:
+      case 'country':
+        $country = wp_get_post_terms($id, self::HUB_CNY_TAXONOMY);
+        $result = (object) array(
+          'id' => isset($country[0]) ? $country[0]->slug : null,
+          'name' => isset($country[0]) ? $country[0]->name : null,
+        );
+      break;
+      self::HUB_LOC_META:
+      case 'location':
+        $location_id = get_post_meta($id, self::HUB_LOC_META, true);
+        $location = get_post($location_id);
+        $result = (object) array(
+          'id' => $location ? $location->ID : null,
+          'name' => $location ? $location->post_name : null,
+          'title'=> $location ? $location->post_title : null,
+        );
+      break;
+      self::HUB_EDU_TAXONOMY:  // Not for Tricky Topics!
+      case 'edu':
+        $result = wp_get_post_terms($id, self::HUB_EDU_TAXONOMY),
       break;
       case 'quiz':
         //$quiz = $this->get_last_quiz_by_user( get_current_user_id() );

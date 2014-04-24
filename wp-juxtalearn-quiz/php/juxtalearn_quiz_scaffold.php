@@ -70,6 +70,8 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
     }
     $post = get_post($tricky_topic_id);
     $stumbling_blocks = $this->get_data('sb', $tricky_topic_id);
+    $country = $this->get_data('country', $tricky_topic_id);
+    $location = $this->get_data('location', $tricky_topic_id);
     $html = '';
     foreach ($stumbling_blocks as $tm) {
       $html .= '<label><input type=checkbox value="'. $tm->term_id .'">'. $tm->name .'</label>';
@@ -78,11 +80,15 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
       'quiz_id' => $quiz->id,
       'tricky_topic_id' => $post->ID,
       'tricky_topic_title' => $post->post_title,
-      'tricky_topic_url' => $post->guid,
-      'post_type' => $post->post_type,
+      'tricky_topic_url' => get_permalink($post->ID),  #Was: $post->guid
+      #'post_type' => $post->post_type,
       'count' => count($stumbling_blocks),
       'stumbling_blocks' => $stumbling_blocks,
       'quiz_sbs' => $this->get_stumbling_blocks($quiz->id),
+      #'education_level' => $this->get_data('edu', $post->ID),
+      'country_name' => $country->name,
+      'country_id' => $country->id,
+      'location' => $location->name,
       'html' => $html,
     ));
   }
