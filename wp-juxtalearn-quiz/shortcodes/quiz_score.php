@@ -27,7 +27,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
   }
 
   protected function set_score_options() {
-    $this->offset = intval($this->_get('offset', 1));
+    $this->offset = floatval($this->_get('offset', 1)); //intval()
     $this->divisor = $this->_get('divisor', 'max_score');
     $this->chart_size = intval($this->_get('chartsize', 500));
   }
