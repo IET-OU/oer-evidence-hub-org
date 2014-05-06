@@ -1,3 +1,5 @@
+/* Tested with Tiny Forge theme for WordPress.
+*/
 
 .simple-embed .site > header,
 .simple-embed .site > footer,
@@ -7,12 +9,123 @@
 }
 
 body.custom-background.simple-embed {
-  background: none;
+  background: #fdfdfd;
+}
+
+html.simple-embed {
+  margin: 0 !important;
+  overflow: hidden;
 }
 
 html body.simple-embed .site {
   margin: 0;
-  padding: 1em;
+  padding: 2px; /*1em*/
   box-shadow: none;
   max-width: 100%;
+  background: transparent;
+}
+
+.simple-embed .site-content {
+  margin: 0;
+  float: none;
+  width: 100%;
+}
+
+.simple-embed.page .site-content article.type-page {
+  margin: 0;
+  padding: 0;
+}
+
+.simple-embed .slickQuizWrapper .quizArea,
+.simple-embed .slickQuizWrapper .quizResults {
+  margin-bottom: 1em;
+}
+.simple-embed footer.entry-meta {
+  margin-top: 1em;
+}
+
+
+/* Selectively hide comments and headings - various ways.
+*/
+.se-no-comments #comments,
+.shortcode-juxtalearn_quiz.simple-embed #comments,
+.shortcode-quiz_score.simple-embed #comments,
+.shortcode-quiz_score.simple-embed .entry-meta,
+.shortcode-all_quiz_scores.simple-embed .entry-meta,
+.shortcode-juxtalearn_quiz.simple-embed .entry-header {
+  display: none;
+}
+
+.shortcode-juxtalearn_quiz.simple-embed h2.quizName,
+.shortcode-all_quiz_scores.simple-embed .entry-header,
+.shortcode-quiz_score.simple-embed .entry-header {
+  margin: 0 0 .4em;
+}
+
+.shortcode-all_quiz_scores.simple-embed table,
+.shortcode-quiz_score.simple-embed table {
+  margin: 0;
+}
+
+
+/* TODO: move to separate stylesheet?!
+
+  Quiz score visualizations.
+*/
+#jlq-score table th {
+  font-size: 1.2em;
+  min-width: 7em;
+}
+.entry-content #jlq-score table {
+  color: #333;
+}
+.entry-content #jlq-score td {
+  border-top: 1px solid #ddd;
+  padding: 3px 10px 3px 0;
+}
+#jlq-score td i { display: none; }
+#jlq-score-meta em {
+  display: inline-block;
+  min-width: 1.3em;
+  border-bottom: 1px dotted gray;
+  text-align: center;
+  cursor: help;
+}
+#jlq-score-meta {
+  font-size: .9em;
+  line-height: 1.4em;
+}
+.simple-embed #jlq-score-meta {
+  position: absolute;
+  top: 2px;
+  left: 7px;
+  right: 7px;
+  background: #f8f8f8;
+  padding: 5px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+}
+body .jlq-score-bn { display: none; }
+.simple-embed .jlq-score-bn {
+  display: block;
+  position: absolute;
+  top: 5px;
+  right: 9px;
+}
+
+#_jlq-score-chart svg { border: 1px solid #ccc; }
+.simple-embed #jlq-score-chart svg { width: 99%; }
+
+.entry-content #jlq-score-chart h2 {
+  font-size: 1.1em;
+  margin: .4em 0;
+}
+.entry-content #jlq-score-chart p {
+  font-size: .9em;
+  margin: .3em 0;
+}
+
+.page .entry-content .slickQuizWrapper p {
+  margin: 1em 0;
+  line-height: 1em;
 }

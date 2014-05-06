@@ -13,5 +13,9 @@ wp-content/themes/tiny-forge
 *.diff
 *.patch
 *.log
+*.pot
+*.po
+*.mo
+
 
 #End.

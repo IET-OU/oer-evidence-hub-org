@@ -25,3 +25,6 @@
 [submodule "google-sitemap-generator"]
 	path = google-sitemap-generator
 	url = https://github.com/wp-plugins/google-sitemap-generator.git
+[submodule "SlickQuiz-WordPress"]
+	path = SlickQuiz-WordPress
+	url = https://github.com/jewlofthelotus/SlickQuiz-WordPress.git

@@ -1,5 +1,5 @@
 
-/* Teacher - "role-editor"
+/* Simplify the admin UI for teachers - "role-editor"
 */
 .wp-admin.X-role-editor #menu-dashboard,
 .wp-admin.role-editor #menu-posts,
@@ -21,4 +21,18 @@
 .wp-admin.role-editor #postexcerpt {
   display: none;
 }
+
+
+/* 'debug' body class.
+*/
+.debug .jlq-stumbles-inner label { line-height: 2.4em; }
+.debug input[type = checkbox] { margin-right: 3em; }
+.debug input[type = checkbox]:after {
+  display: inline-block;
+  content: " SB:" attr(value);
+  font-size: .9em;
+  height: 1.2em;
+  width: 2em;
+}
+
 

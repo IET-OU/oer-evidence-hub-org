@@ -1,0 +1,29 @@
+
+# http://perishablepress.com/wordpress-xmlrpc-pingback-vulnerability/
+# protect xmlrpc
+<IfModule mod_alias.c>
+  RedirectMatch  403  /xmlrpc.php
+</IfModule>
+
+
+
+# Use the most recent Internet Explorer/MSIE available.
+<IfModule headers_module>
+  Header set  X-UA-Compatible  "IE=edge,chrome=1"
+</IfModule>
+
+
+
+# http://codex.wordpress.org/Using_Permalinks
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.php$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.php [L]
+</IfModule>
+[root@tulkas wordpress]#
+

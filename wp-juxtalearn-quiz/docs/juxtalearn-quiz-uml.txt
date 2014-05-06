@@ -1,0 +1,39 @@
+/*
+ * JuxtaLearn Quiz UML diagrams.
+ * N.D.Freear, 16 April 2014.
+ */
+
+
+// JuxtaLearn Quiz class hierarchy - WordPress plugin.
+[JuxtaLearn_Quiz_API_Helper]^-[JuxtaLearn_Quiz_Create_Table]
+[JuxtaLearn_Quiz_Create_Table]^-[JuxtaLearn_Quiz_Model]
+[JuxtaLearn_Quiz_Model]^-[Wp_JuxtaLearn_Quiz{bg:cornsilk}]
+
+// Edit: http://yuml.me/edit/9653697f
+// PNG:  http://yuml.me/9653697f
+// JSON: {"type":"class","extension":"png","dsl":"// JuxtaLearn Quiz class hierarchy - WordPress plugin., [JuxtaLearn_Quiz_API_Helper]^-[JuxtaLearn_Quiz_Create_Table], [JuxtaLearn_Quiz_Create_Table]^-[JuxtaLearn_Quiz_Model], [JuxtaLearn_Quiz_Model]^-[Wp_JuxtaLearn_Quiz{bg:cornsilk}]","digest":"9653697f","file_only":false,"customisations":"scruffy;dir:TB;","mime":"image/png"}
+
+
+// JuxtaLearn Quiz class hierarchy - scaffolding
+[JuxtaLearn_Quiz_API_Helper]^-[JuxtaLearn_Quiz_Create_Table]
+[JuxtaLearn_Quiz_Create_Table]^-[JuxtaLearn_Quiz_Model]
+[JuxtaLearn_Quiz_Model]^-[JuxtaLearn_Quiz_Scaffold]
+
+// Edit: http://yuml.me/edit/4bf99af3
+// PNG:  http://yuml.me/4bf99af3
+// JSON: {"type":"class","extension":"png","dsl":"// JuxtaLearn Quiz class hierarchy - scaffolding, [JuxtaLearn_Quiz_API_Helper]^-[JuxtaLearn_Quiz_Create_Table], [JuxtaLearn_Quiz_Create_Table]^-[JuxtaLearn_Quiz_Model], [JuxtaLearn_Quiz_Model]^-[JuxtaLearn_Quiz_Scaffold]","digest":"4bf99af3","file_only":false,"customisations":"scruffy;dir:TB;","mime":"image/png"}
+
+
+// JuxtaLearn Quiz class hierarchy - shortcode [quiz_score]
+[JuxtaLearn_Quiz_API_Helper]^-[JuxtaLearn_Quiz_Create_Table]
+[JuxtaLearn_Quiz_Create_Table]^-[JuxtaLearn_Quiz_Model]
+[JuxtaLearn_Quiz_Model]^-[JuxtaLearn_Quiz_Shortcode]
+[JuxtaLearn_Quiz_Shortcode]^-[JuxtaLearn_Quiz_Shortcode_Score]
+
+// Edit: http://yuml.me/edit/f14a2feb
+// PNG:  http://yuml.me/f14a2feb
+// JSON: {"type":"class","extension":"png","dsl":"// JuxtaLearn Quiz class hierarchy - scaffolding, [JuxtaLearn_Quiz_API_Helper]^-[JuxtaLearn_Quiz_Create_Table], [JuxtaLearn_Quiz_Create_Table]^-[JuxtaLearn_Quiz_Model], [JuxtaLearn_Quiz_Model]^-[JuxtaLearn_Quiz_Shortcode], [JuxtaLearn_Quiz_Shortcode]^-[JuxtaLearn_Quiz_Shortcode_Score]","digest":"b2682e93","file_only":false,"customisations":"scruffy;","mime":"image/png"}
+
+
+
+//[End.]
