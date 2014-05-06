@@ -2,7 +2,8 @@
 
 # Environment
 XGETTEXT=/usr/local/bin/xgettext
-WORDPRESS=--language=PHP --keyword=__:1
+WORDPRESS=--language=PHP --keyword=__:1 -k_e:1 -k_x:1
+PO_DIR=translations/
 META=--copyright-holder="Copyright 2014 The Open University." \
  --msgid-bugs-address=iet-webmaster@open.ac.uk --package-name
 JSHINT=../node_modules/jshint/bin/jshint
@@ -25,6 +26,7 @@ sym-links:
 	ln -sf  ../../../wpmail-smtp  wordpress/wp-content/plugins/wpmail-smtp
 	#cd ../themes
 	ln -sf  ../../../tiny-forge/1.5.4.2  wordpress/wp-content/themes/tiny-forge
+	ln -s ../../translations wordpress/wp-content/translations
 
 install-cmn: sym-links
 	mkdir  wordpress/wp-content/files/
@@ -57,14 +59,29 @@ jl-quiz-pot:
 	# Extract text for translation (i18n) to GetText POT templates.
 	find "wp-juxtalearn-quiz" -type f -name "*.php" \
 	| $(XGETTEXT) $(WORDPRESS) $(META)=JuxtaLearn-Quiz -f - \
-	--from-code=utf-8 --add-comments=/ -o juxtalearn-quiz.pot
-	more juxtalearn-quiz.pot
+	--from-code=utf-8 --add-comments=/ -o $(PO_DIR)juxtalearn-quiz.pot
+	more $(PO_DIR)juxtalearn-quiz.pot
 
 jl-hub-pot:
 	find "wp-juxtalearn-hub" -type f -name "*.php" -and -not -path "*/lib/*" \
 	| $(XGETTEXT) $(WORDPRESS) $(META)=JuxtaLearn-Hub -f - \
-	--from-code=utf-8 --add-comments=/ -o juxtalearn-hub.pot
-	more juxtalearn-hub.pot
+	--from-code=utf-8 --add-comments=/ -o $(PO_DIR)juxtalearn-hub.pot
+	more $(PO_DIR)juxtalearn-hub.pot
+
+tinyforge-pot:
+	find "tiny-forge/1.5.4.2" -type f -name "*.php" \
+	| $(XGETTEXT) $(WORDPRESS) $(META)=Tiny-Forge -f - \
+	--from-code=utf-8 --add-comments=/ -o $(PO_DIR)tinyforge.pot
+	more $(PO_DIR)tinyforge.pot
+
+msgfmt:
+	# Compile binary MO file. Not working :(.
+	find "translations" -type f -name "*.po" \
+	-print -exec bash -c 'msgfmt -o "$0.mo" "$0"' {} \;
+
+msgtest:
+	find "translations" -type f -name "*.po" \
+	-print -exec sh -c 'echo "[$0] [$1]"' foobar {} \;
 
 install-dev:
 	npm install jshint

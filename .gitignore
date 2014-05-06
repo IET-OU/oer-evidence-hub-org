@@ -15,6 +15,7 @@ wp-content/themes/tiny-forge
 *.log
 *.pot
 *.po
+*.mo
 
 
 #End.

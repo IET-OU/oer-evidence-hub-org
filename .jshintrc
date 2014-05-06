@@ -16,5 +16,5 @@
 
   "_NOTE_": "/*jslint indent:2, nomen:true, todo:true */",
   "_NOTE_": "/*global jQuery:false, window:false, log:false, console:false, setTimeout:false, _t:false, loading:false */"
-  // https://github.com/gruntjs/jrunt-contrib-jshint#.jshintrc
+  // https://github.com/gruntjs/grunt-contrib-jshint#.jshintrc
 }
