@@ -3,11 +3,9 @@
 Plugin Name: JuxtaLearn Custom Functions
 Plugin URI:  https://gist.github.com/nfreear/9049532
 Description: Search user-interface hack; admin UI simplifications for teachers/editors [JuxtaLearn].
-    I use them to make my site work <a href=
-"http://wphidedash.org/2011/04/best-practice-for-adding-custom-functions/">my way.</a>
 Author:  Nick Freear
 Author URI:  https://github.com/IET-OU/oer-evidence-hub-org/#Juxtalearn
-Version:  0.1
+Version:  1.2
 */
 // FILE: juxtalearn_hub/wordpress/wp-content/plugins/my-custom-functions.php
 
@@ -23,7 +21,7 @@ if (basename($_SERVER['PHP_SELF']) == basename (__FILE__)) {
 
 /** START ADDING CODE BELOW THIS LINE **/
 
-define('CUSTOM_FUNC_REGISTER_FILE',
+define('JXL_CUSTOM_FUNC_REGISTER_FILE',
   preg_replace('@/Users/[^\/]+/[^\/]+/[^\/]+@', '',    # Mac OS X
     preg_replace('@\/var\/www\/[^\/]+@', '', __FILE__) # Linux
 ));
@@ -32,7 +30,7 @@ define('CUSTOM_FUNC_REGISTER_FILE',
 //remove_filter ('the_content', 'wpautop');
 
 
-class My_Custom_Functions {
+class JxL_Custom_Functions {
 
   const DEV_SERVER_REGEX = '@(test|approval|acct|dev)@';
 
@@ -76,14 +74,14 @@ class My_Custom_Functions {
 
   public function admin_enqueue_scripts() {
     wp_enqueue_style('my-custom-functions-admin', plugins_url(
-      'css/custom-admin.css', CUSTOM_FUNC_REGISTER_FILE
+      'css/custom-admin.css', JXL_CUSTOM_FUNC_REGISTER_FILE
     ));
   }
 
 
   public function front_enqueue_scripts() {
     wp_enqueue_script('my-custom-functions-front', plugins_url(
-      'js/facetious-hack.js', CUSTOM_FUNC_REGISTER_FILE
+      'js/facetious-hack.js', JXL_CUSTOM_FUNC_REGISTER_FILE
     ), array('jquery'), false, $in_footer = TRUE);
   }
 
@@ -124,7 +122,7 @@ class My_Custom_Functions {
   }
 }
 
-$custom_func = new My_Custom_Functions();
+$jxl_custom_functions = new JxL_Custom_Functions();
 
 
 /** STOP ADDING CODE NOW**/
