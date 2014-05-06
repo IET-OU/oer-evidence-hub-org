@@ -19,3 +19,6 @@
 [submodule "jetpack"]
 	path = jetpack
 	url = https://github.com/wp-plugins/jetpack.git
+[submodule "SlickQuiz-WordPress"]
+	path = SlickQuiz-WordPress
+	url = https://github.com/jewlofthelotus/SlickQuiz-WordPress.git
