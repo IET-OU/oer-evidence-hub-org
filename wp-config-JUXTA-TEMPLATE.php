@@ -46,10 +46,18 @@ define('WP_PROXY_HOST', 'wwwcache.open.ac.uk');
 define('WP_PROXY_PORT', '80');
 
 
-
 define('SMTP_HOST', 'smtpmail.open.ac.uk');
 define('SMTP_PORT', 25);
 //ini_set('SMTP', 'smtpmail.open.ac.uk');
+
+
+/* NDF: API stuff, May 2014.
+*/
+define( 'JXL_COOKIE_SECRET_KEY', NULL );
+define( 'JXL_COOKIE_DOMAIN', NULL );
+define( 'JXL_CLIPIT_LOGIN', NULL );
+define( 'JXL_CLIPIT_PASSWORD', NULL );
+define('JXL_CLIPIT_API_URL', 'http://jxl1.escet.urjc.es/clipit_dev/services/api/rest/%s/');
 
 
 
