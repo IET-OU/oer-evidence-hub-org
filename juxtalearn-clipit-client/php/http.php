@@ -3,25 +3,11 @@
  * Generic HTTP library.
  * (Clip-It API client library for JuxtaLearn.)
  * NDF, 13 March 2014.
+ *
+ * @copyright 2014 The Open University.
  */
 
-/** Dummy CodeIgniter object.
-*/
-if (!function_exists('get_instance')) {
-  class CodeIgniter_Dummy {
-    function _debug() {}
-    function _log() {}
-    function _error() {}
-  }
-  $CI = new CodeIgniter_Dummy();
-  function get_instance() {
-    global $CI;
-    return $CI;
-  }
-}
-function base_url() {
-  return 'http://iet.open.ac.uk/juxtalearn.net';
-}
+/**WAS: Dummy CodeIgniter object. */
 
 
 /**
@@ -36,9 +22,17 @@ class Http {
   protected $CI;
 
   public function __construct() {
-    
-    $this->CI =& get_instance();
+    // CodeIgniter compatibility.
+    if (function_exists('get_instance')) {
+      $this->CI =& get_instance();
+    }
   }
+
+  protected function base_url() { /*return base_url();*/ }
+  protected function _debug($s) { /*$this->CI->debug();*/ }
+  protected function _error($s) { /*$this->CI->_error();*/ }
+  protected function config($s) { /*$this->CI->.config->.item()*/ }
+  protected function cookie($s) { /*$this->CI->.input->cookie()*/ }
 
 
   public function request($url, $spoof=TRUE, $options=array()) {
@@ -74,14 +68,14 @@ class Http {
 
     // Bug #1334, Proxy mode to fix VLE caption redirects (Timedtext controller).
     if (isset($options['proxy_cookies'])) {
-      $cookie_names =  $this->CI->config->item('httplib_proxy_cookies');
+      $cookie_names =  $this->config('httplib_proxy_cookies');
       if (! is_array($cookie_names)) {
         $this->CI->_error('Array expected for $config[httplib_proxy_cookies]', 400);
       }
 
       $cookies = '';
       foreach ($cookie_names as $cname) {
-        $cookies .= "$cname=". $this->CI->input->cookie($cname) .'; ';
+        $cookies .= "$cname=". $this->cookie($cname) .'; ';
       }
       $options['cookie'] = rtrim($cookies, '; ');
     }
@@ -96,7 +90,7 @@ class Http {
 
     // Merge the default options.
     $options += array(
-      'proxy' => NULL, #$this->CI->config->item('http_proxy'),
+      'proxy' => NULL, #$this->config('http_proxy'),
       'headers' => array(),
       'method' => 'GET',
       'data' => NULL,
@@ -113,7 +107,7 @@ class Http {
       #'method' => 'GET',
     );
     if (1 == $options['proxy']) {
-      $options['proxy'] = $this->CI->config->item('http_proxy');
+      $options['proxy'] = $this->config('http_proxy');
     }
 
     return $result;
@@ -125,7 +119,7 @@ class Http {
   protected function _http_request_curl($url, $spoof, $options, $result) {
     if (!function_exists('curl_init'))  die('Error, cURL is required.');
 
-    $this->CI->_debug($options);
+    $this->_debug($options);
 
     $h_curl = curl_init($url);
 
@@ -133,9 +127,16 @@ class Http {
       curl_setopt($h_curl, CURLOPT_CUSTOMREQUEST, $options['method']); 
     }
 
+    if (is_array($options['data'])) {
+      curl_setopt($h_curl, CURLOPT_POSTFIELDS, http_build_query($options['data']));
+    }
+    elseif (is_string($options['data'])) {
+      curl_setopt($h_curl, CURLOPT_POSTFIELDS, $options['data']);
+    }
+
     curl_setopt($h_curl, CURLOPT_USERAGENT, $options['ua']);
     if (!$spoof) {
-      curl_setopt($h_curl, CURLOPT_REFERER, base_url());
+      curl_setopt($h_curl, CURLOPT_REFERER, $this->base_url());
     }
 
     /*if ($options['cookie']) {
@@ -168,7 +169,7 @@ class Http {
       curl_setopt($h_curl, CURLOPT_USERPWD, $options['auth']);
     }
 
-	$http_proxy = $options['proxy']; #$this->CI->config->item('http_proxy');
+	$http_proxy = $options['proxy']; #$this->config('http_proxy');
 	if ($http_proxy) {
 	  curl_setopt($h_curl, CURLOPT_PROXY, $http_proxy);
 	}
