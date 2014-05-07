@@ -40,6 +40,7 @@ class JxL_Custom_Functions {
     add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
     add_action('wp_enqueue_scripts', array(&$this, 'front_enqueue_scripts'));
 
+    add_action('wp_head', array(&$this, 'head_custom_style'));
     add_action('wp_footer', array(&$this, 'footer_browser_sniff'));
 
     if (preg_match(self::DEV_SERVER_REGEX, $_SERVER['HTTP_HOST'])) {
@@ -51,6 +52,43 @@ class JxL_Custom_Functions {
 
     $this->security_remove_wp_links();
   }
+
+
+  public function head_custom_style() {
+    $css_selector = self::get_option( 'jxl_menu_clipit_selector',
+        '.main-navigation ul > .menu-item-type-custom a[href *= clipit]' );
+        //'.main-navigation ul #menu-item-609 a' );
+    $css_color    = self::get_option( 'jxl_menu_clipit_color', '#32b4e5' );
+    $css_custom   = self::get_option( 'jxl_custom_style', '/* Option:jxl_custom_style */' );
+      ?>
+  <style id=jxl-custom-style >
+  /* ClipIt menu link.
+  */
+  body .main-navigation li {
+    margin: 0 2rem 0 0;
+  }
+  /* Option:jxl_menu_clipit_selector */
+  body <?php echo $css_selector ?> {
+    text-transform: none;  /*uppercase*/
+    color: <?php echo $css_color ?>;  /* Option:jxl_menu_clipit_color */
+    background: #fbfbfb;
+    border: 1px solid <?php echo $css_color ?>; /*#0066cc, #32b4e5, #f7931e*/
+    border-radius: 3px;
+    line-height: 1.6em;
+    padding: 3px 12px;
+    font-weight: bold;
+    font-size: 1.15em;
+  }
+  body <?php echo $css_selector ?>:hover {
+    background: #f6f6f6;
+    border-color: #fc9f00;
+    color: #fc9f00;  /*orange*/
+  }
+  <?php echo $css_custom ?>
+  </style>
+    <?php
+  }
+
 
   public function debug_body_class( $classes ) {
     if (!isset($_GET['debug'])) return $classes;
@@ -120,8 +158,23 @@ class JxL_Custom_Functions {
     <script src="//cdn.jsdelivr.net/modernizr/2.7.1/modernizr.min.js"></script>
     <?php */
   }
-}
 
+
+  // Utility.
+
+  /**
+   * Get values for a named option from the options database table.
+   * Uses WordPress `get_option()`. Falls back to a PHP defined() constant.
+   *
+   * @link https://codex.wordpress.org/Function_Reference/get_option
+   */
+  public static function get_option( $key, $default = NULL ) {
+    $_KEY = strtoupper( $key );
+    $default = !$default && defined( $_KEY ) ? constant( $_KEY ) : $default;
+    return get_option( $key, $default );
+  }
+
+}
 $jxl_custom_functions = new JxL_Custom_Functions();
 
 
