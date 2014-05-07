@@ -28,3 +28,6 @@
 [submodule "SlickQuiz-WordPress"]
 	path = SlickQuiz-WordPress
 	url = https://github.com/jewlofthelotus/SlickQuiz-WordPress.git
+[submodule "juxtalearn-clipit-client/lib/juxtalearn-cookie-authentication"]
+	path = juxtalearn-clipit-client/lib/juxtalearn-cookie-authentication
+	url = https://github.com/juxtalearn/juxtalearn-cookie-authentication.git
