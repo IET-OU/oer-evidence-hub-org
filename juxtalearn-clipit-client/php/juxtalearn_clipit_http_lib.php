@@ -23,6 +23,7 @@ class JuxtaLearn_ClipIt_HTTP_Lib {
 
   public function __construct() {
     add_action('admin_notices', array(&$this, 'admin_notices'));
+    add_action( 'admin_init', array(&$this, 'ajax_authenticate') );
 
     add_action( 'wp_ajax_clipit_test', array(&$this, 'clipit_api_test') );
   }
@@ -36,20 +37,37 @@ class JuxtaLearn_ClipIt_HTTP_Lib {
     endforeach;
   }
 
+
+  public function ajax_authenticate() {
+    $regex = '@admin-ajax.php.+action=clipit_@';
+    if (preg_match($regex, $_SERVER['REQUEST_URI']) && !is_user_logged_in()) {
+      die( "Warning, not logged in" );
+    }
+    @header( 'Content-Type: text/plain' );
+  }
+
   /** TEST.
   * wordpress/wp-admin/admin-ajax.php?action=clipit_test&method=site.api_list
   */
   public function clipit_api_test() {
-    @header( 'Content-Type: text/plain' );
+    $this->ajax_authenticate();
+
     $api_method = isset($_GET['method']) ? $_GET['method'] : NULL;
+    $ids = $this->_get( 'id' );
     $input = array(
-      'id_array' => isset($_GET['id']) && is_array($_GET['id']) ? $_GET['id'] : NULL,
-      'id' =>  isset($_GET['id']) && is_numeric($_GET['id']) ? $_GET['id'] : NULL,
+      'id_array' => is_array( $ids ) ? $ids : NULL,
+      'id' =>  is_numeric( $ids ) ? $ids : NULL,
     );
-    $result = $this->api_request( $api_method, $input );
-    echo "$result->http_method $result->url \nHTTP status: $result->http_code".PHP_EOL;
-    if ($result->success) {
-      print_r( $result->obj );
+    foreach ($_GET as $key => $value) {
+      if (preg_match('/(id|method|token)/', $key)) continue;
+      $input[ $key ] = $value;
+    }
+    $resp = $this->api_request( $api_method, $input );
+    $resp->obj->http_code = $resp->http_code;
+    $resp->obj->url = $resp->url;
+    echo "$resp->http_method $resp->url \nHTTP status: $resp->http_code".PHP_EOL;
+    if ($resp->success) {
+      print_r( $resp->obj );
     } else {
       echo 'ERROR: '. $result->curl_error;
     }
@@ -57,6 +75,11 @@ class JuxtaLearn_ClipIt_HTTP_Lib {
   }
 
 
+  /** Main method to make a request to the ClipIt API. Handles authentication.
+  * @param string $api_method  Examples 'site.get_token', 'quiz.create'
+  * @param array  $input
+  * @return object Response, with the result in $resp->obj->result. Also, $resp->success.
+  */
   protected function api_request( $api_method = NULL, $input = array() ) {
     $api_method = $api_method ? $api_method : 'site.api_list';
     if (!$this->get_token()) {
@@ -73,7 +96,6 @@ class JuxtaLearn_ClipIt_HTTP_Lib {
     if ('site.get_token' == $api_method) {
       return $resp;
     }
-
     return $this->do_request( $api_method, $input );
   }
 
@@ -139,4 +161,9 @@ class JuxtaLearn_ClipIt_HTTP_Lib {
   protected function message( $text, $type = 'ok' ) {
     $this->messages[] = array( 'type' => $type, 'msg' => $text );
   }
+
+  protected function _get( $key, $default = NULL ) {
+    return isset($_GET[$key]) ? $_GET[$key] : $default;
+  }
+
 }

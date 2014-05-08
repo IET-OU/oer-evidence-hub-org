@@ -62,6 +62,8 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_HTTP_Lib {
   * wordpress/wp-admin/admin-ajax.php?action=clipit_cookie
   */
   public function clipit_cookie_test() {    
+    $this->ajax_authenticate();
+
     require_once 'juxtalearn-cookie-authentication/test.php';
     print_r( $_COOKIE );
     exit;
