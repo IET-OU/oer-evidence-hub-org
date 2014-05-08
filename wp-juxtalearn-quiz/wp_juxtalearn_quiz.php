@@ -37,8 +37,8 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
     require_once 'shortcodes/slickquiz_dummy.php';
     $shortcode_sq = new JuxtaLearn_Quiz_Shortcode_SlickQuiz_Dummy();
 
-    #require_once 'shortcodes/juxtalearn_quiz.php';
-    #$shortcode_quiz = new JuxtaLearn_Quiz_Shortcode_Quiz();
+    require_once 'shortcodes/quiz_list.php';
+    $shortcode_quiz_list = new JuxtaLearn_Quiz_Shortcode_List();
 
     $this->plugin_name = basename( dirname( __FILE__ ) ) . '/' . basename( __FILE__ );
 
