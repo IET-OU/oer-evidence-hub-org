@@ -27,7 +27,12 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_HTTP_Lib {
   public function init_authenticate() {
     if (!$this->auth) {
 
-      $this->auth = new JuxtaLearn_Cookie_Authentication();
+      try {
+        $this->auth = new JuxtaLearn_Cookie_Authentication();
+      } catch (Exception $ex) {
+        $this->error( $ex->getMessage() );
+        return;
+      }
 
       $result = $this->auth->authenticate();
 
