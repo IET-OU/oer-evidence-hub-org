@@ -52,6 +52,8 @@ class JuxtaLearn_Quiz_Shortcode_All_Quiz_Scores extends JuxtaLearn_Quiz_Shortcod
       <?php return; ?>
     <?php endif;
 
+    ob_start();
+
     $notes = sprintf(
       __('%d students have attempted the quiz.', self::LOC_DOMAIN), count($all_scores))
       .' '. __('(Only the most recent attempt is shown per student.)', self::LOC_DOMAIN);
@@ -68,6 +70,8 @@ class JuxtaLearn_Quiz_Shortcode_All_Quiz_Scores extends JuxtaLearn_Quiz_Shortcod
 
 <?php    
     $this->print_utility_javascripts($all_scores);
+
+    return ob_get_clean();
   }
 
 }

@@ -159,6 +159,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     return $score;
   }
 
+
   protected function print_spider_javascript($the_scores) {
     # http://bl.ocks.org/nbremer/6506614#RadarChart.js
 
@@ -305,11 +306,14 @@ var legend = svg.append("g")
 
 
   protected function print_utility_javascripts($score) {
-    ?>
+    $sc = is_array($score) ? $score[0] : $score;
+
+    if ($this->_get( 'debug' )): ?>
     <script>
     var JLQ_score_data = <?php echo json_encode($score) ?>;
     window.console && console.log(">> Score data:", JLQ_score_data);
     </script>
+    <?php endif; ?>
 
     <script>
     jQuery(function ($) {
@@ -318,6 +322,9 @@ var legend = svg.append("g")
         $meta.toggle();
       });
       $meta.hide();
+
+      $("title").html( $("title").html().replace(/Page \d+/, <?php
+          echo json_encode("$sc->quiz_name [Quiz ID: $sc->quiz_id]") ?>) );
     });
     </script>
 
