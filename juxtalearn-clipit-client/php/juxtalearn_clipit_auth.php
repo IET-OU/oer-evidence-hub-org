@@ -17,10 +17,27 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_HTTP_Lib {
   public function __construct() {
     parent::__construct();
 
+    add_filter( 'login_message', array(&$this, 'login_message_filter') );
+
     add_action('init', array(&$this, 'init_authenticate'));
     add_action('admin_init', array(&$this, 'init_authenticate'));
 
     add_action('wp_ajax_clipit_cookie', array(&$this, 'clipit_cookie_test'));
+  }
+
+
+  public function login_message_filter( $body ) {
+    ob_start(); ?>
+
+    <style>.login #jxl-login-msg p { font-size: 1.15em; margin: 1em 0; } </style>
+    <div id=jxl-login-msg ><p>
+    <?php echo sprintf(__(
+    'Students and teachers should <a %s>login via ClipIt</a>. <p>System administrators, log in below.',
+      self::LOC_DOMAIN ),
+      'href="http://clipit.juxtalearn.net/clipit_apionly/login?url='. site_url() .'"'
+    ) ?></div>
+
+  <?php return ob_get_clean() . $body;
   }
 
 

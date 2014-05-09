@@ -14,6 +14,7 @@ require_once 'http.php';
 
 class JuxtaLearn_ClipIt_HTTP_Lib {
 
+  const LOC_DOMAIN = JuxtaLearn_ClipIt_Client::LOC_DOMAIN;
   const API_TIMEOUT = 1000000;
 
   // ClipIt API token.
