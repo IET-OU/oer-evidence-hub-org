@@ -69,7 +69,7 @@ class JuxtaLearn_ClipIt_HTTP_Lib {
     if ($resp->success) {
       print_r( $resp->obj );
     } else {
-      echo 'ERROR: '. $result->curl_error;
+      echo 'ERROR: '. $resp->curl_error;
     }
     die();
   }

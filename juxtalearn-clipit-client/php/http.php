@@ -29,6 +29,7 @@ class Http {
   }
 
   protected function base_url() { /*return base_url();*/ }
+  protected function _log($e,$s){ /*$this->CI->_log();*/ }
   protected function _debug($s) { /*$this->CI->debug();*/ }
   protected function _error($s) { /*$this->CI->_error();*/ }
   protected function config($s) { /*$this->CI->.config->.item()*/ }
@@ -186,7 +187,7 @@ class Http {
     }
     if ($errno = curl_errno($h_curl)) {
       //Error. Quietly log?
-      $this->CI->_log('error', "cURL $errno, ".curl_error($h_curl)." GET $url");
+      $this->_log('error', "cURL $errno, ".curl_error($h_curl)." GET $url");
       #$this->CI->firephp->fb("cURL $errno", "cURL error", "ERROR");
       $result->http_code = "500." . $errno;
       $result->curl_errno = $errno;
