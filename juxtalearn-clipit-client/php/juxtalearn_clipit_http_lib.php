@@ -15,7 +15,9 @@ require_once 'http.php';
 class JuxtaLearn_ClipIt_HTTP_Lib {
 
   const LOC_DOMAIN = JuxtaLearn_ClipIt_Client::LOC_DOMAIN;
-  const API_TIMEOUT = 1000000;
+  const CLIPIT_TIMEOUT = 1000000;
+  const CLIPIT_API = '/services/api/rest/json?method=clipit.%s&';
+  const DEF_BASE_URL = 'JXL_CLIPIT_BASE_URL';
 
   // ClipIt API token.
   private $auth_token;
@@ -23,6 +25,11 @@ class JuxtaLearn_ClipIt_HTTP_Lib {
 
 
   public function __construct() {
+    if (!defined( self::DEF_BASE_URL )) {
+      $this->error( 'Error. Missing PHP define(): '. self::DEF_BASE_URL );
+      //throw new Exception(..)
+    }
+
     add_action('admin_notices', array(&$this, 'admin_notices'));
     add_action( 'admin_init', array(&$this, 'ajax_authenticate') );
 
@@ -87,7 +94,7 @@ class JuxtaLearn_ClipIt_HTTP_Lib {
       $resp = $this->do_request( 'site.get_token', array(
         'login'   => constant( 'JXL_CLIPIT_LOGIN' ),
         'password'=> constant( 'JXL_CLIPIT_PASSWORD' ),
-        'timeout' => self::API_TIMEOUT,
+        'timeout' => self::CLIPIT_TIMEOUT,
       ));
 
       if ($resp->success) {
@@ -110,8 +117,9 @@ class JuxtaLearn_ClipIt_HTTP_Lib {
       $input[ 'auth_token' ] = $this->get_token();
     }
 
-    $url = sprintf(constant( 'JXL_CLIPIT_API_URL' ), 'json')
-        .'?method=clipit.'. $api_method .'&';
+    $url = constant( self::DEF_BASE_URL ) . sprintf( self::CLIPIT_API, $api_method );
+    //WAS: $url = sprintf(constant( 'JXL_CLIPIT_API_URL' ), 'json')
+    //    .'?method=clipit.'. $api_method .'&';
     $payload = NULL;
     if ($is_get) {
       $url .= http_build_query( $input );

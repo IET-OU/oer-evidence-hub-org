@@ -27,7 +27,7 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
 
   // Map: WordPress TTT post-type => ClipIt API.
   protected static $types_map = array(
-    'student_problem'  => 'ClipitStudentProblem', //?
+    'student_problem'  => 'ClipitExample',
     'teaching_activity'=> 'ClipitSTA',  //Extends 'ClipitFile' (not 'ClipitActivity')
     'tricky_topic'     => 'ClipitTricky_Topic',
     'stumbling_block'  => 'ClipitTag',  //'ClipitStumblingBlock'

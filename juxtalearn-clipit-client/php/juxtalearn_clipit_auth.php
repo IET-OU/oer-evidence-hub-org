@@ -33,8 +33,8 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_HTTP_Lib {
     <div id=jxl-login-msg ><p>
     <?php echo sprintf(__(
     'Students and teachers should <a %s>login via ClipIt</a>. <p>System administrators, log in below.',
-      self::LOC_DOMAIN ),
-      'href="http://clipit.juxtalearn.net/clipit_apionly/login?url='. site_url() .'"'
+      self::LOC_DOMAIN ), 'href="'.
+      constant( self::DEF_BASE_URL ) .'/login?url='. urlencode(site_url()) .'"'
     ) ?></div>
 
   <?php return ob_get_clean() . $body;
