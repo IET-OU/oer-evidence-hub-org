@@ -16,7 +16,7 @@ require_once 'juxtalearn_quiz_api_helper.php';
 
 class JuxtaLearn_Quiz_Create_Table extends JuxtaLearn_Quiz_API_Helper {
 
-  const DB_VERSION = '1.2';
+  const DB_VERSION = '1.3';
   const DB_PREFIX = '_juxtalearn_quiz__';
   const DB_SCAFFOLD = 'juxtalearn_quiz_scaffold';
   const DB_SCORES   = 'juxtalearn_quiz_scores';
@@ -33,13 +33,17 @@ class JuxtaLearn_Quiz_Create_Table extends JuxtaLearn_Quiz_API_Helper {
     // quiz_id: Links to `wp_plugin_slickquiz`.`id`
     // tricky_topic_id:  Links to `wp_posts`.id WHERE post_type=tricky_topic
     // stumbling_blocks: JSON:  [{"q":"What is 33 + 72?","s":["278","281"]}]
+    // clipit_id:  Relates to `juxtalearn-clipit-client Plugin`
+    // WordPress database error: [Duplicate key name 'quiz_id_index']
+    // ALTER TABLE wp_4_juxtalearn_quiz_scaffold ADD UNIQUE KEY quiz_id_index (quiz_id)
     $sql = "CREATE TABLE $table_name (
             meta_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
             quiz_id bigint(20) unsigned NOT NULL DEFAULT '0',
             tricky_topic_id bigint(20) unsigned NOT NULL DEFAULT '0',
+            clipit_id bigint(20) unsigned NOT NULL DEFAULT '0',
             stumbling_blocks longtext NULL,
             PRIMARY KEY  (meta_id),
-            KEY quiz_id_index (quiz_id)
+            UNIQUE KEY quiz_id_index (quiz_id)
         );";
 
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
