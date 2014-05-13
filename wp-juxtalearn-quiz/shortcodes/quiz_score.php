@@ -90,13 +90,11 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     <figure id=jlq-score-figure aria-labelledby="jlq-score-caption" role="img">
     <figcaption>
     <h2 id="jlq-score-caption"><?php echo sprintf( __(
-'Spider or radar chart of cumulative quiz scores versus stumbling blocks, for the <a %s>%s tricky topic</a>.',
+        'Radar chart for the <a %s>%s tricky topic</a> quiz',
         self::LOC_DOMAIN), "href='$score->tricky_topic_url'", $score->tricky_topic_title) ?>
-    <small>(Offset: <?php echo $offset ?>)</small></h2>
-
-    <?php if ($notes): ?>
-      <p class=notes ><?php echo $notes ?></p>
-    <?php endif; ?>
+    <small>(offset: <?php echo $offset ?>)</small></h2>
+<!--Spider or radar chart of cumulative quiz scores versus stumbling blocks, for the <a %s>%s tricky topic</a>. -->
+    <?php /*Was: if ($notes) ..*/ ?>
 
     <?php if (0 == count($score->stumbling_blocks)): ?>
     <p class="jl-error-msg no-sbs">ERROR. Sorry! I couldn't get any stumbling blocks. A bug maybe? :(
@@ -140,6 +138,10 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     <?php endforeach; ?>
     </ul>
 
+    <?php if ($notes): ?>
+      <p class=notes ><?php echo $notes ?></p>
+    <?php endif; ?>
+
     <table id=jlq-score-table >
       <tr><th>Stumbling block</th> <th>Questions</th> <th>Scores</th></tr>
 
@@ -170,7 +172,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
   }
 
 
-  protected function print_spider_javascript($the_scores) {
+  protected function print_spider_javascript($the_scores, $is_personal = TRUE) {
     # http://bl.ocks.org/nbremer/6506614#RadarChart.js
 
     $num_scores = count($the_scores);
@@ -283,7 +285,8 @@ var text = svg.append("text")
 	.attr("y", 10)
 	.attr("font-size", (<?php echo $this->font_size ?> + 2) + "px")  //Was: 12px
 	.attr("fill", "#404040")
-	.text("<?php echo __('Students who completed the quiz', self::LOC_DOMAIN) ?>");
+	.text("<?php echo $is_personal ? __('Your latest quiz attempt', self::LOC_DOMAIN) :
+		sprintf(__('%s students completed the quiz', self::LOC_DOMAIN), $num_scores) ?>");
 
 //Initiate Legend
 var legend = svg.append("g")
