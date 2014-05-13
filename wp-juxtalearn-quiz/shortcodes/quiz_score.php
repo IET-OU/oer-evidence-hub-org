@@ -22,6 +22,9 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
   protected $divisor;
   protected $chart_size; //pixels
   protected $chart_intervals;
+  protected $font_size = 12;  //Was: 10 (10px)
+  protected $debug = FALSE;
+
 
   public function __construct() {
     add_shortcode(self::SHORTCODE, array(&$this, 'quiz_score_shortcode'));
@@ -32,6 +35,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     $this->divisor = $this->_get('divisor', 'max_score');
     $this->chart_size = intval($this->_get('chartsize', 500));
     $this->chart_intervals = intval($this->_get( 'intervals', 6 ));
+    $this->debug = (bool) $this->_get( 'debug' );
   }
 
   public function quiz_score_shortcode($attrs, $content = '', $name) {
@@ -190,6 +194,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
       'max_score' => $max_score,
       'offset' => $this->offset,
       'format' => $format,
+      'font_size' => $this->font_size,
       'intervals' => $this->chart_intervals,
     ));
 
@@ -232,10 +237,11 @@ var chart_data = [
 <?php
     $sb_limit = count($score->stumbling_blocks);
     $sb_count = 0;
+    $debug = $this->debug;
 ?>
 		[
     <?php foreach ($score->stumbling_blocks as $sb_id => $sb): ?>
-		{axis: "<?php echo $sb['sb'] .' (SB:'. $sb_id .')' ?>", value: <?php
+		{axis: "<?php echo $sb['sb'] . ($debug ? " (SB:$sb_id)" :'') ?>", value: <?php
 		    echo $sb['score'] / $divisor ?> }<?php $sb_count++; echo $sb_count < $sb_limit ? ',':''; ?>
 
     <?php endforeach; ?>
@@ -251,6 +257,7 @@ var mycfg = {
   maxValue: <?php echo $max_score //0.6 ?>,
   format: '<?php echo $format ?>',
   levels: <?php echo $this->chart_intervals ?>,
+  fontSize: <?php echo $this->font_size ?>,  //Was: 10 (10px)
   ExtraWidthX: 300
 };
 
@@ -266,15 +273,15 @@ var svg = d3.select('#jlq-score-body')
 	.selectAll('svg')
 	.append('svg')
 	.attr("width", width + 300)
-	.attr("height", height);
-
+	.attr("height", height)
+	;
 //Create the title for the legend
 var text = svg.append("text")
 	.attr("class", "title")
-	.attr('transform', 'translate(90,0)')
+	.attr('transform', 'translate(130,0)')  //Was: (90,0)
 	.attr("x", width - 70)
 	.attr("y", 10)
-	.attr("font-size", "12px")
+	.attr("font-size", (<?php echo $this->font_size ?> + 2) + "px")  //Was: 12px
 	.attr("fill", "#404040")
 	.text("<?php echo __('Students who completed the quiz', self::LOC_DOMAIN) ?>");
 
@@ -283,7 +290,7 @@ var legend = svg.append("g")
 	.attr("class", "legend")
 	.attr("height", 100)
 	.attr("width", 200)
-	.attr('transform', 'translate(90,20)')
+	.attr('transform', 'translate(130,20)')  //Was: (90,20)
 	;
 	//Create colour squares
 	legend.selectAll('rect')
@@ -303,7 +310,7 @@ var legend = svg.append("g")
 	  .append("text")
 	  .attr("x", width - 52)
 	  .attr("y", function(d, i){ return i * 20 + 9;})
-	  .attr("font-size", "11px")
+	  .attr("font-size", (<?php echo $this->font_size ?> + 1) + "px")  //Was: 11px
 	  .attr("fill", "#737373")
 	  .text(function(d) { return d; })
 	  ;
@@ -318,7 +325,7 @@ var legend = svg.append("g")
   protected function print_utility_javascripts($score) {
     $sc = is_array($score) ? $score[0] : $score;
 
-    if ($this->_get( 'debug' )): ?>
+    if ($this->debug): ?>
     <script>
     var JLQ_score_data = <?php echo json_encode($score) ?>;
     window.console && console.log(">> Score data:", JLQ_score_data);
