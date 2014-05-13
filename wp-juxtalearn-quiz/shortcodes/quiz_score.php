@@ -21,6 +21,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
   protected $offset;
   protected $divisor;
   protected $chart_size; //pixels
+  protected $chart_intervals;
 
   public function __construct() {
     add_shortcode(self::SHORTCODE, array(&$this, 'quiz_score_shortcode'));
@@ -30,6 +31,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     $this->offset = floatval($this->_get('offset', 1)); //intval()
     $this->divisor = $this->_get('divisor', 'max_score');
     $this->chart_size = intval($this->_get('chartsize', 500));
+    $this->chart_intervals = intval($this->_get( 'intervals', 6 ));
   }
 
   public function quiz_score_shortcode($attrs, $content = '', $name) {
@@ -54,6 +56,8 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
       <?php return; ?>
     <?php endif;
 
+    ob_start();
+
     $this->print_score_markup(array($score));
     ?>
 
@@ -66,6 +70,8 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
 
 <?php
     $this->print_utility_javascripts($score);
+
+    return ob_get_clean();
   }
 
 
@@ -176,15 +182,19 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     if ($divisor <= 0) {
       $divisor = 1;
     }
+    if ($this->chart_intervals <= 0) {
+      $this->chart_intervals = 6;
+    }
     $meta = json_encode(array(
       'divisor' => $divisor,
       'max_score' => $max_score,
       'offset' => $this->offset,
       'format' => $format,
+      'intervals' => $this->chart_intervals,
     ));
 
     ?>
-/*jslint devel: true, vars: true, white: true, indent: 2 */
+/*jslint devel: true, vars: true, white:true, unparam:true, indent:2 */
 /*global jQuery:false, window:false, d3:false, RadarChart:false */
 
 jQuery(function ($) {
@@ -199,8 +209,8 @@ jQuery(function ($) {
 
   $(".jl-chart-loading").hide();
 
-  var w = <?php echo $this->chart_size ?>,
-	h = <?php echo $this->chart_size ?>;
+  var width = <?php echo $this->chart_size ?>,
+	height = <?php echo $this->chart_size ?>;
 
 var colorscale = d3.scale.category10();
 
@@ -216,8 +226,8 @@ var LegendOptions = [
 <?php endforeach; ?>
 ];
 
-//Data
-var d = [
+//Data (Was: "var d..")
+var chart_data = [
 <?php foreach ($the_scores as $j => $score): ?>
 <?php
     $sb_limit = count($score->stumbling_blocks);
@@ -236,17 +246,17 @@ var d = [
 
 //Options for the Radar chart, other than default
 var mycfg = {
-  w: w,
-  h: h,
+  w: width,
+  h: height,
   maxValue: <?php echo $max_score //0.6 ?>,
   format: '<?php echo $format ?>',
-  levels: 6,
+  levels: <?php echo $this->chart_intervals ?>,
   ExtraWidthX: 300
 };
 
 //Call function to draw the Radar chart
 //Will expect that data is in %'s
-RadarChart.draw("#jlq-score-chart", d, mycfg);
+RadarChart.draw("#jlq-score-chart", chart_data, mycfg);
 
 ////////////////////////////////////////////
 /////////// Initiate legend ////////////////
@@ -255,14 +265,14 @@ RadarChart.draw("#jlq-score-chart", d, mycfg);
 var svg = d3.select('#jlq-score-body')
 	.selectAll('svg')
 	.append('svg')
-	.attr("width", w+300)
-	.attr("height", h)
+	.attr("width", width + 300)
+	.attr("height", height);
 
 //Create the title for the legend
 var text = svg.append("text")
 	.attr("class", "title")
 	.attr('transform', 'translate(90,0)')
-	.attr("x", w - 70)
+	.attr("x", width - 70)
 	.attr("y", 10)
 	.attr("font-size", "12px")
 	.attr("fill", "#404040")
@@ -280,7 +290,7 @@ var legend = svg.append("g")
 	  .data(LegendOptions)
 	  .enter()
 	  .append("rect")
-	  .attr("x", w - 65)
+	  .attr("x", width - 65)
 	  .attr("y", function(d, i){ return i * 20;})
 	  .attr("width", 10)
 	  .attr("height", 10)
@@ -291,7 +301,7 @@ var legend = svg.append("g")
 	  .data(LegendOptions)
 	  .enter()
 	  .append("text")
-	  .attr("x", w - 52)
+	  .attr("x", width - 52)
 	  .attr("y", function(d, i){ return i * 20 + 9;})
 	  .attr("font-size", "11px")
 	  .attr("fill", "#737373")

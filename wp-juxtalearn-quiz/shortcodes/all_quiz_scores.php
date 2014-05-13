@@ -24,7 +24,9 @@ class JuxtaLearn_Quiz_Shortcode_All_Quiz_Scores extends JuxtaLearn_Quiz_Shortcod
     $quiz_id = $this->url_parse_id($attrs);
     $this->set_score_options();
 
-    $b_continue = $this->auth_permitted(NULL, NULL, $auth_reason);
+    $score_user_id = $score_perm = NULL;
+
+    $b_continue = $this->auth_permitted( $score_user_id, $score_perm, $auth_reason );
     if (!$b_continue) {
       return;
     }
