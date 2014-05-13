@@ -77,7 +77,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     <div id=jlq-score >
     <style> .jlq-score-bn { display: none; } </style>
 
-    <figure id=jlq-score-chart aria-labelledby="jlq-score-caption" role="img">
+    <figure id=jlq-score-figure aria-labelledby="jlq-score-caption" role="img">
     <figcaption>
     <h2 id="jlq-score-caption"><?php echo sprintf( __(
 'Spider or radar chart of cumulative quiz scores versus stumbling blocks, for the <a %s>%s tricky topic</a>.',
