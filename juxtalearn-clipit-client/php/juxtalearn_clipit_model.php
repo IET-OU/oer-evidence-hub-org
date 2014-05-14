@@ -8,6 +8,22 @@
 
 class JuxtaLearn_ClipIt_Model {
 
+  const META_CLIPIT = 'juxtalearn_clipit_id';
+
+  const QUIZ_URL  = 'juxtalearn-quiz/%d/';
+  const EMBED_URL = 'juxtalearn-quiz/%d/?embed=1';
+  const ALL_SCORES_URL = 'all-quiz-scores/%d/';
+
+  // Map: WordPress TTT post-type => ClipIt API.
+  protected static $types_map = array(
+    'student_problem'  => 'ClipitExample',
+    'teaching_activity'=> 'ClipitSTA',  //Extends 'ClipitFile' (not 'ClipitActivity')
+    'tricky_topic'     => 'ClipitTricky_Topic',
+    'stumbling_block'  => 'ClipitTag',  //'ClipitStumblingBlock'
+    'X_slickquiz'      => 'ClipitQuiz',
+    'X_learning_analytics' => 'ClipitLA',
+  );
+
 
   protected function quiz_get_scaffold( $quiz_id ) {
     global $wpdb;

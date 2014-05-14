@@ -115,7 +115,7 @@ class JuxtaLearn_ClipIt_HTTP_Lib extends JuxtaLearn_ClipIt_Model {
   protected function do_request( $api_method, $input ) {
     $this->request_count++;
 
-    $is_get = preg_match( '/\.(get_|api_list)/', $api_method );
+    $is_get = preg_match( '/\.(get_|api_list|list_prop)/', $api_method );
 
     $this->debug( 'API request: '. $api_method );
 

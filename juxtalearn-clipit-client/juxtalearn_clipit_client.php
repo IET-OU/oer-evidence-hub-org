@@ -22,18 +22,6 @@ require_once 'php/juxtalearn_clipit_auth.php';
 class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
 
   const LOC_DOMAIN = 'juxtalearn-clipit-client';
-  const META_CLIPIT = 'juxtalearn_clipit_id';
-  const STUMBLING_BLOCK_URL = 'block/%s';
-
-  // Map: WordPress TTT post-type => ClipIt API.
-  protected static $types_map = array(
-    'student_problem'  => 'ClipitExample',
-    'teaching_activity'=> 'ClipitSTA',  //Extends 'ClipitFile' (not 'ClipitActivity')
-    'tricky_topic'     => 'ClipitTricky_Topic',
-    'stumbling_block'  => 'ClipitTag',  //'ClipitStumblingBlock'
-    'X_slickquiz'      => 'ClipitQuiz',
-    'X_learning_analytics' => 'ClipitLA',
-  );
 
 
   public function __construct() {
@@ -75,12 +63,17 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
       'prop_value_array' => array(
         'name' => $quiz->name,
         'description' => $quiz_data->info->main,
-        'url' => NULL,
+        'quiz_question_array' = array(),
+        'public' => TRUE,   //?
+        'tricky_topic' => NULL,
+        'url' => site_url(sprintf( self::QUIZ_URL, $quiz_id )),
+        'embed_url' => site_url(sprintf( self::EMBED_URL, $quiz_id )),
+        'scores_url'=> site_url(sprintf( self::ALL_SCORES_URL, $quiz_id )),
       ),
     ));
 
     if ($quiz_resp->success) {
-      $clipit_id = $response->obj->result;
+      $clipit_id = $quiz_resp->obj->result;
       $result = $this->quiz_set_clipit_id( $quiz_id, $clipit_id );
 
       /*$qq_resp = $this->api_request( 'quiz.set_quiz_questions', array(
@@ -89,7 +82,7 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
       ));
       */
 
-      $this->debug( "OK, $clipit_method | $clipit_id" );
+      $this->debug( "OK, $clipit_method | $clipit_id | $result" );
     } else {
       $this->error( "Error, $clipit_method" );
     }
@@ -129,7 +122,7 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
     // Is the post one of the Tricky Topic tool types? No, then return.
     if (!array_key_exists( $post_type, self::$types_map )) return;
 
-    $clipit_id = get_post_meta( $post_id, self::META_CLIPIT );
+    $clipit_id = get_post_meta( $post_id, self::META_CLIPIT, $single = TRUE );
 
     $this->debug( __FUNCTION__ .'; clipit ID: '. $clipit_id );
 
@@ -201,7 +194,6 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
           'name' => $tag->name,
           'description' => $tag->description,
           'url' => get_term_link( $tag ),  #.'#!ttt_term_id='. $tag->term_id,
-          #'url' => site_url(sprintf(self::STUMBLING_BLOCK_URL, $tag->slug )),
         ),
       ));
       if ($create_rsp->success) {
