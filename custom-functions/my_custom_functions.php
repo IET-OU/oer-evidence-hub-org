@@ -65,7 +65,10 @@ class JxL_Custom_Functions {
   /* ClipIt menu link.
   */
   body .main-navigation li {
-    margin: 0 2rem 0 0;
+    margin: 0 1.7rem 0 0;  /*right: 2.85rem, 2rem*/
+  }
+  body .main-navigation li:last-child {
+    margin: 0;
   }
   /* Option:jxl_menu_clipit_selector */
   body <?php echo $css_selector ?> {
@@ -75,7 +78,7 @@ class JxL_Custom_Functions {
     border: 1px solid <?php echo $css_color ?>; /*#0066cc, #32b4e5, #f7931e*/
     border-radius: 3px;
     line-height: 1.6em;
-    padding: 3px 12px;
+    padding: 3px 11px;
     font-weight: bold;
     font-size: 1.15em;
   }

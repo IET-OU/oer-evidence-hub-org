@@ -24,7 +24,9 @@ class JuxtaLearn_Quiz_Shortcode_All_Quiz_Scores extends JuxtaLearn_Quiz_Shortcod
     $quiz_id = $this->url_parse_id($attrs);
     $this->set_score_options();
 
-    $b_continue = $this->auth_permitted(NULL, NULL, $auth_reason);
+    $score_user_id = $score_perm = NULL;
+
+    $b_continue = $this->auth_permitted( $score_user_id, $score_perm, $auth_reason );
     if (!$b_continue) {
       return;
     }
@@ -52,6 +54,8 @@ class JuxtaLearn_Quiz_Shortcode_All_Quiz_Scores extends JuxtaLearn_Quiz_Shortcod
       <?php return; ?>
     <?php endif;
 
+    ob_start();
+
     $notes = sprintf(
       __('%d students have attempted the quiz.', self::LOC_DOMAIN), count($all_scores))
       .' '. __('(Only the most recent attempt is shown per student.)', self::LOC_DOMAIN);
@@ -63,11 +67,13 @@ class JuxtaLearn_Quiz_Shortcode_All_Quiz_Scores extends JuxtaLearn_Quiz_Shortcod
     "<?php echo plugins_url('js/radar-charts-d3.js', JUXTALEARN_QUIZ_REGISTER_FILE) ?>"
     ></script>
     <script>
-    <?php $this->print_spider_javascript($all_scores) ?>
+    <?php $this->print_spider_javascript($all_scores, $is_personal = FALSE) ?>
     </script>
 
 <?php    
     $this->print_utility_javascripts($all_scores);
+
+    return ob_get_clean();
   }
 
 }

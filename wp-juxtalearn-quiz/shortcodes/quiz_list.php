@@ -13,7 +13,6 @@
 class JuxtaLearn_Quiz_Shortcode_List extends JuxtaLearn_Quiz_Shortcode {
 
   const SHORTCODE = 'quiz_list';
-  //const SHORTCODE_LONG = 'juxtalearn_quiz_list';
 
   public function __construct() {
     add_shortcode(self::SHORTCODE, array(&$this, 'quiz_list_shortcode'));
@@ -21,7 +20,6 @@ class JuxtaLearn_Quiz_Shortcode_List extends JuxtaLearn_Quiz_Shortcode {
 
 
   public function quiz_list_shortcode($attrs, $content = '', $name) {
-    //Was: $jlq_score_id
     //$sq_quiz_id = $this->url_parse_id($attrs);
 
     $quizzes_list = $this->model_get_quizzes();
@@ -52,7 +50,9 @@ class JuxtaLearn_Quiz_Shortcode_List extends JuxtaLearn_Quiz_Shortcode {
     $quizzes = $wpdb->get_results( "SELECT *
         FROM $db_name
         INNER JOIN $join_scaffold ON $join_scaffold.quiz_id = $db_name.id
-        WHERE hasBeenPublished = 1" );
+        WHERE hasBeenPublished = 1
+        GROUP BY $join_scaffold.quiz_id" );  // Defensive - 'group by'
+
     foreach ($quizzes as $qz) {
       $qz->data = json_decode(
           $qz->hasBeenPublished ? $qz->publishedJson : $qz->workingJson );
@@ -68,12 +68,12 @@ class JuxtaLearn_Quiz_Shortcode_List extends JuxtaLearn_Quiz_Shortcode {
   protected function print_utility_javascripts( $quizzes ) {
     if ($this->_get( 'debug' )): ?>
       <pre id=quiz-list-debug ><?php print_r( $quizzes ) ?></pre>
-    <?php endif; ?>
 
     <script>
     var JLQ_quizzes = <?php echo json_encode( $quizzes ) ?>;
     window.console && console.log(">> Score data:", JLQ_quizzes);
     </script>
+    <?php endif; ?>
 
     <script>
     document.documentElement.className += " shortcode-<?php echo self::SHORTCODE ?>";

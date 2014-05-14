@@ -21,6 +21,10 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
   protected $offset;
   protected $divisor;
   protected $chart_size; //pixels
+  protected $chart_intervals;
+  protected $font_size = 11;  //Was: 10 (10px); 12;
+  protected $debug = FALSE;
+
 
   public function __construct() {
     add_shortcode(self::SHORTCODE, array(&$this, 'quiz_score_shortcode'));
@@ -30,6 +34,8 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     $this->offset = floatval($this->_get('offset', 1)); //intval()
     $this->divisor = $this->_get('divisor', 'max_score');
     $this->chart_size = intval($this->_get('chartsize', 500));
+    $this->chart_intervals = intval($this->_get( 'intervals', 6 ));
+    $this->debug = (bool) $this->_get( 'debug' );
   }
 
   public function quiz_score_shortcode($attrs, $content = '', $name) {
@@ -54,6 +60,8 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
       <?php return; ?>
     <?php endif;
 
+    ob_start();
+
     $this->print_score_markup(array($score));
     ?>
 
@@ -66,6 +74,8 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
 
 <?php
     $this->print_utility_javascripts($score);
+
+    return ob_get_clean();
   }
 
 
@@ -77,16 +87,14 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     <div id=jlq-score >
     <style> .jlq-score-bn { display: none; } </style>
 
-    <figure id=jlq-score-chart aria-labelledby="jlq-score-caption" role="img">
+    <figure id=jlq-score-figure aria-labelledby="jlq-score-caption" role="img">
     <figcaption>
     <h2 id="jlq-score-caption"><?php echo sprintf( __(
-'Spider or radar chart of cumulative quiz scores versus stumbling blocks, for the <a %s>%s tricky topic</a>.',
+        'Radar chart for the <a %s>%s tricky topic</a> quiz',
         self::LOC_DOMAIN), "href='$score->tricky_topic_url'", $score->tricky_topic_title) ?>
-    <small>(Offset: <?php echo $offset ?>)</small></h2>
-
-    <?php if ($notes): ?>
-      <p class=notes ><?php echo $notes ?></p>
-    <?php endif; ?>
+    <small>(offset: <?php echo $offset ?>)</small></h2>
+<!--Spider or radar chart of cumulative quiz scores versus stumbling blocks, for the <a %s>%s tricky topic</a>. -->
+    <?php /*Was: if ($notes) ..*/ ?>
 
     <?php if (0 == count($score->stumbling_blocks)): ?>
     <p class="jl-error-msg no-sbs">ERROR. Sorry! I couldn't get any stumbling blocks. A bug maybe? :(
@@ -130,6 +138,10 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     <?php endforeach; ?>
     </ul>
 
+    <?php if ($notes): ?>
+      <p class=notes ><?php echo $notes ?></p>
+    <?php endif; ?>
+
     <table id=jlq-score-table >
       <tr><th>Stumbling block</th> <th>Questions</th> <th>Scores</th></tr>
 
@@ -159,7 +171,8 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     return $score;
   }
 
-  protected function print_spider_javascript($the_scores) {
+
+  protected function print_spider_javascript($the_scores, $is_personal = TRUE) {
     # http://bl.ocks.org/nbremer/6506614#RadarChart.js
 
     $num_scores = count($the_scores);
@@ -175,15 +188,20 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     if ($divisor <= 0) {
       $divisor = 1;
     }
+    if ($this->chart_intervals <= 0) {
+      $this->chart_intervals = 6;
+    }
     $meta = json_encode(array(
       'divisor' => $divisor,
       'max_score' => $max_score,
       'offset' => $this->offset,
       'format' => $format,
+      'font_size' => $this->font_size,
+      'intervals' => $this->chart_intervals,
     ));
 
     ?>
-/*jslint devel: true, vars: true, white: true, indent: 2 */
+/*jslint devel: true, vars: true, white:true, unparam:true, indent:2 */
 /*global jQuery:false, window:false, d3:false, RadarChart:false */
 
 jQuery(function ($) {
@@ -198,8 +216,8 @@ jQuery(function ($) {
 
   $(".jl-chart-loading").hide();
 
-  var w = <?php echo $this->chart_size ?>,
-	h = <?php echo $this->chart_size ?>;
+  var width = <?php echo $this->chart_size ?>,
+	height = <?php echo $this->chart_size ?>;
 
 var colorscale = d3.scale.category10();
 
@@ -215,16 +233,17 @@ var LegendOptions = [
 <?php endforeach; ?>
 ];
 
-//Data
-var d = [
+//Data (Was: "var d..")
+var chart_data = [
 <?php foreach ($the_scores as $j => $score): ?>
 <?php
     $sb_limit = count($score->stumbling_blocks);
     $sb_count = 0;
+    $debug = $this->debug;
 ?>
 		[
     <?php foreach ($score->stumbling_blocks as $sb_id => $sb): ?>
-		{axis: "<?php echo $sb['sb'] .' (SB:'. $sb_id .')' ?>", value: <?php
+		{axis: "<?php echo $sb['sb'] . ($debug ? " (SB:$sb_id)" :'') ?>", value: <?php
 		    echo $sb['score'] / $divisor ?> }<?php $sb_count++; echo $sb_count < $sb_limit ? ',':''; ?>
 
     <?php endforeach; ?>
@@ -235,17 +254,18 @@ var d = [
 
 //Options for the Radar chart, other than default
 var mycfg = {
-  w: w,
-  h: h,
+  w: width,
+  h: height,
   maxValue: <?php echo $max_score //0.6 ?>,
   format: '<?php echo $format ?>',
-  levels: 6,
+  levels: <?php echo $this->chart_intervals ?>,
+  fontSize: <?php echo $this->font_size ?>,  //Was: 10 (10px)
   ExtraWidthX: 300
 };
 
 //Call function to draw the Radar chart
 //Will expect that data is in %'s
-RadarChart.draw("#jlq-score-chart", d, mycfg);
+RadarChart.draw("#jlq-score-chart", chart_data, mycfg);
 
 ////////////////////////////////////////////
 /////////// Initiate legend ////////////////
@@ -254,35 +274,36 @@ RadarChart.draw("#jlq-score-chart", d, mycfg);
 var svg = d3.select('#jlq-score-body')
 	.selectAll('svg')
 	.append('svg')
-	.attr("width", w+300)
-	.attr("height", h)
-
+	.attr("width", width + 300)
+	.attr("height", height)
+	;
 //Create the title for the legend
 var text = svg.append("text")
 	.attr("class", "title")
-	.attr('transform', 'translate(90,0)')
-	.attr("x", w - 70)
-	.attr("y", 10)
-	.attr("font-size", "12px")
+	.attr('transform', 'translate(130,0)')  //Was: (90,0)
+	.attr("x", width - 70)
+	.attr("y", 10)  //10
+	.attr("font-size", (<?php echo $this->font_size ?> + 2) + "px")  //Was: 12px
 	.attr("fill", "#404040")
-	.text("<?php echo __('Students who completed the quiz', self::LOC_DOMAIN) ?>");
+	.text("<?php echo $is_personal ? __('Your latest quiz attempt', self::LOC_DOMAIN) :
+		sprintf(__('%s students completed the quiz', self::LOC_DOMAIN), $num_scores) ?>");
 
 //Initiate Legend
 var legend = svg.append("g")
 	.attr("class", "legend")
 	.attr("height", 100)
 	.attr("width", 200)
-	.attr('transform', 'translate(90,20)')
+	.attr('transform', 'translate(130,<?php echo $this->font_size + 10 ?>)')  //Was: (90,20)
 	;
 	//Create colour squares
 	legend.selectAll('rect')
 	  .data(LegendOptions)
 	  .enter()
 	  .append("rect")
-	  .attr("x", w - 65)
+	  .attr("x", width - 65)
 	  .attr("y", function(d, i){ return i * 20;})
 	  .attr("width", 10)
-	  .attr("height", 10)
+	  .attr("height", <?php echo $this->font_size ?>)
 	  .style("fill", function(d, i){ return colorscale(i);})
 	  ;
 	//Create text next to squares
@@ -290,9 +311,9 @@ var legend = svg.append("g")
 	  .data(LegendOptions)
 	  .enter()
 	  .append("text")
-	  .attr("x", w - 52)
+	  .attr("x", width - 52)
 	  .attr("y", function(d, i){ return i * 20 + 9;})
-	  .attr("font-size", "11px")
+	  .attr("font-size", (<?php echo $this->font_size ?> + 1) + "px")  //Was: 11px
 	  .attr("fill", "#737373")
 	  .text(function(d) { return d; })
 	  ;
@@ -305,11 +326,14 @@ var legend = svg.append("g")
 
 
   protected function print_utility_javascripts($score) {
-    ?>
+    $sc = is_array($score) ? $score[0] : $score;
+
+    if ($this->debug): ?>
     <script>
     var JLQ_score_data = <?php echo json_encode($score) ?>;
     window.console && console.log(">> Score data:", JLQ_score_data);
     </script>
+    <?php endif; ?>
 
     <script>
     jQuery(function ($) {
@@ -318,6 +342,9 @@ var legend = svg.append("g")
         $meta.toggle();
       });
       $meta.hide();
+
+      $("title").html( $("title").html().replace(/Page \d+/, <?php
+          echo json_encode("$sc->quiz_name [Quiz ID: $sc->quiz_id]") ?>) );
     });
     </script>
 
