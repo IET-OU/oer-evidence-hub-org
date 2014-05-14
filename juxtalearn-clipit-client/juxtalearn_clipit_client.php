@@ -63,7 +63,7 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
       'prop_value_array' => array(
         'name' => $quiz->name,
         'description' => $quiz_data->info->main,
-        'quiz_question_array' = array(),
+        'quiz_question_array' => array(),
         'public' => TRUE,   //?
         'tricky_topic' => NULL,
         'url' => site_url(sprintf( self::QUIZ_URL, $quiz_id )),
