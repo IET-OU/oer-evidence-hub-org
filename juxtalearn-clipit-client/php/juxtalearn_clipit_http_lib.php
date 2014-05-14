@@ -76,6 +76,7 @@ class JuxtaLearn_ClipIt_HTTP_Lib {
     echo "$resp->http_method $resp->url \nHTTP status: $resp->http_code".PHP_EOL;
     if ($resp->success) {
       print_r( $resp->obj );
+      print_r( $this->messages );
     } else {
       echo 'ERROR: '. $resp->curl_error;
     }
@@ -167,8 +168,11 @@ class JuxtaLearn_ClipIt_HTTP_Lib {
   protected function debug( $text ) {
     return $this->message( $text, 'debug' );
   }
+
   protected function message( $text, $type = 'ok' ) {
-    $this->messages[] = array( 'type' => $type, 'msg' => $text );
+    $message_r = array( 'type' => $type, 'msg' => $text );
+    $this->messages[] = $message_r;
+    @header('X-Jxl-Clipit-Msg'. count($this->messages) .': '. json_encode($message_r));
   }
 
   protected function _get( $key, $default = NULL ) {

@@ -61,6 +61,7 @@ define( 'JXL_CLIPIT_BASE_URL', 'http://clipit.juxtalearn.net/clipit_apionly' );
 //define( 'JXL_CLIPIT_BASE_URL', 'http://jxl1.escet.urjc.es/clipit_dev' );
 define( 'JXL_CLIPIT_LOGIN', NULL );
 define( 'JXL_CLIPIT_PASSWORD', NULL );
+//define( 'JXL_CLIPIT_WP_SET_AUTH_COOKIE', TRUE );
 # Legacy.
 #define('JXL_CLIPIT_API_URL', 'http://jxl1.escet.urjc.es/clipit_dev/services/api/rest/%s/');
 

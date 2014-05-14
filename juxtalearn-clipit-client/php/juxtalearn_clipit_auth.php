@@ -13,6 +13,13 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_HTTP_Lib {
   // Cookie authentication object.
   private $auth;
 
+  // Map: ClipIt roles => WordPress roles.
+  // wp_juxtalearn_hub.php : init() : $wp_roles
+  protected static $roles_map = array(
+    'student' => 'subscriber',
+    'teacher' => 'editor',
+  );
+
 
   public function __construct() {
     parent::__construct();
@@ -56,25 +63,44 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_HTTP_Lib {
       if ($this->auth->is_authenticated()) {
         $this->auth_token = $this->auth->get_api_token();
         $user_name = $this->auth->get_user_login();
+        $user_role = $this->auth->get_property( 'user_role' );
+        $user_role = isset(self::$roles_map[$user_role]) ? self::$roles_map[$user_role] : NULL;
 
         $user_email = $user_name . '+VIA+ClipIt@juxtalearn.net';
 
-        // WordPress.
-        $user_id = username_exists( $login );
+        // WordPress, http://codex.wordpress.org/Function_Reference/wp_create_user
+        $user_id = username_exists( $user_name );
         if ( !$user_id and email_exists($user_email) == false ) {
           $random_password = wp_generate_password( $length=12, $include_special_chars=false );
           $result = wp_create_user( $user_name, $random_password, $user_email );
-          if (is_wp_error( $result )) {  //is_numeric( $user_id )) {
+          if (is_wp_error( $result )) {
             $this->error( 'ClipIt authentication: error, '. $result->get_error_message() );
-          } else {
-            // OK. TODO: Switch user?
-            $this->message( 'ClipIt authentication: user created, '. $user_name );
+
+            return FALSE;
           }
+          // OK.
+          $user_id = $result;
+
+          if ($user_role) {
+            $up_result = wp_update_user(array( 'ID' => $user_id, 'role' => $user_role ));
+          }
+          $this->message( 'ClipIt authentication: user created, '. $user_name );
         } else {
           $this->message( 'ClipIt authentication: user already exists, '. $user_name );
         }
+        // TODO: Switch user?
+
+        if (defined( 'JXL_CLIPIT_WP_SET_AUTH_COOKIE' )) {
+          wp_clear_auth_cookie();
+          wp_set_auth_cookie( $user_id );
+
+          header('X-Jxl-Clipit-Auth: set-cookie, user_id=' . $user_id);
+        } else {
+          header('X-Jxl-Clipit-Auth: no-cookie, user_id=' . $user_id);
+        }
       } else {
         //ERROR, maybe
+        $this->debug( 'ClipIt authentication: not authenticated.' );
       }
     }
   }
