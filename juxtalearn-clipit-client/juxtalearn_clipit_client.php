@@ -40,10 +40,82 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
     parent::__construct();
 
     add_action( 'save_post', array(&$this, 'save_post_to_clipit') );
-    #add_action( 'slickquiz_save_quiz', array(&$this, 'ajax_save_quiz') );
+    add_action( 'slickquiz_save_quiz', array(&$this, 'save_quiz_to_clipit') );
     #add_action( 'wp_ajax_export_quiz', array(&$this, 'ajax_save_quiz') );
 
     add_action( 'wp_ajax_clipit_props', array(&$this, 'clipit_properties_test') );
+  }
+
+
+  public function save_quiz_to_clipit( $quiz, $sub_action = 'create_draft' ) {
+    $quiz_id = $quiz->id;
+
+    if (!$quiz->hasBeenPublished) return;
+
+    $scaffold = $this->quiz_get_scaffold( $quiz_id );
+
+    $clipit_id = $scaffold && $scaffold->clipit_id > 0 ? $scaffold->clipit_id : NULL;
+
+    if (!$scaffold || !$scaffold->tricky_topic_id) return;
+
+    $this->debug( __FUNCTION__ .'; clipit ID: '. $clipit_id );
+
+    if ($clipit_id) {
+      $clipit_method = 'quiz.set_properties';
+    } else {
+      $clipit_method = 'quiz.create';
+    }
+
+    $questions = $this->request_quiz_questions( $clipit_id );
+
+    $quiz_data = json_decode( $quiz->publishedJson );
+
+    $quiz_resp = $this->api_request( $clipit_method, array(
+      'id' => $clipit_id,
+      'prop_value_array' => array(
+        'name' => $quiz->name,
+        'description' => $quiz_data->info->main,
+        'url' => NULL,
+      ),
+    ));
+
+    if ($quiz_resp->success) {
+      $clipit_id = $response->obj->result;
+      $result = $this->quiz_set_clipit_id( $quiz_id, $clipit_id );
+
+      /*$qq_resp = $this->api_request( 'quiz.set_quiz_questions', array(
+        'id' => $clipit_id,
+        'quiz_question_array' = array(),
+      ));
+      */
+
+      $this->debug( "OK, $clipit_method | $clipit_id" );
+    } else {
+      $this->error( "Error, $clipit_method" );
+    }
+    $this->debug_request_count();
+  }
+
+  protected function request_quiz_questions( $clipit_id ) {
+    $question_ids = $questions = array();
+    if ($clipit_id) {
+      $qq_resp = $this->api_request( 'quiz.get_questions', array( 'id' => $clipit_id ));
+      $question_ids = $qq_resp->success ? $qq_resp->obj->result : $question_ids;
+
+      if (count($question_ids) > 0) {
+        //Was: 'quiz.question.get_by_id'
+        $question_resp = $this->api_request( 'quiz_question.get_by_id', array(
+          'id_array' => $question_ids
+        ));
+        if ($question_resp->success) {
+          $question_data = $question_resp->obj->result;
+
+          //TODO: create questions that don't exist; add tags..
+
+        }
+      }
+    }
+    return $questions;
   }
 
   /** WordPress action to create or update an object in ClipIt.
@@ -52,11 +124,14 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
   public function save_post_to_clipit( $post_id ) {
     $post_type = get_post_type( $post_id );
 
+    if ('publish' != get_post_status( $post_id )) return;
+
     // Is the post one of the Tricky Topic tool types? No, then return.
-    #if (!preg_match( self::RE_POST_TYPES, $post_type )) return;
     if (!array_key_exists( $post_type, self::$types_map )) return;
 
     $clipit_id = get_post_meta( $post_id, self::META_CLIPIT );
+
+    $this->debug( __FUNCTION__ .'; clipit ID: '. $clipit_id );
 
     $clipit_type = strtolower(str_replace('Clipit', '', self::$types_map[ $post_type ]));
     $clipit_method = $clipit_type .'.';
@@ -75,13 +150,14 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
 
     // OK? Save the ClipIt ID locally.
     if ($response->success) {
-      $this->debug( ">> OK, $clipit_method | $clipit_id" );
-
       $clipit_id = $response->obj->result;
       $meta_id = update_post_meta( $post_id, self::META_CLIPIT, $clipit_id );
+
+      $this->debug( "OK, $response->http_code: $clipit_method | $clipit_id" );
     } else {
-      $this->error( ">> Error, $clipit_method" );
+      $this->error( "Error, $response->http_code: $clipit_method" );
     }
+    $this->debug_request_count();
   }
 
   /** TEST.
@@ -95,67 +171,6 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
     }
     $props = $this->get_post_properties( $post_id );
     var_dump( $props );
-  }
-
-  /** Prepare ClipIt request properties, based on WP post data.
-  * @param int $post_id
-  * @return array
-  */
-  protected function get_post_properties( $post_id ) {
-    // WordPress post.
-    $post = get_post( $post_id );
-    $meta_data = $this->get_posts_meta( $post_id );
-    $tax_terms = wp_get_object_terms( $post_id, array() );
-    $stumbling_blocks = wp_get_object_terms( $post_id, array( 'juxtalearn_hub_sb' ));
-
-    $clipit_tags = $this->create_update_tags( $stumbling_blocks );
-
-    $properties = array(
-        'name' => $post->post_title,
-        'description' => $post->post_content,
-        'url' => get_permalink( $post_id ),  #.'#!ttt_post_id='. $post_id,
-        'tag_array' => $clipit_tags[ 'tags' ],
-        #'_ttt_tags_about_' => $clipit_tags[ 'about' ],
-        #'_ttt_type_' => $post->post_type,
-        #'_ttt_post_id_' => $post->ID,
-    );
-
-    $problem_tax = array();
-    foreach ($meta_data as $meta) {
-      switch ($meta->meta_key) {
-        case 'juxtalearn_hub_link':
-          $properties[ 'resource_url' ] = $meta->meta_value ? $meta->meta_value : NULL;
-          break;
-        case 'juxtalearn_hub_trickytopic_id':
-          $properties[ 'tricky_topic' ] =
-              get_post_meta( $meta->meta_value, self::META_CLIPIT, $single=true );
-          break;
-        case 'juxtalearn_hub_location_id': //TODO: Not used.
-        default:
-          break;
-      }
-      if (preg_match('@juxtalearn_hub_((bel|esn|pre|term)\d+)@', $meta->meta_key, $m)) {
-        $problem_tax[] = 'jxl_hub_' . $m[ 1 ];
-      }
-    }
-    #$properties[ '_ttt_problem_tax_' ] = $problem_tax;
-
-    // Process taxonomy terms, like 'subject' and country.
-    foreach ($tax_terms as $tag) {
-      switch ($tag->taxonomy) {
-        case 'juxtalearn_hub_subject':
-          $properties[ 'subject' ] = $tag->name;
-        break;
-        case 'juxtalearn_hub_country':
-          $properties[ 'country' ] = $tag->slug;  //ISO: 'gb', etc.
-          break;
-        case 'juxtalearn_hub_education_level': //TODO: Not used.
-          #$properties[ 'education_level' ] = $tag->name;
-          break;
-      }
-    }
-
-    return $properties;
   }
 
   /** Search for Stumbling Block tags and create those that don't exist - in ClipIt.
@@ -196,19 +211,6 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
     }
 
     return array( 'tags' => $clipit_tags, 'about' => $about_tags );
-  }
-
-  /**
-  * Source: .../juxtalearn_quiz_model.php
-  */
-  protected function get_posts_meta( $post_id, $like = 'juxtalearn_hub_%' ) {
-    global $wpdb;
-    $post_ids = array( $post_id );
-
-    return $wpdb->get_results( "SELECT * FROM $wpdb->postmeta
-      WHERE post_id IN (". implode(',', $post_ids) .")
-      AND meta_key LIKE '$like'
-      GROUP BY meta_key" );
   }
 
 }

@@ -10,9 +10,10 @@
  * Twitter app.:   Twitter caster;
  */
 require_once 'http.php';
+require_once 'juxtalearn_clipit_model.php';
 
 
-class JuxtaLearn_ClipIt_HTTP_Lib {
+class JuxtaLearn_ClipIt_HTTP_Lib extends JuxtaLearn_ClipIt_Model {
 
   const LOC_DOMAIN = JuxtaLearn_ClipIt_Client::LOC_DOMAIN;
   const CLIPIT_TIMEOUT = 1000000;
@@ -22,6 +23,7 @@ class JuxtaLearn_ClipIt_HTTP_Lib {
   // ClipIt API token.
   private $auth_token;
   protected $messages = array();
+  protected $request_count = 0;
 
 
   public function __construct() {
@@ -73,6 +75,7 @@ class JuxtaLearn_ClipIt_HTTP_Lib {
     $resp = $this->api_request( $api_method, $input );
     $resp->obj->http_code = $resp->http_code;
     $resp->obj->url = $resp->url;
+    $this->debug_request_count();
     echo "$resp->http_method $resp->url \nHTTP status: $resp->http_code".PHP_EOL;
     if ($resp->success) {
       print_r( $resp->obj );
@@ -110,6 +113,8 @@ class JuxtaLearn_ClipIt_HTTP_Lib {
 
 
   protected function do_request( $api_method, $input ) {
+    $this->request_count++;
+
     $is_get = preg_match( '/\.(get_|api_list)/', $api_method );
 
     $this->debug( 'API request: '. $api_method );
@@ -140,7 +145,7 @@ class JuxtaLearn_ClipIt_HTTP_Lib {
       $resp->obj = json_decode($resp->data);
 
       if (0 === $resp->obj->status) {
-        $this->message( 'ClipIt API: OK, '. $url );
+        $this->debug( "ClipIt API: OK, $resp->http_code: $url" );
       } else {
         $resp->success = FALSE;
         $resp->curl_errno = $resp->obj->status;
@@ -168,11 +173,14 @@ class JuxtaLearn_ClipIt_HTTP_Lib {
   protected function debug( $text ) {
     return $this->message( $text, 'debug' );
   }
+  protected function debug_request_count() {
+    return $this->debug( 'ClipIt API, request count: '. $this->request_count );
+  }
 
   protected function message( $text, $type = 'ok' ) {
     $message_r = array( 'type' => $type, 'msg' => $text );
     $this->messages[] = $message_r;
-    @header('X-Jxl-Clipit-Msg'. count($this->messages) .': '. json_encode($message_r));
+    @header('X-Jxl-Clipit-Msg-'. count($this->messages) .': '. json_encode($message_r));
   }
 
   protected function _get( $key, $default = NULL ) {
