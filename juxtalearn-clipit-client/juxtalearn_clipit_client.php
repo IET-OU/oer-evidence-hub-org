@@ -54,7 +54,7 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
       $clipit_method = 'quiz.create';
     }
 
-    $questions = $this->request_quiz_questions( $clipit_id );
+    $questions = $this->request_quiz_questions( $clipit_id, $scaffold );
 
     $quiz_data = json_decode( $quiz->publishedJson );
 
@@ -63,7 +63,7 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
       'prop_value_array' => array(
         'name' => $quiz->name,
         'description' => $quiz_data->info->main,
-        'quiz_question_array' => array(),
+        'quiz_question_array' => $questions,
         'public' => TRUE,   //?
         'tricky_topic' => NULL,
         'url' => site_url(sprintf( self::QUIZ_URL, $quiz_id )),
@@ -89,10 +89,10 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
     $this->debug_request_count();
   }
 
-  protected function request_quiz_questions( $clipit_id ) {
+  protected function request_quiz_questions( $clipit_id, $scaffold ) {
     $question_ids = $questions = array();
     if ($clipit_id) {
-      $qq_resp = $this->api_request( 'quiz.get_questions', array( 'id' => $clipit_id ));
+      $qq_resp = $this->api_request('quiz.get_quiz_questions', array('id' => $clipit_id));
       $question_ids = $qq_resp->success ? $qq_resp->obj->result : $question_ids;
 
       if (count($question_ids) > 0) {
