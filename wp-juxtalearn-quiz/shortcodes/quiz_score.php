@@ -22,7 +22,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
   protected $divisor;
   protected $chart_size; //pixels
   protected $chart_intervals;
-  protected $font_size = 12;  //Was: 10 (10px)
+  protected $font_size = 11;  //Was: 10 (10px); 12;
   protected $debug = FALSE;
 
 
@@ -282,7 +282,7 @@ var text = svg.append("text")
 	.attr("class", "title")
 	.attr('transform', 'translate(130,0)')  //Was: (90,0)
 	.attr("x", width - 70)
-	.attr("y", 10)
+	.attr("y", 10)  //10
 	.attr("font-size", (<?php echo $this->font_size ?> + 2) + "px")  //Was: 12px
 	.attr("fill", "#404040")
 	.text("<?php echo $is_personal ? __('Your latest quiz attempt', self::LOC_DOMAIN) :
@@ -293,7 +293,7 @@ var legend = svg.append("g")
 	.attr("class", "legend")
 	.attr("height", 100)
 	.attr("width", 200)
-	.attr('transform', 'translate(130,20)')  //Was: (90,20)
+	.attr('transform', 'translate(130,<?php echo $this->font_size + 10 ?>)')  //Was: (90,20)
 	;
 	//Create colour squares
 	legend.selectAll('rect')
@@ -303,7 +303,7 @@ var legend = svg.append("g")
 	  .attr("x", width - 65)
 	  .attr("y", function(d, i){ return i * 20;})
 	  .attr("width", 10)
-	  .attr("height", 10)
+	  .attr("height", <?php echo $this->font_size ?>)
 	  .style("fill", function(d, i){ return colorscale(i);})
 	  ;
 	//Create text next to squares
