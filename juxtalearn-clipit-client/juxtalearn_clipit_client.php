@@ -29,24 +29,50 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
 
     add_action( 'save_post', array(&$this, 'save_post_to_clipit') );
     add_action( 'slickquiz_save_quiz', array(&$this, 'save_quiz_to_clipit') );
-    #add_action( 'wp_ajax_export_quiz', array(&$this, 'ajax_save_quiz') );
+    add_action( 'juxtalearn_quiz_save_score', array(&$this, 'save_score_to_clipit') );
 
-    add_action( 'wp_ajax_clipit_props', array(&$this, 'clipit_properties_test') );
+    add_action( 'wp_ajax_clipit_props_test', array(&$this, 'clipit_properties_test') );
+    add_action( 'wp_ajax_clipit_quiz_test', array(&$this, 'clipit_quiz_test') );
   }
 
 
-  public function save_quiz_to_clipit( $quiz, $sub_action = 'create_draft' ) {
-    $quiz_id = $quiz->id;
+  public function save_score_to_clipit( $data ) {
+    $quiz_id = $data->score->quiz_id;
+    $score_id = $data->score_id;
+    $quiz_responses = $data->score->responses;
 
-    if (!$quiz->hasBeenPublished) return;
+    $this->debug( __FUNCTION__ .'. TODO: incomplete!!. Quiz ID: '. $quiz_id );
 
     $scaffold = $this->quiz_get_scaffold( $quiz_id );
 
     $clipit_id = $scaffold && $scaffold->clipit_id > 0 ? $scaffold->clipit_id : NULL;
 
-    if (!$scaffold || !$scaffold->tricky_topic_id) return;
+    if (!$scaffold || !$scaffold->tricky_topic_id) {
+      $this->debug( 'Not pushing Score to ClipIt: no linked Tricky Topic. Quiz ID: '. $quiz_id );
+      return;
+    }
+    /* -- TODO: -- */
+  }
 
-    $this->debug( __FUNCTION__ .'; clipit ID: '. $clipit_id );
+
+  public function save_quiz_to_clipit( $quiz, $sub_action = 'create_draft' ) {
+    $quiz_id = is_object( $quiz ) ? $quiz->id : intval( $quiz );
+
+    // Get the most up-to-date Quiz data.
+    #$scaffold = $this->quiz_get_scaffold( $quiz_id );
+    $quiz = $this->get_quiz( $quiz_id );
+
+    if (!$quiz->hasBeenPublished) {
+      $this->debug( 'Not pushing Quiz to ClipIt: not published. Quiz ID: '. $quiz_id );
+      return;
+    }
+
+    $clipit_id = $quiz && $quiz->clipit_id > 0 ? $quiz->clipit_id : NULL;
+    if (!$quiz || !$quiz->tricky_topic_id) {
+      $this->debug( 'Not pushing Quiz to ClipIt: no linked Tricky Topic. Quiz ID: '. $quiz_id );
+      return;
+    }
+    $this->debug( __FUNCTION__ .". Sub-action: $sub_action. Clipit ID: $clipit_id. Quiz ID: $quiz_id" );
 
     if ($clipit_id) {
       $clipit_method = 'quiz.set_properties';
@@ -54,9 +80,9 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
       $clipit_method = 'quiz.create';
     }
 
-    $questions = $this->request_quiz_questions( $clipit_id, $scaffold );
+    $questions = $this->request_quiz_questions( $clipit_id, $quiz );
 
-    $quiz_data = json_decode( $quiz->publishedJson );
+    $quiz_data = $quiz->published_data;
 
     $quiz_resp = $this->api_request( $clipit_method, array(
       'id' => $clipit_id,
@@ -117,14 +143,20 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
   public function save_post_to_clipit( $post_id ) {
     $post_type = get_post_type( $post_id );
 
-    if ('publish' != get_post_status( $post_id )) return;
+    if ('publish' != get_post_status( $post_id )) {
+      $this->debug( 'Not pushing post to ClipIt: not published. Post ID: '. $post_id );
+      return;
+    }
 
     // Is the post one of the Tricky Topic tool types? No, then return.
-    if (!array_key_exists( $post_type, self::$types_map )) return;
+    if (!array_key_exists( $post_type, self::$types_map )) {
+      $this->debug( 'Not pushing Post to ClipIt: not a JxL object. Post ID: '. $post_id );
+      return;
+    }
 
-    $clipit_id = get_post_meta( $post_id, self::META_CLIPIT, $single = TRUE );
+    $clipit_id = $this->post_get_clipit_id( $post_id );
 
-    $this->debug( __FUNCTION__ .'; clipit ID: '. $clipit_id );
+    $this->debug( __FUNCTION__ .'. Clipit ID: '. $clipit_id );
 
     $clipit_type = strtolower(str_replace('Clipit', '', self::$types_map[ $post_type ]));
     $clipit_method = $clipit_type .'.';
@@ -144,7 +176,7 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
     // OK? Save the ClipIt ID locally.
     if ($response->success) {
       $clipit_id = $response->obj->result;
-      $meta_id = update_post_meta( $post_id, self::META_CLIPIT, $clipit_id );
+      $meta_id = $this->post_set_clipit_id( $post_id, $clipit_id );
 
       $this->debug( "OK, $response->http_code: $clipit_method | $clipit_id" );
     } else {
@@ -165,6 +197,17 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
     $props = $this->get_post_properties( $post_id );
     var_dump( $props );
   }
+
+  public function clipit_quiz_test() {
+    $this->ajax_authenticate();
+
+    $quiz_id = intval($this->_get( 'id', 2 ));
+    //$result = $this->get_quiz( $quiz_id );
+    $result = $this->save_quiz_to_clipit( $quiz_id );
+    print_r( $result );
+    print_r( $this->get_messages() );
+  }
+
 
   /** Search for Stumbling Block tags and create those that don't exist - in ClipIt.
   * @param  array $wp_tags  Array of WP tag/ tag IDs.

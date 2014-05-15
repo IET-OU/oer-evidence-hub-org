@@ -1,9 +1,9 @@
 <?php
 /**
- * Clip-It API client library for JuxtaLearn.
+ * Clip-It API HTTP client library for JuxtaLearn.
  *
  * @author Nick Freear, 13 March, 2 May 2014.
- * @copyright 2014 The Open University.
+ * @copyright 2014 The Open University (IET).
  *
  * Chrome add-on:  Postman API client;
  * Chrome add-on:  XML Viewer;
@@ -40,9 +40,10 @@ class JuxtaLearn_ClipIt_HTTP_Lib extends JuxtaLearn_ClipIt_Model {
 
 
   public function admin_notices() {
-    foreach ($this->messages as $msg):
+    foreach ($this->get_messages() as $msg):
+        $classes = ' '. $msg['type'] . ('debug' == $msg['type'] ? 'warn update-nag': 'updated');
         ?>
-    <div class="clipit-msg <?php echo $msg['type'] ?>"><p><?php echo $msg['msg'] ?></div>
+    <div class="message clipit-msg <?php echo $classes ?>"><p><?php echo $msg['msg'] ?></div>
     <?php
     endforeach;
   }
@@ -79,7 +80,7 @@ class JuxtaLearn_ClipIt_HTTP_Lib extends JuxtaLearn_ClipIt_Model {
     echo "$resp->http_method $resp->url \nHTTP status: $resp->http_code".PHP_EOL;
     if ($resp->success) {
       print_r( $resp->obj );
-      print_r( $this->messages );
+      print_r( $this->get_messages() );
     } else {
       echo 'ERROR: '. $resp->curl_error;
     }
@@ -181,6 +182,9 @@ class JuxtaLearn_ClipIt_HTTP_Lib extends JuxtaLearn_ClipIt_Model {
     $message_r = array( 'type' => $type, 'msg' => $text );
     $this->messages[] = $message_r;
     @header('X-Jxl-Clipit-Msg-'. count($this->messages) .': '. json_encode($message_r));
+  }
+  protected function get_messages() {
+    return $this->messages;
   }
 
   protected function _get( $key, $default = NULL ) {

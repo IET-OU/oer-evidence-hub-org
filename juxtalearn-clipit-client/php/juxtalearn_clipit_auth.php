@@ -2,7 +2,7 @@
 /**
  * WordPress wrapper around JuxtaLearn Cookie Authentication.
  *
- * @copyright 2014 The Open University.
+ * @copyright 2014 The Open University (IET).
  */
 require_once 'juxtalearn_clipit_http_lib.php';
 require_once 'juxtalearn-cookie-authentication/juxtalearn_cookie_authentication.php';
@@ -18,6 +18,7 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_HTTP_Lib {
   protected static $roles_map = array(
     'student' => 'subscriber',
     'teacher' => 'editor',
+    'admin'   => 'editor',
   );
 
 
@@ -100,7 +101,7 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_HTTP_Lib {
         }
       } else {
         //ERROR, maybe
-        $this->debug( 'ClipIt authentication: not authenticated.' );
+        $this->debug( 'ClipIt authentication: no cookie auth. (OK, falls back to API)' );
       }
     }
   }

@@ -2,9 +2,9 @@
 /**
  * Generic HTTP library.
  * (Clip-It API client library for JuxtaLearn.)
- * NDF, 13 March 2014.
  *
- * @copyright 2014 The Open University.
+ * @author Nick Freear, 13 March 2014.
+ * @copyright 2014 The Open University (IET).
  */
 
 /**WAS: Dummy CodeIgniter object. */

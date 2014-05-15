@@ -2,6 +2,8 @@
 /**
  * Database and API models for JuxtaLearn Quiz plugin.
  *
+ * NOTE: public methods are used in JuxtaLearn ClipIt Client plugin.
+ *
  * @copyright 2014 The Open University (IET).
  * @author Nick Freear.
  * @package JuxtaLearn_Quiz
@@ -11,15 +13,21 @@ require_once 'juxtalearn_quiz_create_table.php';
 
 class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
 
+  const SAVE_SCORE_ACTION = 'juxtalearn_quiz_save_score';
+
   const HUB_SB_TAXONOMY = 'juxtalearn_hub_sb';
   const HUB_EDU_TAXONOMY = 'juxtalearn_hub_education_level';
   const HUB_CNY_TAXONOMY = 'juxtalearn_hub_country';
   const HUB_LOC_META = 'juxtalearn_hub_location_id';
 
+  const DB_SQ_QUIZ = 'plugin_slickquiz';
+  const DB_SQ_SCORES = 'plugin_slickquiz_scores';
+
   // Was: 'juxtalearn-quiz-score/'
   const SCORE_URL = 'quiz-score/%d/';
   const QUIZ_URL  = 'juxtalearn-quiz/%d/';
   const TT_URL    = 'trickytopic/%s/';
+
 
   /**
   * save_score()
@@ -51,9 +59,15 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
         $set['createdDate'] = $slickquiz_score->createdDate;
 
         $success = $wpdb->insert( $db_name, $set );
-        if (!$success) {
+        if ($success) {
+          // Bug #8,
+          do_action( self::SAVE_SCORE_ACTION, (object) array(
+              'score' => $data, 'score_id' => $set['score_id'] ));
+        }
+        else {
           $this->error('Failed to submit score');
         }
+
         return array('jlq_score_id' => $wpdb->insert_id,
                 'sq_score_id' => $slickquiz_score->id,
                 'parent_score' => $slickquiz_score);
@@ -82,6 +96,31 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
     protected function get_slickquiz_option($option = 'save_scores') {
       $all = get_option('slick_quiz_options');
       return $option && isset($all[$option]) ? $all[$option] : $all;
+    }
+
+    public function get_quiz( $quiz_id ) {
+      global $wpdb;
+      $db_name = $wpdb->prefix . self::DB_SQ_QUIZ;
+      $join_quiz = $wpdb->prefix . self::DB_SCAFFOLD;
+      $quiz_all = $wpdb->get_row( "SELECT * FROM $db_name
+          JOIN $join_quiz ON $join_quiz.quiz_id = $db_name.id
+          WHERE $db_name.id =". intval($quiz_id) );
+      if ($quiz_all) {
+        $quiz_all->stumbling_blocks_data = json_decode( $quiz_all->stumbling_blocks );
+        $quiz_all->published_data = json_decode( $quiz_all->publishedJson );
+        $quiz_all->working_data = json_decode( $quiz_all->workingJson );
+      }
+      return $quiz_all;
+    }
+
+    public function quiz_get_scaffold( $quiz_id ) {
+      global $wpdb;
+      $db_name = $wpdb->prefix . self::DB_SCAFFOLD;
+      $scaffold = $wpdb->get_row( "SELECT * FROM $db_name WHERE quiz_id = $quiz_id" );
+      if ($scaffold) {
+        $scaffold->stumbling_blocks_data = json_decode( $scaffold->stumbling_blocks );
+      }
+      return $scaffold;
     }
 
     public function get_score($sq_score_id, $offset = 0) {

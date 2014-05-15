@@ -1,14 +1,16 @@
 <?php
 /**
- * Clip-It API model for JuxtaLearn.
+ * Clip-It API database model for JuxtaLearn.
  *
- * @author Nick Freear, 2 May 2014.
- * @copyright 2014 The Open University.
+ * @author Nick Freear (IET), 2 May 2014.
+ * @copyright 2014 The Open University (IET).
  */
 
 class JuxtaLearn_ClipIt_Model {
 
   const META_CLIPIT = 'juxtalearn_clipit_id';
+  const DB_SCAFFOLD = 'juxtalearn_quiz_scaffold';
+  const JXL_QUIZ_MODEL_PATH = '/../../wp-juxtalearn-quiz/php/juxtalearn_quiz_model.php';
 
   const QUIZ_URL  = 'juxtalearn-quiz/%d/';
   const EMBED_URL = 'juxtalearn-quiz/%d/?embed=1';
@@ -26,21 +28,31 @@ class JuxtaLearn_ClipIt_Model {
 
 
   protected function quiz_get_scaffold( $quiz_id ) {
-    global $wpdb;
-    $db_name = $wpdb->prefix . 'juxtalearn_quiz_scaffold';
-    $scaffold = $wpdb->get_row( "SELECT * FROM $db_name WHERE quiz_id = $quiz_id" );
-    if ($scaffold) {
-      $scaffold->stumbling_blocks_data = json_decode( $scaffold->stumbling_blocks );
-    }
-    return $scaffold;
+    require_once __DIR__ . self::JXL_QUIZ_MODEL_PATH;
+    $quiz_model = new JuxtaLearn_Quiz_Model();
+    return $quiz_model->quiz_get_scaffold( $quiz_id );
+  }
+
+  protected function get_quiz( $quiz_id ) {
+    require_once __DIR__ . self::JXL_QUIZ_MODEL_PATH;
+    $quiz_model = new JuxtaLearn_Quiz_Model();
+    return $quiz_model->get_quiz( $quiz_id );
   }
 
   protected function quiz_set_clipit_id( $quiz_id, $clipit_id ) {
     global $wpdb;
-    $db_name = $wpdb->prefix . 'juxtalearn_quiz_scaffold';
+    $db_name = $wpdb->prefix . self::DB_SCAFFOLD;
     return $wpdb->update( $db_name, array(
         'clipit_id' => intval($clipit_id)
       ), array('quiz_id' => intval($quiz_id) ));
+  }
+
+  protected function post_get_clipit_id( $post_id ) {
+    return get_post_meta( $post_id, self::META_CLIPIT, $single = TRUE );
+  }
+
+  protected function post_set_clipit_id( $post_id, $clipit_id ) {
+    return update_post_meta( $post_id, self::META_CLIPIT, $clipit_id );
   }
 
   /** Prepare ClipIt request properties, based on WP post data.
@@ -73,8 +85,7 @@ class JuxtaLearn_ClipIt_Model {
           $properties[ 'resource_url' ] = $meta->meta_value ? $meta->meta_value : NULL;
           break;
         case 'juxtalearn_hub_trickytopic_id':
-          $properties[ 'tricky_topic' ] =
-              get_post_meta( $meta->meta_value, self::META_CLIPIT, $single=true );
+          $properties[ 'tricky_topic' ] = $this->post_get_clipit_id( $meta->meta_value );
           break;
         case 'juxtalearn_hub_location_id': //TODO: Not used.
         default:
