@@ -60,6 +60,7 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_HTTP_Lib {
       }
 
       $result = $this->auth->authenticate();
+      $this->debug( $result );
 
       if ($this->auth->is_authenticated()) {
         $this->auth_token = $this->auth->get_api_token();

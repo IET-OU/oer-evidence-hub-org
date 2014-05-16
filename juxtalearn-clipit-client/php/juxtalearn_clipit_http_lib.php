@@ -41,7 +41,10 @@ class JuxtaLearn_ClipIt_HTTP_Lib extends JuxtaLearn_ClipIt_Model {
 
   public function admin_notices() {
     foreach ($this->get_messages() as $msg):
-        $classes = ' '. $msg['type'] . ('debug' == $msg['type'] ? 'warn update-nag': 'updated');
+      if (!is_string($msg['msg'])) {
+        continue;
+      }
+      $classes = $msg['type'] . ('debug' == $msg['type'] ? ' warn update-nag': ' updated');
         ?>
     <div class="message clipit-msg <?php echo $classes ?>"><p><?php echo $msg['msg'] ?></div>
     <?php
