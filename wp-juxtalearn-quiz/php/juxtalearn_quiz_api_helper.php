@@ -79,6 +79,26 @@ class JuxtaLearn_Quiz_API_Helper {
         site_url('wp-admin/admin-ajax.php'), self::NONCE_ACTION)
     );
   }
+
+
+  /** Utilities.
+  */
+  protected function __error( $text ) {
+    return $this->message( $text, 'error' );
+  }
+  protected function debug( $text ) {
+    return $this->message( $text, 'debug' );
+  }
+
+  protected function message( $text, $type = 'ok' ) {
+    $message_r = array( 'type' => $type, 'msg' => $text );
+    $this->messages[] = $message_r;
+    @header('X-Jxl-Quiz-Msg-'. count($this->messages) .': '. json_encode($message_r));
+  }
+  protected function get_messages() {
+    return $this->messages;
+  }
+
 }
 
 
