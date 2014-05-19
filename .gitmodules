@@ -28,3 +28,6 @@
 [submodule "SlickQuiz-WordPress"]
 	path = SlickQuiz-WordPress
 	url = https://github.com/jewlofthelotus/SlickQuiz-WordPress.git
+[submodule "wp-accessify"]
+	path = wp-accessify
+	url = https://github.com/nfreear/wp-accessify.git
