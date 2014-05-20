@@ -61,10 +61,11 @@ jQuery(function ($) {
 
 
   // Quiz editor - SAVE changes to scaffolding.
-  $('button.publish, .draft, .preview', qEdit).on('click', function (e) {
+  $.fn.setPreSaveQuiz(function () {
+  /*$('button.publish, .draft, .preview', qEdit).on('click', function (e) {
     e.preventDefault();
     loading();
-
+  */
     var trickytopic = $('#jlq-trickytopic option:selected', qEdit),
         stumbles = [];
 
@@ -76,15 +77,17 @@ jQuery(function ($) {
     });
 
     var data = {
-      sub_action:       e.target.value || null, //"Publish", "Save Draft"
+      sub_action:       null, //e.target.value || null, //"Publish", "Save Draft"
       trickytopic_id:   trickytopic.val(),
       trickytopic_name: trickytopic.text(),
       stumbling_blocks: stumbles
     };
-    //log(">> Publish?", trickytopic.text(), stumbles);
+    log(">> Publish?", trickytopic.text(), stumbles);
+
+    return data;  /* = = = = = = = = = = = */
+
 
     //TODO: new quiz race? Quiz ID!
-    //setTimeout(function () {
 
     $.ajax({
       type: 'POST',
@@ -104,9 +107,8 @@ jQuery(function ($) {
     })
     .always(loading_end);
 
-    //}, 800);
 
-    log(">> Saving:", e);
+    //log(">> Saving:", e);
   });
 
   // Get stumbling block tags.

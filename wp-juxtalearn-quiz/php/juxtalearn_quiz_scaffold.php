@@ -20,10 +20,15 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
   public function __construct() {
 
     $AJAX_ACT = 'wp_ajax_juxtalearn_quiz_';
-    add_action($AJAX_ACT . 'edit', array(&$this, 'ajax_post_quiz_edit'));
     add_action($AJAX_ACT . 'stumbling_blocks', array(&$this, 'ajax_get_stumbles'));
     add_action($AJAX_ACT . 'student_problems', array(&$this, 'ajax_get_student_problems'));
     //add_action('admin_init', array(&$this, 'admin_init'));
+
+    if (defined('JXL_QUIZ_LEGACY_SAVE')) {
+      add_action($AJAX_ACT . 'edit', array(&$this, 'ajax_post_quiz_edit'));
+    } else {
+      add_action( 'slickquiz_save_quiz', array(&$this, 'slickquiz_save_quiz') );
+    }
 
     if ($this->is_quiz_admin_page()) {
       add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
@@ -216,7 +221,29 @@ HTML;
     );
   }
 
-  # POST wordpress/wp-admin/admin-ajax.php?action=juxtalearn_quiz_edit&id=1
+
+  public function slickquiz_save_quiz( $quiz, $mode = 'create_draft' ) {
+    $quiz_id = is_object( $quiz ) ? $quiz->id : intval( $quiz );
+
+    $this->debug(__FUNCTION__ . "; Quiz-ID=$quiz_id; mode=$mode");
+
+    $data = $this->check_post_json();
+
+    $extra_data = isset($data->extra) ? $data->extra : NULL;
+    if (!$extra_data) {
+      $this->debug( 'No extra data; Quiz-ID=' . $quiz_id );
+      return;
+    }
+    $this->debug( $extra_data );
+
+    $result = $this->update_scaffold( $quiz_id, $extra_data );  //??
+
+    $this->debug(array( 'quiz_id' => $quiz_id, 'result' => $result ));
+  }
+
+  /** LEGACY.
+  * POST wordpress/wp-admin/admin-ajax.php?action=juxtalearn_quiz_edit&id=1
+  */
   public function ajax_post_quiz_edit() {
     $this->api_init();
 

@@ -25,6 +25,7 @@ sym-links:
 	#cd oer_evidence_hub/
 	ln -sf ../../../wordpress-importer/trunk $(PLUGIN_DIR)/wordpress-importer
 	ln -sf  ../../../wpmail-smtp  $(PLUGIN_DIR)/wpmail-smtp
+	ln -sf  ../../../wp-accessify $(PLUGIN_DIR)/wp-accessify
 	#cd ../themes
 	ln -sf  ../../../tiny-forge/1.5.4.2  wordpress/wp-content/themes/tiny-forge
 	ln -s ../../translations wordpress/wp-content/translations
@@ -53,7 +54,7 @@ install-juxta: install-cmn
 	cp -r SlickQuiz-WordPress  wordpress/wp-content/plugins/slickquiz
 	ln -sf  ../../../custom-functions   $(PLUGIN_DIR)/jxl-custom-functions
 	ln -sf  ../../../wp-juxtalearn-hub  $(PLUGIN_DIR)/wp-juxtalearn-hub
-	ln -sf  ../../../wp-juxtalearn-quiz wordpress/wp-content/plugins/wp-juxtalearn-quiz
+	ln -sf  ../../../wp-juxtalearn-quiz $(PLUGIN_DIR)/wp-juxtalearn-quiz
 
 	# git submodule update --init
 	# git checkout quiz/CR1/scaffold

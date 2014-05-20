@@ -31,3 +31,6 @@
 [submodule "juxtalearn-clipit-client/lib/juxtalearn-cookie-authentication"]
 	path = juxtalearn-clipit-client/lib/juxtalearn-cookie-authentication
 	url = https://github.com/juxtalearn/juxtalearn-cookie-authentication.git
+[submodule "wp-accessify"]
+	path = wp-accessify
+	url = https://github.com/nfreear/wp-accessify.git
