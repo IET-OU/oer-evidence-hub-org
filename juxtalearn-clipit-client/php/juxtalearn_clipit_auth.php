@@ -10,6 +10,8 @@ require_once 'juxtalearn-cookie-authentication/juxtalearn_cookie_authentication.
 
 class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_HTTP_Lib {
 
+  const EXCLUDE_PATH_RE = '@\/wp-login.php@';
+
   // Cookie authentication object.
   private $auth;
 
@@ -27,8 +29,12 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_HTTP_Lib {
 
     add_filter( 'login_message', array(&$this, 'login_message_filter') );
 
-    add_action('init', array(&$this, 'init_authenticate'));
-    add_action('admin_init', array(&$this, 'init_authenticate'));
+    if (preg_match( self::EXCLUDE_PATH_RE, $_SERVER['REQUEST_URI'] )) {
+      $this->debug( 'Cookie auth: exclude login/logout/register pages' );
+    } else {
+      add_action('init', array(&$this, 'init_authenticate'));
+      add_action('admin_init', array(&$this, 'init_authenticate'));
+    }
 
     add_action('wp_ajax_clipit_cookie', array(&$this, 'clipit_cookie_test'));
   }
@@ -63,7 +69,6 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_HTTP_Lib {
       $this->debug( $result );
 
       if ($this->auth->is_authenticated()) {
-        $this->auth_token = $this->auth->get_api_token();
         $user_name = $this->auth->get_user_login();
         $user_role = $this->auth->get_property( 'user_role' );
         $user_role = isset(self::$roles_map[$user_role]) ? self::$roles_map[$user_role] : NULL;
@@ -90,16 +95,9 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_HTTP_Lib {
         } else {
           $this->message( 'ClipIt authentication: user already exists, '. $user_name );
         }
-        // TODO: Switch user?
 
-        if (defined( 'JXL_CLIPIT_WP_SET_AUTH_COOKIE' )) {
-          wp_clear_auth_cookie();
-          wp_set_auth_cookie( $user_id );
+        $this->login_switch_user( $user_id );
 
-          header('X-Jxl-Clipit-Auth: set-cookie, user_id=' . $user_id);
-        } else {
-          header('X-Jxl-Clipit-Auth: no-cookie, user_id=' . $user_id);
-        }
       } else {
         //ERROR, maybe
         $this->debug( 'ClipIt authentication: no cookie auth. (OK, falls back to API)' );
@@ -107,6 +105,19 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_HTTP_Lib {
     }
   }
 
+
+  protected function login_switch_user( $user_id ) {
+    if (defined( 'JXL_CLIPIT_WP_SET_AUTH_COOKIE' )) {
+      wp_clear_auth_cookie();
+      wp_set_auth_cookie( $user_id );
+
+      $this->auth_token = $this->auth->get_api_token();
+
+      header('X-Jxl-Clipit-Auth: set-cookie; user_id=' . $user_id);
+    } else {
+      header('X-Jxl-Clipit-Auth: no-cookie; user_id=' . $user_id);
+    }
+  }
 
   /** TEST.
   * wordpress/wp-admin/admin-ajax.php?action=clipit_cookie
