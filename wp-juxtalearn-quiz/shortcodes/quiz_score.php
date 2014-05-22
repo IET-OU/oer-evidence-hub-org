@@ -17,6 +17,8 @@
 class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
 
   const SHORTCODE = 'quiz_score';
+  const DEF_DIVISOR = 1;   //Was: 'max_score'
+  const DEF_OFFSET  = 0.4; //Was: 1;
 
   protected $offset;
   protected $divisor;
@@ -31,10 +33,10 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
   }
 
   protected function set_score_options() {
-    $this->offset = floatval($this->_get('offset', 1)); //intval()
-    $this->divisor = $this->_get('divisor', 'max_score');
-    $this->chart_size = intval($this->_get('chartsize', 500));
-    $this->chart_intervals = intval($this->_get( 'intervals', 6 ));
+    $this->offset = floatval($this->_get('offset', self::DEF_OFFSET));
+    $this->divisor = $this->_get('divisor', self::DEF_DIVISOR);
+    $this->chart_size = absint($this->_get('chartsize', 500));
+    $this->chart_intervals = absint($this->_get( 'intervals', 6 ));
     $this->debug = (bool) $this->_get( 'debug' );
   }
 
