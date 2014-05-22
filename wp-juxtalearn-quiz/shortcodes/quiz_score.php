@@ -143,12 +143,12 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     <?php endif; ?>
 
     <table id=jlq-score-table >
-      <tr><th>Stumbling block</th> <th>Questions</th> <th>Scores</th></tr>
+      <thead><tr><th>Stumbling block</th> <th>Questions</th> <th>Scores</th></tr></thead>
 
 <?php foreach ($score->stumbling_blocks as $sb_id => $sb): ?>
       <tr><td title="SB <?php echo $sb_id ?>"><?php echo $sb['sb'] ?><i> (SB:<?php echo $sb_id ?>)</i></td>
-        <td><?php echo $sb['qs'] ?></td>
-        <td>
+        <td class=qn ><ul><li><?php echo implode(' <li>', $sb['qs']) ?></ul></td>
+        <td class=sc >
         <?php foreach ($all_scores as $sc):
             $scb = $sc->stumbling_blocks[$sb_id]; ?>
             <em title="<?php echo $sc->user_name ?>"><?php echo $scb['score'] - $offset ?></em>,
