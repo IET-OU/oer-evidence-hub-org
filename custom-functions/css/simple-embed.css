@@ -122,8 +122,8 @@ body .jlq-score-bn { display: none; }
 .simple-embed .jlq-score-bn {
   display: block;
   position: absolute;
-  top: 5px;
-  right: 9px;
+  top: 2px;
+  right: 7px;
 }
 
 #_jlq-score-chart svg { border: 1px solid #ccc; }
