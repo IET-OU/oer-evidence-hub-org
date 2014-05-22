@@ -30,6 +30,7 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_HTTP_Lib {
     add_filter( 'login_message', array(&$this, 'login_message_filter') );
 
     if (preg_match( self::EXCLUDE_PATH_RE, $_SERVER['REQUEST_URI'] )) {
+      // Allow users to login if they need to!!
       $this->debug( 'Cookie auth: exclude login/logout/register pages' );
     } else {
       add_action('init', array(&$this, 'init_authenticate'));
@@ -69,11 +70,12 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_HTTP_Lib {
       $this->debug( $result );
 
       if ($this->auth->is_authenticated()) {
-        $user_name = $this->auth->get_user_login();
-        $user_role = $this->auth->get_property( 'user_role' );
+        $user_name = sanitize_user($this->auth->get_user_login());
+        $user_email= sanitize_email($this->auth->get_property( 'user_mail' ));
+        $user_role = sanitize_text_field($this->auth->get_property( 'user_role' ));
         $user_role = isset(self::$roles_map[$user_role]) ? self::$roles_map[$user_role] : NULL;
 
-        $user_email = $user_name . '+VIA+ClipIt@juxtalearn.net';
+        $_AN_email = $user_name . '+VIA+ClipIt@juxtalearn.net';
 
         // WordPress, http://codex.wordpress.org/Function_Reference/wp_create_user
         $user_id = username_exists( $user_name );
@@ -125,7 +127,7 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_HTTP_Lib {
   public function clipit_cookie_test() {    
     $this->ajax_authenticate();
 
-    require_once 'juxtalearn-cookie-authentication/test.php';
+    require_once 'juxtalearn-cookie-authentication/test/test.php';
     print_r( $_COOKIE );
     exit;
   }

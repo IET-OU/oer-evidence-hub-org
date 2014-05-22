@@ -83,7 +83,9 @@ class JuxtaLearn_ClipIt_HTTP_Lib extends JuxtaLearn_ClipIt_Model {
     echo "$resp->http_method $resp->url \nHTTP status: $resp->http_code".PHP_EOL;
     if ($resp->success) {
       print_r( $resp->obj );
-      print_r( $this->get_messages() );
+      if ($this->_get('debug')) {
+        print_r( $this->get_messages() );
+      }
     } else {
       echo 'ERROR: '. $resp->curl_error;
     }
@@ -150,6 +152,8 @@ class JuxtaLearn_ClipIt_HTTP_Lib extends JuxtaLearn_ClipIt_Model {
 
       if (0 === $resp->obj->status) {
         $this->debug( "ClipIt API: OK, $resp->http_code: $url" );
+
+        $resp->clipit_id = is_int($resp->obj->result) ? $resp->obj->result : NULL;
       } else {
         $resp->success = FALSE;
         $resp->curl_errno = $resp->obj->status;

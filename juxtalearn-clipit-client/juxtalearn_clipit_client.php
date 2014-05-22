@@ -23,6 +23,8 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
 
   const LOC_DOMAIN = 'juxtalearn-clipit-client';
 
+  const CLIPIT_QUESTION_TYPE = 'multiple choice';
+
 
   public function __construct() {
     parent::__construct();
@@ -115,26 +117,88 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
     $this->debug_request_count();
   }
 
-  protected function request_quiz_questions( $clipit_id, $scaffold ) {
+
+  protected function request_quiz_questions( $clipit_id, $quiz ) {
     $question_ids = $questions = array();
     if ($clipit_id) {
+      // Editing a quiz - some questions may exist, some won't.
       $qq_resp = $this->api_request('quiz.get_quiz_questions', array('id' => $clipit_id));
-      $question_ids = $qq_resp->success ? $qq_resp->obj->result : $question_ids;
+      $question_clipit_ids = $qq_resp->success ? $qq_resp->obj->result : $question_ids;
 
-      if (count($question_ids) > 0) {
-        //Was: 'quiz.question.get_by_id'
-        $question_resp = $this->api_request( 'quiz_question.get_by_id', array(
-          'id_array' => $question_ids
+      $questions_to_create = array();
+      foreach ($question_clipit_ids as $qn_clipit_id) {
+        $question_resp = $this->api_request('quiz_question.get_properties', array(
+          'id' => $qn_clipit_id,
+          'prop_array' => array( 'id', 'description', 'name' ),
         ));
         if ($question_resp->success) {
-          $question_data = $question_resp->obj->result;
+          $question_text = $question_resp->obj->result->description;
+          $b_found = false;
+          foreach ($quiz->stumbling_block_data as $idx => $question_sbs) {
+            if ($question_sbs->q == $question_text) {
+              $b_found = TRUE;
+              break;
+            }
+          }
+          if (!$b_found) {
+            //$questions_to_create[ $idx ] = $question_sbs;
+            $questions_to_create[] = $idx;
+          }
+        }
+      }
 
-          //TODO: create questions that don't exist; add tags..
+      //TODO: ...
 
+      /*if (count($question_ids) > 0) {
+        //Was: 'quiz.question.get_by_id'
+        $questions_resp = $this->api_request( 'quiz_question.get_by_id', array(
+          'id_array' => $question_ids
+        ));
+        if ($questions_resp->success) {
+          foreach ($questions_resp->obj->result as $clipit_question) {
+            //TODO: iterate, create questions that don't exist; add tags..
+            $b_found = FALSE;
+            foreach ($quiz->stumbling_block_data as $question_sbs) {
+              if ($question_sbs->q == $clipit_question->description) {
+                $b_found = TRUE;
+                // TODO: Test - a 'clipit ID'?!
+                $questions[ $question_sbs->q ] = $clipit_question->id;
+                break;
+              }
+            }
+            if (!$b_found) {  }
+          }
+        /-/}
+      }*/
+    } else {
+      // Creating a quiz - no questions exist.
+      foreach ($quiz->stumbling_blocks_data as $idx => $question_sbs) {
+        //$qz_data = $quiz->published_data[ $idx ];
+        $question_text = $question_sbs->q;
+        $sb_tag_ids = $question_sbs->s;
+        $clipit_tags = $this->create_update_tags( $sb_tag_ids );
+
+        $clipit_tag_ids = array_values($clipit_tags['tags']);
+
+        $question_resp = $this->api_request('quiz_question.create', array(
+          'prop_value_array' => array(
+            'description' => $question_text,
+            'option_array' => NULL,
+            'option_type' => self::CLIPIT_QUESTION_TYPE,
+            'quiz_result_array' => NULL,
+            'tag_array' => $clipit_tag_ids,
+          ) //'quiz_question.add_tags'
+        ));
+        if ($question_resp->success) {
+          $questions[ $question_text ] = $question_resp->clipit_id;
         }
       }
     }
     return $questions;
+  }
+
+  protected function create_quiz_questions( $questions_tags, $questions ) {
+  
   }
 
   /** WordPress action to create or update an object in ClipIt.
@@ -175,8 +239,8 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
 
     // OK? Save the ClipIt ID locally.
     if ($response->success) {
-      $clipit_id = $response->obj->result;
-      $meta_id = $this->post_set_clipit_id( $post_id, $clipit_id );
+      #$clipit_id = $response->obj->result;
+      $meta_id = $this->post_set_clipit_id( $post_id, $response->clipit_id );
 
       $this->debug( "OK, $response->http_code: $clipit_method | $clipit_id" );
     } else {
@@ -210,12 +274,14 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
 
 
   /** Search for Stumbling Block tags and create those that don't exist - in ClipIt.
-  * @param  array $wp_tags  Array of WP tag/ tag IDs.
+  * @param  array $wp_tags  Array of WP tags or tag IDs.
   * @return array $clipit_tags  Array of ClipIt tag IDs.
   */
   protected function create_update_tags( array $wp_tags ) {
     $clipit_tags = array();
     $about_tags = array();
+
+    //TODO: IF required convert WP tag IDs to tag objects.
 
     foreach ($wp_tags as $tag) {
       $search_rsp = $this->api_request( 'tag.get_from_search', array(
@@ -240,7 +306,7 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
         ),
       ));
       if ($create_rsp->success) {
-        $clipit_tags[] = $create_rsp->obj->result;
+        $clipit_tags[] = $create_rsp->clipit_id; #$create_rsp->obj->result;
         $about_tags[] = array('tag' => $tag->name, 'action' => 'search:not-exist,create');
       }
     }
