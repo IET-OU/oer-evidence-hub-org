@@ -30,7 +30,7 @@ class JuxtaLearn_Quiz_Shortcode_List extends JuxtaLearn_Quiz_Shortcode {
   <?php
     foreach ($quizzes_list as $qz): ?>
       <li><a href="<?php echo $qz->url ?>"><?php echo $qz->name ?></a>
-        <p><?php echo $qz->main_text ?>
+        <div><?php echo $qz->main_text ?></div>
 
   <?php
     endforeach;
@@ -53,11 +53,12 @@ class JuxtaLearn_Quiz_Shortcode_List extends JuxtaLearn_Quiz_Shortcode {
         WHERE hasBeenPublished = 1
         GROUP BY $join_scaffold.quiz_id" );  // Defensive - 'group by'
 
+    #$allow_r = wp_kses_allowed_html( 'post' );
     foreach ($quizzes as $qz) {
       $qz->data = json_decode(
           $qz->hasBeenPublished ? $qz->publishedJson : $qz->workingJson );
       $qz->questions = $qz->data->questions;
-      $qz->main_text = $qz->data->info->main;
+      $qz->main_text = wp_kses_post( $qz->data->info->main );  // WordPress filter.
       $qz->url = site_url(sprintf( self::QUIZ_URL, $qz->quiz_id ));
       $qz->score_url = site_url(sprintf( self::SCORE_URL, $qz->quiz_id ));
     }

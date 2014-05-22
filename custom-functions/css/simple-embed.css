@@ -76,8 +76,8 @@ html body.simple-embed .site {
   font-size: 1.4em;
   margin: .3em 0;
 }
-#jlq-score p, #jlq-score ul {
-  margin: 0 0 1.2em; /*0 0 1.7..rem*/
+#jlq-score p, .entry-content #jlq-score ul {
+  margin: 0 0 1em; /*0 0 1.7..rem*/
 }
 #jlq-score table th {
   font-size: 1.2em;
@@ -89,6 +89,10 @@ html body.simple-embed .site {
 .entry-content #jlq-score td {
   border-top: 1px solid #ddd;
   padding: 3px 10px 3px 0;
+}
+.entry-content #jlq-score td ul {
+  margin: .2em 0;
+  line-height: 1.2em;
 }
 #jlq-score td i { display: none; }
 #jlq-score-meta em {
