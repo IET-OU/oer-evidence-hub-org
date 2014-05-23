@@ -23,8 +23,6 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
 
   const LOC_DOMAIN = 'juxtalearn-clipit-client';
 
-  const CLIPIT_QUESTION_TYPE = 'multiple choice';
-
 
   public function __construct() {
     parent::__construct();
@@ -66,7 +64,7 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
     #$scaffold = $this->quiz_get_scaffold( $quiz_id );
     $quiz = $this->get_quiz( $quiz_id );
 
-    if (!$quiz->hasBeenPublished) {
+    if (!isset($quiz->hasBeenPublished) OR !$quiz->hasBeenPublished) {
       $this->debug( 'Not pushing Quiz to ClipIt: not published. Quiz ID: '. $quiz_id );
       return;
     }
@@ -86,6 +84,8 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
 
     $questions = $this->request_quiz_questions( $clipit_id, $quiz );
 
+    $this->debug( $questions );
+
     $quiz_data = $quiz->published_data;
 
     $quiz_resp = $this->api_request( $clipit_method, array(
@@ -93,7 +93,7 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
       'prop_value_array' => array(
         'name' => $quiz->name,
         'description' => $quiz_data->info->main,
-        'quiz_question_array' => $questions,
+        'quiz_question_array' => array_values( $questions ),
         'public' => TRUE,   //?
         'tricky_topic' => NULL,
         'url' => site_url(sprintf( self::QUIZ_URL, $quiz_id )),
@@ -188,6 +188,11 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
     $quiz_id = intval($this->_get( 'id', 2 ));
     //$result = $this->get_quiz( $quiz_id );
     $result = $this->save_quiz_to_clipit( $quiz_id );
+
+    /*$sb_tags = array( "278","281","280" );
+    $result = $this->create_update_tags( $sb_tags );
+    */
+
     print_r( $result );
     print_r( $this->get_messages() );
   }

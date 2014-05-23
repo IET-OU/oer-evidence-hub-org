@@ -191,7 +191,8 @@ class JuxtaLearn_ClipIt_HTTP_Lib extends JuxtaLearn_ClipIt_Model {
   protected function message( $text, $type = 'ok' ) {
     $message_r = array( 'type' => $type, 'msg' => $text );
     $this->messages[] = $message_r;
-    @header('X-Jxl-Clipit-Msg-'. count($this->messages) .': '. json_encode($message_r));
+    @header('X-Jxl-Clipit-Msg-'.
+        sprintf('%02d', count($this->messages)) .': '. json_encode( $message_r ));
   }
   protected function get_messages() {
     return $this->messages;
