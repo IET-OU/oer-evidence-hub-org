@@ -36,6 +36,12 @@ html body.simple-embed .site {
   padding: 0;
 }
 
+.simple-embed .site-content .entry-content p,
+.simple-embed .site-content .entry-content ul {
+  margin: 0 0 .9em; /*0 0 1.7..rem*/
+  line-height: 1.4em;
+}
+
 .simple-embed .slickQuizWrapper .quizArea,
 .simple-embed .slickQuizWrapper .quizResults {
   margin-bottom: 1em;
@@ -76,9 +82,6 @@ html body.simple-embed .site {
   font-size: 1.4em;
   margin: .3em 0;
 }
-#jlq-score p, #jlq-score ul {
-  margin: 0 0 1.2em; /*0 0 1.7..rem*/
-}
 #jlq-score table th {
   font-size: 1.2em;
   min-width: 7em;
@@ -88,7 +91,10 @@ html body.simple-embed .site {
 }
 .entry-content #jlq-score td {
   border-top: 1px solid #ddd;
-  padding: 3px 10px 3px 0;
+  padding: 2px 10px 2px 0;
+}
+.entry-content #jlq-score td ul {
+  margin: 0;
 }
 #jlq-score td i { display: none; }
 #jlq-score-meta em {
@@ -116,8 +122,8 @@ body .jlq-score-bn { display: none; }
 .simple-embed .jlq-score-bn {
   display: block;
   position: absolute;
-  top: 5px;
-  right: 9px;
+  top: 2px;
+  right: 7px;
 }
 
 #_jlq-score-chart svg { border: 1px solid #ccc; }

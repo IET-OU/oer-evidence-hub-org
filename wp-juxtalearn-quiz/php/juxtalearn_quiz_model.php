@@ -188,29 +188,36 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
 
       $post = get_post($score->tricky_topic_id);
       $score->tricky_topic_title = $post->post_title;
-      $score->tricky_topic_url = get_permalink($post->ID); #Was: site_url(sprintf(self::TT_URL, $post->post_name));
+      $score->tricky_topic_url = get_permalink($post->ID);
       $score->quiz_url = site_url(sprintf(self::QUIZ_URL, $score->quiz_id));
 
       $stumbles = array();
       $max_score = $offset;
-      foreach ($score->stumbling_block_ids as $sb) {
-        $sb_ids = $sb->s;
+      // Iterate through each question (with associated Stumbling Blocks)
+      foreach ($score->stumbling_block_ids as $question_sbs) {  #Was: $sb
+        $sb_ids = $question_sbs->s;
         if (0 == count($sb_ids)) {
           $score->warning =
             __('at least one question has no stumbling blocks', self::LOC_DOMAIN);
         }
-        // TODO: are there multiple questions potentially?
-        $the_question = $sb->q;
+        // WordPress filter - no HTML <el>.
+        $the_question = wp_filter_nohtml_kses( $question_sbs->q );
 
         foreach ($sb_ids as $sb_id) {
           $the_sb = get_term( $sb_id, self::HUB_SB_TAXONOMY );
-          $stumbles[$sb_id] = array(
-            'score' => $offset, 'qs' => $the_question, 'sb_id' => $sb_id,
-            'sb' => isset($the_sb->name) ? $the_sb->name : '[unknown]',
-          );
-          foreach ($score->_scores as $qs) {
-            $cand_question = preg_replace('/^\d+\. /', '', $qs->q_text);
-            if ($cand_question == $the_question && $qs->is_correct) {
+          // Handle multiple questions.
+          if (isset($stumbles[$sb_id])) {
+            $stumbles[$sb_id]['qs'][] = $the_question;
+          } else {
+            $stumbles[$sb_id] = array(
+              'score' => $offset, 'qs' => array($the_question), 'sb_id' => $sb_id,
+              'sb' => isset($the_sb->name) ? $the_sb->name : '[unknown]',
+            );
+          }
+          // Iterate through the scores - crude question-text matching.
+          foreach ($score->_scores as $qz_score) {
+            $candidate_question = preg_replace('/^\d+\. /', '', $qz_score->q_text);
+            if ($candidate_question == $the_question && $qz_score->is_correct) {
               $stumbles[$sb_id]['score'] += 1;
               $max_score += $stumbles[$sb_id]['score'] > $max_score ? 1 : 0;
             }

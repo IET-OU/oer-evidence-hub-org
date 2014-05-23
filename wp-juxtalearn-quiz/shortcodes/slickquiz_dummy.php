@@ -14,6 +14,7 @@
 class JuxtaLearn_Quiz_Shortcode_SlickQuiz_Dummy extends JuxtaLearn_Quiz_Shortcode {
 
   const SLICKQUIZ_SC_RE = '@\[slickquiz id=(\-?\d+|url|uri)\]@';
+  const QUIZ_EDIT_URL = 'admin.php?page=slickquiz-edit&id=%d';
 
   protected $is_quiz_view_pg = FALSE;
   protected $quiz;
@@ -80,9 +81,18 @@ class JuxtaLearn_Quiz_Shortcode_SlickQuiz_Dummy extends JuxtaLearn_Quiz_Shortcod
         //'user_email'=> $user->user_email,
       ));
 
+      $quiz_edit_url = admin_url(sprintf( self::QUIZ_EDIT_URL, $quiz_id ));
+
       $body .= <<<HTML
       <script>
-      juxtalearn_quiz = $json;
+      var juxtalearn_quiz = $json;
+
+      // Add an "Edit Quiz" link if appropriate.
+      jQuery(function () {
+        var url = "$quiz_edit_url";
+        jQuery(".entry-meta .edit-link").after(
+          ' <a class=jxl-quiz-edit href="' + url + '">Edit Quiz</a>');
+      });
       </script>
       <script>
       document.documentElement.className += " shortcode-juxtalearn_quiz";

@@ -1,6 +1,7 @@
 <?php
 /**
- * Wordpress shortcode to visualize a JuxtaLearn quiz score for a single attempt.
+ * Wordpress shortcode to visualize a JuxtaLearn quiz score for a single attempt,
+ * via a Radar or Spider chart.
  *
  * Usage:
  *   [quiz_score] - With `my-page/{SQ SCORE ID}/`
@@ -17,6 +18,8 @@
 class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
 
   const SHORTCODE = 'quiz_score';
+  const DEF_DIVISOR = 1;   //Was: 'max_score'
+  const DEF_OFFSET  = 0.4; //Was: 1;
 
   protected $offset;
   protected $divisor;
@@ -31,13 +34,16 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
   }
 
   protected function set_score_options() {
-    $this->offset = floatval($this->_get('offset', 1)); //intval()
-    $this->divisor = $this->_get('divisor', 'max_score');
-    $this->chart_size = intval($this->_get('chartsize', 500));
-    $this->chart_intervals = intval($this->_get( 'intervals', 6 ));
+    $this->offset = floatval($this->_get('offset', self::DEF_OFFSET));
+    $this->divisor = $this->_get('divisor', self::DEF_DIVISOR);
+    $this->chart_size = absint($this->_get('chartsize', 500));
+    $this->chart_intervals = absint($this->_get( 'intervals', 6 ));
     $this->debug = (bool) $this->_get( 'debug' );
   }
 
+
+  /** WP shortcode action.
+  */
   public function quiz_score_shortcode($attrs, $content = '', $name) {
     //Was: $jlq_score_id
     $sq_score_id = $this->url_parse_id($attrs);
@@ -69,7 +75,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     "<?php echo plugins_url('js/radar-charts-d3.js', JUXTALEARN_QUIZ_REGISTER_FILE) ?>"
     ></script>
     <script>
-    <?php $this->print_spider_javascript(array($score)) ?>
+    <?php $this->print_spider_chart_javascript(array($score)) ?>
     </script>
 
 <?php
@@ -79,6 +85,8 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
   }
 
 
+  /** Protected: output visualization containers, tables etc.
+  */
   protected function print_score_markup($all_scores, $notes = NULL) {
 
     $score = $all_scores[0];
@@ -143,12 +151,12 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     <?php endif; ?>
 
     <table id=jlq-score-table >
-      <tr><th>Stumbling block</th> <th>Questions</th> <th>Scores</th></tr>
+      <thead><tr><th>Stumbling block</th> <th>Questions</th> <th>Scores</th></tr></thead>
 
 <?php foreach ($score->stumbling_blocks as $sb_id => $sb): ?>
       <tr><td title="SB <?php echo $sb_id ?>"><?php echo $sb['sb'] ?><i> (SB:<?php echo $sb_id ?>)</i></td>
-        <td><?php echo $sb['qs'] ?></td>
-        <td>
+        <td class=qn ><ul><li><?php echo implode(' <li>', $sb['qs']) ?></ul></td>
+        <td class=sc >
         <?php foreach ($all_scores as $sc):
             $scb = $sc->stumbling_blocks[$sb_id]; ?>
             <em title="<?php echo $sc->user_name ?>"><?php echo $scb['score'] - $offset ?></em>,
@@ -172,7 +180,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
   }
 
 
-  protected function print_spider_javascript($the_scores, $is_personal = TRUE) {
+  protected function print_spider_chart_javascript($the_scores, $is_personal = TRUE) {
     # http://bl.ocks.org/nbremer/6506614#RadarChart.js
 
     $num_scores = count($the_scores);

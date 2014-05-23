@@ -1,4 +1,10 @@
 
+#juxtalearn-clipit-client/lib
+juxtalearn-clipit-client/php/juxtalearn-cookie-authentication
+custom-functions/conditional_script.php
+#wp-accessify
+
+
 Thumbs.db
 .DS_Store
 
@@ -8,6 +14,7 @@ wp-content/plugins/wp-evidence-hub
 wp-content/plugins/wp-juxtalearn-hub
 wp-content/themes/tiny-forge
 
+/test.php
 /_dev
 /*.sql
 *.diff
