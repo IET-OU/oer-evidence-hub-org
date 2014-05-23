@@ -1,6 +1,7 @@
 <?php
 /**
- * Wordpress shortcode to visualize a JuxtaLearn quiz score for a single attempt.
+ * Wordpress shortcode to visualize a JuxtaLearn quiz score for a single attempt,
+ * via a Radar or Spider chart.
  *
  * Usage:
  *   [quiz_score] - With `my-page/{SQ SCORE ID}/`
@@ -40,6 +41,9 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     $this->debug = (bool) $this->_get( 'debug' );
   }
 
+
+  /** WP shortcode action.
+  */
   public function quiz_score_shortcode($attrs, $content = '', $name) {
     //Was: $jlq_score_id
     $sq_score_id = $this->url_parse_id($attrs);
@@ -71,7 +75,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     "<?php echo plugins_url('js/radar-charts-d3.js', JUXTALEARN_QUIZ_REGISTER_FILE) ?>"
     ></script>
     <script>
-    <?php $this->print_spider_javascript(array($score)) ?>
+    <?php $this->print_spider_chart_javascript(array($score)) ?>
     </script>
 
 <?php
@@ -81,6 +85,8 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
   }
 
 
+  /** Protected: output visualization containers, tables etc.
+  */
   protected function print_score_markup($all_scores, $notes = NULL) {
 
     $score = $all_scores[0];
@@ -174,7 +180,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
   }
 
 
-  protected function print_spider_javascript($the_scores, $is_personal = TRUE) {
+  protected function print_spider_chart_javascript($the_scores, $is_personal = TRUE) {
     # http://bl.ocks.org/nbremer/6506614#RadarChart.js
 
     $num_scores = count($the_scores);
