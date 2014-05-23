@@ -67,7 +67,7 @@ class JuxtaLearn_Quiz_Shortcode_All_Quiz_Scores extends JuxtaLearn_Quiz_Shortcod
     "<?php echo plugins_url('js/radar-charts-d3.js', JUXTALEARN_QUIZ_REGISTER_FILE) ?>"
     ></script>
     <script>
-    <?php $this->print_spider_javascript($all_scores, $is_personal = FALSE) ?>
+    <?php $this->print_spider_chart_javascript($all_scores, $is_personal = FALSE) ?>
     </script>
 
 <?php    
