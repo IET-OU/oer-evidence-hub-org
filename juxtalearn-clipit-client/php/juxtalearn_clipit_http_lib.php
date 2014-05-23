@@ -39,6 +39,8 @@ class JuxtaLearn_ClipIt_HTTP_Lib extends JuxtaLearn_ClipIt_Model {
   }
 
 
+  /** WP action to display error/ debug/ info messages.
+  */
   public function admin_notices() {
     foreach ($this->get_messages() as $msg):
       if (!is_string($msg['msg'])) {
@@ -118,7 +120,7 @@ class JuxtaLearn_ClipIt_HTTP_Lib extends JuxtaLearn_ClipIt_Model {
   }
 
 
-  protected function do_request( $api_method, $input ) {
+  private function do_request( $api_method, $input ) {
     $this->request_count++;
 
     $is_get = preg_match( '/\.(get_|api_list|list_prop)/', $api_method );
@@ -169,6 +171,7 @@ class JuxtaLearn_ClipIt_HTTP_Lib extends JuxtaLearn_ClipIt_Model {
     $resp->http_method = $is_get ? 'GET' : 'POST';
     return $resp;
   }
+
 
   /** Utilities.
   */

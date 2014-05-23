@@ -1,6 +1,6 @@
 <?php
 /**
- * Clip-It API database model for JuxtaLearn.
+ * Database model for JuxtaLearn ClipIt client.
  *
  * @author Nick Freear (IET), 2 May 2014.
  * @copyright 2014 The Open University (IET).
