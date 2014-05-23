@@ -122,7 +122,7 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_Worker { #Was: extends Ju
     $user->role = isset(self::$roles_map[$user->role]) ? self::$roles_map[$user->role] : NULL;
     $user->email_alt = $user->user_name . '+VIA+ClipIt@juxtalearn.net';
 
-    if (!$user->user_name OR !$user->email OR !$user->role) {
+    if (!$user->user_name OR !$user->email) {  //Was: OR !$user->role) {
       $this->error( 'ClipIt authentication: missing or invalid sanitized field.' );
       return FALSE;
     }
@@ -132,7 +132,7 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_Worker { #Was: extends Ju
   /** Login the user.
   */
   protected function login_switch_user( $user_id ) {
-    if (defined( 'JXL_CLIPIT_WP_LOGIN_USER' ) && !is_user_logged_in()) {
+    if (defined( 'JXL_CLIPIT_WP_LOGIN_USER' ) && !is_user_logged_in() && $user_id) {
       wp_clear_auth_cookie();
       wp_set_auth_cookie( $user_id );
 
