@@ -64,9 +64,10 @@ class Simple_Embed {
     if (!$this->is_embed) return $classes;
 
     if (is_array($classes)) {
-      $classes[] = 'simple-embed';
+      $classes[] = is_user_logged_in() ? 'se-login-yes' : 'se-login-no';
     } else {
-      $classes .= ' simple-embed';
+      $classes .= ' simple-embed ';
+      $classes .= is_user_logged_in() ? 'se-login-yes' : 'se-login-no';
     }
     return $classes;
   }
@@ -97,7 +98,7 @@ class Simple_Embed {
           $user->user_login, $this->get_user_role(), $this->get_user_auth_method());
 
       if (0 == $user->ID) {
-        $info = __('Not logged in');
+        $info = __('Not logged in.');
       }
     }
 
@@ -109,10 +110,12 @@ class Simple_Embed {
       $("a:not( [title] )").attr("title", $("base").attr("title"));
 
       // User info widget.
-      $(".entry-content:first").append(
-        "<button id='se-info-btn' title='Information'></button>"
-      ).on("click", function () {
-        alert(<?php echo json_encode( $info ) ?>);
+      ///$(".entry-content:first").append(
+      $("body").prepend(
+        "<button id='se-info-btn' title='User information'><i>i</i></button>"
+      )
+      $("#se-info-btn").on("click", function () {
+        alert("User Information:\n\n" + <?php echo json_encode( $info ) ?>);
       });
     });
     </script>
