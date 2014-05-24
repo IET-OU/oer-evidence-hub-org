@@ -142,3 +142,19 @@ body .jlq-score-bn { display: none; }
   margin: 1em 0;
   line-height: 1em;
 }
+
+
+/* User information widget.
+*/
+html body #se-info-btn {
+  position: absolute;
+  right: 2px; bottom: 2px;
+  padding: 3px;
+  x-font: 1.2em times,serif;
+  font: 400 18px/1 dashicons !important;
+  width: 26px; height:26px;
+  background: #eee; color: #666;
+}
+/* .dashicons-info \f348; -admin-tools/spanner \f107; -admin-users \f110 */
+#se-info-btn:before { content: "\f110"; }
+
