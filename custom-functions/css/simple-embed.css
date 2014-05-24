@@ -146,15 +146,19 @@ body .jlq-score-bn { display: none; }
 
 /* User information widget.
 */
-html body #se-info-btn {
+body #se-info-btn {
   position: absolute;
   right: 2px; bottom: 2px;
   padding: 3px;
-  x-font: 1.2em times,serif;
-  font: 400 18px/1 dashicons !important;
+  font: 1.2em Times,serif;
   width: 26px; height:26px;
-  background: #eee; color: #666;
+  background: #eee; color: #444;
 }
+.se-login-yes #se-info-btn {
+  font: 400 18px/1 dashicons !important;
+  color: #777;
+}
+.se-login-yes #se-info-btn * { display: none; }
 /* .dashicons-info \f348; -admin-tools/spanner \f107; -admin-users \f110 */
-#se-info-btn:before { content: "\f110"; }
+.se-login-yes #se-info-btn:before { content: "\f110"; }
 
