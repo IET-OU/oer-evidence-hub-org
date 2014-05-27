@@ -26,7 +26,7 @@ class Simple_Embed {
   public function __construct() {
 
     $this->is_embed = $this->_get( 'embed' );
-    if ($this->_get( 'comments' ) < 1) {
+    if (0 === $this->_get( 'comments' )) {  //< 1
       $this->has_comments = FALSE;
     }
     if ($this->_get('target') && preg_match(self::TARGET_RE, $_GET['target'], $m)) {

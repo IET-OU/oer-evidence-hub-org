@@ -71,6 +71,17 @@
   content: ". ";
 }
 
+.wp-admin .slickQuiz .jlq-scaffold-inner .tax .lbl {
+  font-weight: bold;
+  letter-spacing: .08em;
+}
+.wp-admin .slickQuiz .jlq-scaffold-inner .tax .dsc {
+  color: #777;
+}
+.wp-admin .slickQuiz .jlq-scaffold-inner .tax .prmt {
+  color: #333;
+}
+
 
 /* Tweak SlickQuiz styles - reduce scrolling!
 */
