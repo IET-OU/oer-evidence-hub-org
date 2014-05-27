@@ -148,6 +148,9 @@ HTML;
     $meta = $this->get_posts_meta($student_problems);
 
     $tax_data = array();
+    $tax_tree = array(
+      'term' => array(), 'pre' => array(), 'esn' => array(), 'bel' => array());
+
     $tax_html = '';
     $count = 0;
     foreach ($meta as $m) {
@@ -167,18 +170,26 @@ HTML;
           }
         }
         $tax_data[ $tax_key ] = array(
-          'name' => $name,
-          'label' => $label,
-          'desc' => $desc,
-          'prompt' => $prompt,
+          'name' => $name,     # Per $tax_id
+          'desc' => $desc,     # Per $tax_id
+          'label' => $label,   # Per $tax_key
+          'prompt' => $prompt, # Per $tax_key
           'id'  => $tax_id,
           'key' => $tax_key,
         );
-        $tax_html .= <<<HTML
-  <li data-tx=$tax_key ><h4>$name</h4><span class=lbl >$label</span>
-    <span class=dsc >$desc</span> <span class=prmt >$prompt</span></li>
+
+        if (count($tax_tree[ $tax_id ]) <= 0) {
+          $tax_html .= <<<HTML
+  <li data-tx_id=$tax_id class=tx-id ><h4>$name</h4> <span class=dsc >$desc</span>
 
 HTML;
+        }
+        $tax_html .= <<<HTML
+  <li data-tx=$tax_key ><span class=lbl >$label</span> <span class=prmt >$prompt</span>
+
+HTML;
+        $tax_tree[ $tax_id ][ $tax_key ] =
+                array( 'label' => $label, 'prompt' => $prompt );
       }
     }
     if (!$count || 0 == count($meta)) {
