@@ -13,10 +13,11 @@ define('SIMPLE_EMBED_REGISTER_FILE',
 ));
 
 
+
 class Simple_Embed {
 
   // http://w3.org/TR/html-markup/a.html#a.attrs.target
-  const TARGET_RE = '/^(_blank|_self|_parent|_top)$/';
+  const TARGET_REGEX = '/^(_blank|_self|_parent|_top)$/';
 
   protected $is_embed = FALSE;
   protected $has_comments = TRUE;
@@ -29,8 +30,9 @@ class Simple_Embed {
     if (0 === $this->_get( 'comments' )) {  //< 1
       $this->has_comments = FALSE;
     }
-    if ($this->_get('target') && preg_match(self::TARGET_RE, $_GET['target'], $m)) {
-      $this->target = $m[1];
+    $try_target = $this->_get( 'target' );
+    if ($try_target && preg_match( self::TARGET_REGEX, $try_target )) {
+      $this->target = $try_target;
     }
 
     if ($this->is_embed || !$this->has_comments) {
@@ -64,6 +66,7 @@ class Simple_Embed {
     if (!$this->is_embed) return $classes;
 
     if (is_array($classes)) {
+      $classes[] = 'simple-embed';
       $classes[] = is_user_logged_in() ? 'se-login-yes' : 'se-login-no';
     } else {
       $classes .= ' simple-embed ';
