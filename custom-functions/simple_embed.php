@@ -98,7 +98,7 @@ class Simple_Embed {
     $info = 'Logged in as: [unknown]';
     if ($user instanceof WP_User) {
       $info = sprintf('Logged in as: %s (role: %s, via: %s)',
-          $user->user_login, $this->get_user_role(), $this->get_user_auth_method());
+          $user->user_login, $this->get_current_user_role(), $this->get_user_auth_method());
 
       if (0 == $user->ID) {
         $info = __('Not logged in.');
@@ -132,12 +132,20 @@ class Simple_Embed {
     return isset($_GET[ $key ]) ? $_GET[ $key ] : $default;
   }
 
-  protected function get_user_role() {
-	global $current_user;
-
-	$user_roles = $current_user->roles;
-	$user_role = array_shift($user_roles);
-	return $user_role;
+  # http://wordpress.org/support/topic/how-to-get-the-current-logged-in-users-role#post-1691825
+  /**
+   * Returns the translated role of the current user. If that user has
+   * no role for the current blog, it returns false.
+   *
+   * @return string The name of the current role
+   */
+  function get_current_user_role() {
+    global $wp_roles;
+    $current_user = wp_get_current_user();
+    $roles = $current_user->roles;
+    $role = array_shift($roles);
+    $t_role = isset($wp_roles->role_names[$role]) ? $wp_roles[$role] : null;
+    return translate_user_role($t_role);
   }
 
   protected function get_user_auth_method() {
