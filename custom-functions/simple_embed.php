@@ -13,10 +13,11 @@ define('SIMPLE_EMBED_REGISTER_FILE',
 ));
 
 
+
 class Simple_Embed {
 
   // http://w3.org/TR/html-markup/a.html#a.attrs.target
-  const TARGET_RE = '/^(_blank|_self|_parent|_top)$/';
+  const TARGET_REGEX = '/^(_blank|_self|_parent|_top)$/';
 
   protected $is_embed = FALSE;
   protected $has_comments = TRUE;
@@ -29,8 +30,9 @@ class Simple_Embed {
     if (0 === $this->_get( 'comments' )) {  //< 1
       $this->has_comments = FALSE;
     }
-    if ($this->_get('target') && preg_match(self::TARGET_RE, $_GET['target'], $m)) {
-      $this->target = $m[1];
+    $try_target = $this->_get( 'target' );
+    if ($try_target && preg_match( self::TARGET_REGEX, $try_target )) {
+      $this->target = $try_target;
     }
 
     if ($this->is_embed || !$this->has_comments) {
@@ -64,6 +66,7 @@ class Simple_Embed {
     if (!$this->is_embed) return $classes;
 
     if (is_array($classes)) {
+      $classes[] = 'simple-embed';
       $classes[] = is_user_logged_in() ? 'se-login-yes' : 'se-login-no';
     } else {
       $classes .= ' simple-embed ';
@@ -95,7 +98,7 @@ class Simple_Embed {
     $info = 'Logged in as: [unknown]';
     if ($user instanceof WP_User) {
       $info = sprintf('Logged in as: %s (role: %s, via: %s)',
-          $user->user_login, $this->get_user_role(), $this->get_user_auth_method());
+          $user->user_login, $this->get_current_user_role(), $this->get_user_auth_method());
 
       if (0 == $user->ID) {
         $info = __('Not logged in.');
@@ -129,12 +132,20 @@ class Simple_Embed {
     return isset($_GET[ $key ]) ? $_GET[ $key ] : $default;
   }
 
-  protected function get_user_role() {
-	global $current_user;
-
-	$user_roles = $current_user->roles;
-	$user_role = array_shift($user_roles);
-	return $user_role;
+  # http://wordpress.org/support/topic/how-to-get-the-current-logged-in-users-role#post-1691825
+  /**
+   * Returns the translated role of the current user. If that user has
+   * no role for the current blog, it returns false.
+   *
+   * @return string The name of the current role
+   */
+  function get_current_user_role() {
+    global $wp_roles;
+    $current_user = wp_get_current_user();
+    $roles = $current_user->roles;
+    $role = array_shift($roles);
+    $t_role = isset($wp_roles->role_names[$role]) ? $wp_roles[$role] : null;
+    return translate_user_role($t_role);
   }
 
   protected function get_user_auth_method() {
