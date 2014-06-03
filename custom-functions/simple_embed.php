@@ -144,7 +144,7 @@ class Simple_Embed {
     $current_user = wp_get_current_user();
     $roles = $current_user->roles;
     $role = array_shift($roles);
-    $t_role = isset($wp_roles->role_names[$role]) ? $wp_roles[$role] : null;
+    $t_role = isset($wp_roles->role_names[$role]) ? $wp_roles->role_names[$role] : null;
     return translate_user_role($t_role);
   }
 
