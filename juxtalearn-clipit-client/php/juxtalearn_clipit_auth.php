@@ -5,13 +5,13 @@
  * @copyright 2014 The Open University (IET).
  */
 require_once 'juxtalearn_clipit_worker.php';
-#Was: require_once 'juxtalearn_clipit_http_lib.php';
 require_once 'juxtalearn-cookie-authentication/juxtalearn_cookie_authentication.php';
 
 
-class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_Worker { #Was: extends JuxtaLearn_ClipIt_HTTP_Lib
+class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_Worker {
 
   const EXCLUDE_PATH_RE = '@\/wp-login.php@';
+  const AUTH_META = '_jxl_clipit_auth_method';
 
   // Cookie authentication object.
   private $auth;
@@ -71,10 +71,7 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_Worker { #Was: extends Ju
         return;
       }
 
-      $auth_result = $this->auth->authenticate();
-      $this->debug( $auth_result );
-
-      if ($this->auth->is_authenticated()) {
+      if ($this->is_authenticated()) {
         $user = $this->get_cookie_auth_user();
         if (!$user) {
           return FALSE;
@@ -92,11 +89,7 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_Worker { #Was: extends Ju
           }
           // OK.
           $user_id = $result;
-
-          if ($user->role) {
-            $up_result = wp_update_user(array( 'ID' => $user_id, 'role' => $user->role ));
-          }
-          $this->message( 'ClipIt authentication: user created, '. $user->user_name );
+          $update_result = $this->update_new_user( $user_id, $user );
         } else {
           $this->message( 'ClipIt authentication: user already exists, '. $user->user_name );
         }
@@ -111,21 +104,54 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_Worker { #Was: extends Ju
   }
 
 
+  protected function is_authenticated() {
+    $auth_result = $this->auth->authenticate();
+    $this->debug( $auth_result );
+    return $this->auth->is_authenticated();
+  }
+
+
+  protected function update_new_user( $user_id, $user ) {
+    $update_user = array(
+      'ID' => $user_id,
+      'display_name' => $user->display_name,
+      'first_name' => $user->first_name,
+      'last_name'  => $user->last_name,
+    );
+    if ($user->role) {
+      $update_user[ 'role' ] = $user->role;
+    }
+    $update_result = wp_update_user( $update_user );
+    $meta_res = add_user_meta($user_id, self::AUTH_META, 'ClipIt create');
+
+    $this->message( 'ClipIt authentication: user created, '. $user->user_name );
+    return $update_result;
+  }
+
+
   /** Get sanitized user credentials.
    */
   protected function get_cookie_auth_user() {
+    $auth = $this->auth;
     $user = (object) array(
-      'user_name' => sanitize_user( $this->auth->get_user_login() ),
-      'email' => sanitize_email($this->auth->get_property( 'user_mail' )),
-      'role' => sanitize_text_field($this->auth->get_property( 'user_role' )),
+      'user_name' => sanitize_user( $auth->get_user_login() ),
+      'email' => sanitize_email($auth->get_property( 'user_mail' )),
+      'role' => sanitize_text_field($auth->get_property( 'user_role' )),
+      'display_name' => sanitize_text_field($auth->get_property('display_name')),
     );
-    $user->role = isset(self::$roles_map[$user->role]) ? self::$roles_map[$user->role] : NULL;
-    $user->email_alt = $user->user_name . '+VIA+ClipIt@juxtalearn.net';
 
-    if (!$user->user_name OR !$user->email) {  //Was: OR !$user->role) {
+    if (!$user->user_name OR !$user->email) {  //Was: OR !$user->role)
       $this->error( 'ClipIt authentication: missing or invalid sanitized field.' );
       return FALSE;
     }
+    $user->role = isset(self::$roles_map[ $user->role ])
+            ? self::$roles_map[ $user->role ] : NULL;
+    $user->email_alt =
+            $user->user_name . '+VIA+ClipIt@juxtalearn.net';
+    $user->first_name = preg_replace(
+            '/ .+?/', '', $user->display_name );
+    $user->last_name => preg_replace(
+            '/ .+/', '', $user->display_name );
     return $user;
   }
 
