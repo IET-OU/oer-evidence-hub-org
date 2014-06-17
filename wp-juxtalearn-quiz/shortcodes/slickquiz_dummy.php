@@ -83,21 +83,26 @@ class JuxtaLearn_Quiz_Shortcode_SlickQuiz_Dummy extends JuxtaLearn_Quiz_Shortcod
 
       $quiz_edit_url = admin_url(sprintf( self::QUIZ_EDIT_URL, $quiz_id ));
 
-      $body .= <<<HTML
-      <script>
-      var juxtalearn_quiz = $json;
-
+      $edit_link = $quiz_edit_js = FALSE;
+      if ($edit_link):
+        $quiz_edit_js = <<<JS
       // Add an "Edit Quiz" link if appropriate.
       jQuery(function () {
         var url = "$quiz_edit_url";
         jQuery(".entry-meta .edit-link").after(
           ' <a class=jxl-quiz-edit href="' + url + '">Edit Quiz</a>');
       });
-      </script>
+JS;
+      endif;
+
+      $body .= <<<HTML
       <script>
-      document.documentElement.className += " shortcode-juxtalearn_quiz";
+      var juxtalearn_quiz = $json;
+
+      $quiz_edit_js
       </script>
 HTML;
+      $this->end();
     }
 
     return $body;

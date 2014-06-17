@@ -13,7 +13,17 @@
  */
 
 abstract class JuxtaLearn_Quiz_Shortcode extends JuxtaLearn_Quiz_Model {
+  const SHORTCODE = 'jl-quiz-shortcode';
 
+
+  protected function end($shortcode = NULL) {
+    $shortcode = $shortcode ? $shortcode : get_class($this);
+    ?>
+  <script>
+  document.documentElement.className += " jxl-shortcode <?php echo $shortcode ?>";
+  </script>
+<?php
+  }
 
   protected function url_parse_id($attrs = array()) {
     #var_dump($sc_name, $sc_content, $attrs, get_the_ID());

@@ -16,8 +16,8 @@ class JuxtaLearn_Quiz_API_Helper {
 
 
   protected function api_init() {
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
+    #error_reporting(E_ALL);
+    #ini_set('display_errors', 1);
   }
 
   protected function _get($key, $default = NULL) {

@@ -80,6 +80,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
 
 <?php
     $this->print_utility_javascripts($score);
+    $this->end();
 
     return ob_get_clean();
   }
@@ -354,10 +355,6 @@ var legend = svg.append("g")
       $("title").html( $("title").html().replace(/Page \d+/, <?php
           echo json_encode("$sc->quiz_name [Quiz ID: $sc->quiz_id]") ?>) );
     });
-    </script>
-
-    <script>
-    document.documentElement.className += " shortcode-<?php echo self::SHORTCODE ?>";
     </script>
 <?php
   }

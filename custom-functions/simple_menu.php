@@ -66,7 +66,19 @@ class Simple_Menu {
   <?php endforeach; ?>
     </ul><?php
 
+    $this->end();
+
     return ob_get_clean();
+  }
+
+
+  protected function end($shortcode = NULL) {
+    $shortcode = $shortcode ? $shortcode : get_class($this);
+    ?>
+  <script>
+  document.documentElement.className += " jxl-shortcode <?php echo $shortcode ?>";
+  </script>
+<?php
   }
 
 }

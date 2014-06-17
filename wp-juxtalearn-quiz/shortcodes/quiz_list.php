@@ -38,6 +38,7 @@ class JuxtaLearn_Quiz_Shortcode_List extends JuxtaLearn_Quiz_Shortcode {
 
   <?php
     $this->print_utility_javascripts( $quizzes_list );
+    $this->end();
 
     return ob_get_clean();
   }
@@ -75,10 +76,6 @@ class JuxtaLearn_Quiz_Shortcode_List extends JuxtaLearn_Quiz_Shortcode {
     window.console && console.log(">> Score data:", JLQ_quizzes);
     </script>
     <?php endif; ?>
-
-    <script>
-    document.documentElement.className += " shortcode-<?php echo self::SHORTCODE ?>";
-    </script>
 <?php
   }
 
