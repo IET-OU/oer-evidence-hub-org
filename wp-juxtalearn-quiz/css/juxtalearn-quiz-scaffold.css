@@ -18,8 +18,8 @@
     ) no-repeat center;
 }
 
-.JL-Quiz-Stumbles h4 {
-  margin: 4px 0;
+.wp-admin .slickQuiz .jlq-scaffold-wrap h4 {
+  margin: 12px 0 0;
 }
 .jlq-stumbles-wrap, .jlq-scaffold-wrap {
   float: left;
@@ -69,6 +69,21 @@
 .X__jlq-scaffold-inner .tax .dsc:after {
   display: inline-block;
   content: ". ";
+}
+
+.wp-admin .slickQuiz .jlq-scaffold-wrap .tax .lbl {
+  font-weight: bold;
+}
+.wp-admin .slickQuiz .jlq-scaffold-wrap .tax .dsc {
+  display: block;
+  margin-bottom: 4px;
+  color: #777;
+}
+.wp-admin .slickQuiz .jlq-scaffold-wrap .tax .prmt {
+  color: #333;
+}
+.wp-admin .slickQuiz .jlq-scaffold-wrap .tax li {
+  margin-bottom: 0;
 }
 
 

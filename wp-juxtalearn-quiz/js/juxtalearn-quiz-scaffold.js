@@ -174,17 +174,20 @@ jQuery(function ($) {
 
     var $wrapper = $(this).closest(".jlq-stumbles-inner");
     var stumbles = $(":checked", $wrapper).values();
+    var $outer = $wrapper.closest(".JL-Quiz-Stumbles"),
+      $scaffold = $(".jlq-scaffold-inner", $outer);
 
     log(">> Stumbling blocks change:", stumbles, e);
 
-    if (!stumbles) { return; }
+    if (!stumbles || !stumbles.length) {
+      $scaffold.html($(".jlq-template.scaffold").html());
+      return;
+    }
 
     loading();
 
     $.getJSON(ajax_url(), { stumbling_blocks: stumbles, action: problemsAction })
       .done(function (data, status, jqXHR) {
-        var $outer = $wrapper.closest(".JL-Quiz-Stumbles"),
-          $scaffold = $(".jlq-scaffold-inner", $outer);
 
         if ("success" === status && "ok" === data.stat) {
 
