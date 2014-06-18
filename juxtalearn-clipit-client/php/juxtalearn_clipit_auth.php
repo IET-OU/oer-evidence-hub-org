@@ -150,7 +150,7 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_Worker {
             $user->user_name . '+VIA+ClipIt@juxtalearn.net';
     $user->first_name = preg_replace(
             '/ .+?/', '', $user->display_name );
-    $user->last_name => preg_replace(
+    $user->last_name = preg_replace(
             '/ .+/', '', $user->display_name );
     return $user;
   }
