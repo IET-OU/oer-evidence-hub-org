@@ -111,19 +111,21 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
 
     public function get_all_scores($quiz_id, $offset = 0) {
       global $wpdb;
-      $db_name = $wpdb->prefix . 'juxtalearn_quiz_scores';
-      $join_scores = $wpdb->prefix . 'plugin_slickquiz_scores';
+      $db_name = $wpdb->prefix . 'plugin_slickquiz_scores';
+      $join_scores = $wpdb->prefix . 'juxtalearn_quiz_scores';
       $join_quiz = $wpdb->prefix . 'plugin_slickquiz';
 
-      $all_scores = $wpdb->get_results( "SELECT *, $join_scores.name AS user_name,
-            $join_quiz.name AS quiz_name, $db_name.id AS jlq_score_id,
-            $join_scores.createdBy AS user_id
+      $all_scores = $wpdb->get_results( "SELECT *, $db_name.name AS user_name,
+            $join_quiz.name AS quiz_name, $join_scores.id AS jlq_score_id,
+            $db_name.createdBy AS user_id
           FROM $db_name
-          JOIN $join_scores ON $join_scores.id = $db_name.score_id
-          JOIN $join_quiz ON $join_quiz.id = $join_scores.quiz_id
-          WHERE $join_quiz.id = ". intval( $quiz_id ) ."
-            GROUP BY $join_scores.name
-            ORDER BY $db_name.endDate ASC" );
+        JOIN ( SELECT createdBy, MAX(createdDate) AS createdDate
+          FROM $db_name GROUP BY createdBy, quiz_id
+        ) AS y USING (createdBy, createdDate)
+          JOIN $join_scores ON $join_scores.score_id = $db_name.id
+          JOIN $join_quiz ON $join_quiz.id = $db_name.quiz_id
+          WHERE $db_name.quiz_id = ". intval( $quiz_id ) ."
+            ORDER BY $db_name.createdDate ASC" ); //Was: 'ASC' //NDF:'
 
       foreach ($all_scores as $j => $score) {
         $all_scores[$j] = $this->process_score( $score, $offset );
