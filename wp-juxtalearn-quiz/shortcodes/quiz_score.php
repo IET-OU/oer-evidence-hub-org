@@ -93,7 +93,8 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
     $score = $all_scores[0];
     $offset = $score->offset;
   ?>
-    <div id=jlq-score >
+    <div id=jlq-score
+    <?php $this->data_attrs( $score, 'quiz_id quiz_name tricky_topic_id') ?> >
     <style> .jlq-score-bn { display: none; } </style>
 
     <figure id=jlq-score-figure aria-labelledby="jlq-score-caption" role="img">
@@ -357,6 +358,16 @@ var legend = svg.append("g")
     });
     </script>
 <?php
+  }
+
+
+  protected function data_attrs( $obj, $keys ) {
+    if (is_string( $keys )) {
+      $keys = explode( ' ', $keys );
+    }
+    foreach ($keys as $key) {
+      echo ' data-' . $key . '=' . json_encode( $obj->{ $key } );
+    }
   }
 
 }
