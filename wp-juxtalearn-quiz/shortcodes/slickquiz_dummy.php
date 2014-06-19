@@ -77,6 +77,7 @@ class JuxtaLearn_Quiz_Shortcode_SlickQuiz_Dummy extends JuxtaLearn_Quiz_Shortcod
       $json = json_encode(array(
         'ajaxurl' => $model->ajax_url(),
         'tt_id'   => $tricky_topic_id,
+        'quiz_id' => $quiz_id,
         //'user_name' => $user->user_login,
         //'user_email'=> $user->user_email,
       ));
@@ -99,6 +100,8 @@ JS;
       <script>
       var juxtalearn_quiz = $json;
 
+      jQuery("title").html(jQuery("title").html().replace(/Page (\d+)/, "[Quiz ID: $1]"));
+
       $quiz_edit_js
       </script>
 HTML;
@@ -109,9 +112,12 @@ HTML;
   }
 
   public function front_enqueue_scripts() {
-    wp_enqueue_script('quiz-response', plugins_url(
+    wp_enqueue_script('jxl-quiz-response', plugins_url(
       'js/juxtalearn-quiz-response.js', JUXTALEARN_QUIZ_REGISTER_FILE
     ), array('jquery', 'slickquiz_js'), false, $in_footer = TRUE);
+    wp_enqueue_script('jxl-analytics', plugins_url(
+      'js/juxtalearn-analytics.js', JUXTALEARN_QUIZ_REGISTER_FILE
+    ), array('jquery'), false, $in_footer = TRUE);
   }
 
 }

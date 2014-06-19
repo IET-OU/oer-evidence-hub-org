@@ -40,6 +40,8 @@ class Simple_Embed {
       add_action('wp_enqueue_scripts', array(&$this, 'enqueue_scripts'));
     }
     if ($this->is_embed) {
+      define( 'SIMPLE_EMBED_IS_EMBED', true );
+
       add_action('wp_head', array(&$this, 'head_target'), 1);
       add_action('wp_footer', array(&$this, 'footer_script')); //, 500);
 
@@ -106,8 +108,11 @@ class Simple_Embed {
     }
 
     ?>
-    <script> document.documentElement.className += " simple-embed"; </script>
-    <script id="se-scr">
+    <script>
+    document.documentElement.className += " simple-embed";
+    simple_embed = { host_url: "<?php echo $_SERVER['HTTP_REFERER'] ?>" }
+    </script>
+    <script id="simple-embed-js-1">
     jQuery(function ($) {
       // Set link titles when target='_blank'
       $("a:not( [title] )").attr("title", $("base").attr("title"));
