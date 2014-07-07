@@ -16,6 +16,7 @@ help:
 	@echo "	Commands:"
 	@echo "		make install-oer"
 	@echo "		make install-juxta"
+	@echo "		make update"
 	@echo "		make jl-quiz-pot"
 	@echo "		make jl-quiz-lint"
 	@echo
@@ -30,7 +31,7 @@ sym-links:
 	ln -sf  ../../../tiny-forge/1.5.4.2  wordpress/wp-content/themes/tiny-forge
 	ln -s ../../translations wordpress/wp-content/translations
 
-install-cmn: sym-links
+install-cmn: update sym-links
 	mkdir  wordpress/wp-content/files/
 	-chown -R apache:apache  wordpress/wp-content/files/
 	# "-" cross-OS compatibility - ignore errors.
@@ -55,8 +56,11 @@ install-juxta: install-cmn
 	ln -sf  ../../../custom-functions   $(PLUGIN_DIR)/jxl-custom-functions
 	ln -sf  ../../../wp-juxtalearn-hub  $(PLUGIN_DIR)/wp-juxtalearn-hub
 	ln -sf  ../../../wp-juxtalearn-quiz $(PLUGIN_DIR)/wp-juxtalearn-quiz
+	ln -sf  ../../../juxtalearn-clipit-client $(PLUGIN_DIR)/juxtalearn-clipit-client
 
-	# git submodule update --init
+update:
+	git pull
+	git submodule update --init
 	# git checkout quiz/CR1/scaffold
 	# git push origin quiz/CR1/scaffold:quiz/CR1/scaffold
 
