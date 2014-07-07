@@ -29,12 +29,21 @@ jQuery(function ($) {
   }
 
   if (SE) {
-    ga_event('Embed', embed_what, SE.host_url, JLQ && JLQ.quiz_id);
+    ga_event('Embed', embed_what, SE.parent_url, {
+      dimension1: 'Embed:' + embed_what,
+      dimension2: 'Parent:' + SE.parent_url,
+      dimension3: JLQ && 'quiz_id:#',
+      metric3:    JLQ && JLQ.quiz_id });
   }
 
 
   $qView.on("click", ".button.startQuiz", function () {
-    ga_event('Quiz', 'Start', quiz_label, JLQ.quiz_id);
+    //ga_event('Quiz', 'Start', quiz_label, JLQ.quiz_id);
+    ga_event('Quiz', 'Start', {
+      dimension1: 'Quiz:Start',
+      dimension3: 'quiz_id:#',
+      metric3:    JLQ.quiz_id
+    });
   });
 
   $qView.on("click", ".button.checkAnswer", function () {

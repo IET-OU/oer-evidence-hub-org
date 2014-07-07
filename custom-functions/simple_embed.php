@@ -107,12 +107,12 @@ class Simple_Embed {
       }
     }
 
-    $host_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : NULL;
+    $parent_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : NULL;
 
     ?>
     <script>
     document.documentElement.className += " simple-embed";
-    simple_embed = { host_url: <?php echo json_encode( $host_url )?> }
+    simple_embed = { parent_url: <?php echo json_encode( $parent_url )?> }
     </script>
     <script id="simple-embed-js-1">
     jQuery(function ($) {
