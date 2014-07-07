@@ -75,9 +75,9 @@ class JuxtaLearn_Quiz_API_Helper {
   }
 
   public function ajax_url() {
-    return esc_url(wp_nonce_url(
-        site_url('wp-admin/admin-ajax.php'), self::NONCE_ACTION)
-    );
+    $url = esc_url(wp_nonce_url(
+        site_url('wp-admin/admin-ajax.php'), self::NONCE_ACTION ));
+    return $url . ($this->_get( 'embed' ) ? '&embed=1' : '');
   }
 
 
