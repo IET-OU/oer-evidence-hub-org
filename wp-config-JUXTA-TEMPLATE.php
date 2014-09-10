@@ -65,6 +65,9 @@ define( 'JXL_CLIPIT_PASSWORD', NULL );
 # Legacy.
 #define('JXL_CLIPIT_API_URL', 'http://jxl1.escet.urjc.es/clipit_dev/services/api/rest/%s/');
 
+// NDF: Hack, 4 July 2014.
+define( 'JXL_CLIPIT_AUTH_ACCOUNT_CONNECT_RE', '@(Chem|Drama)1\d?@' );
+
 
 
 /**#@+

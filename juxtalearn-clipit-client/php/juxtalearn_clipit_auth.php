@@ -140,7 +140,7 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_Worker {
       'display_name' => sanitize_text_field($auth->get_property('display_name')),
     );
 
-    if (!$user->user_name OR !$user->email) {  //Was: OR !$user->role)
+    if (!$user->user_name) {  //OR !$user->email) {  //Was: OR !$user->role)
       $this->error( 'ClipIt authentication: missing or invalid sanitized field.' );
       return FALSE;
     }
