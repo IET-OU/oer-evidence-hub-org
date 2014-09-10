@@ -148,17 +148,19 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
       return $this->process_score($score, $offset);
     }
 
-    public function get_all_scores($quiz_id, $offset = 0) {
+    public function get_all_scores($quiz_id, $offset = 0, $most_recent = TRUE) {
       global $wpdb;
       $db_name = $wpdb->prefix . 'plugin_slickquiz_scores';
       $join_scores = $wpdb->prefix . 'juxtalearn_quiz_scores';
       $join_quiz = $wpdb->prefix . 'plugin_slickquiz';
 
+      $max_min = $most_recent ? 'MAX' : 'MIN';
+
       $all_scores = $wpdb->get_results( "SELECT *, $db_name.name AS user_name,
             $join_quiz.name AS quiz_name, $join_scores.id AS jlq_score_id,
             $db_name.createdBy AS user_id
           FROM $db_name
-        JOIN ( SELECT createdBy, MAX(createdDate) AS createdDate
+        JOIN ( SELECT createdBy, $max_min(createdDate) AS createdDate
           FROM $db_name GROUP BY createdBy, quiz_id
         ) AS y USING (createdBy, createdDate)
           JOIN $join_scores ON $join_scores.score_id = $db_name.id
@@ -268,7 +270,7 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
     global $wpdb;
     $post_ids = array();
     foreach ($posts as $post) {
-      $post_ids[] = $post->ID;
+      $post_ids[] = isset($post->ID) ? $post->ID : $post;
     }
     $like = 'juxtalearn_hub_%';
     return $wpdb->get_results( "SELECT * FROM $wpdb->postmeta
