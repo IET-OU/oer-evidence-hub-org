@@ -46,7 +46,7 @@ class JuxtaLearn_Quiz_Shortcode_All_Quiz_Scores extends JuxtaLearn_Quiz_Shortcod
       <?php return; ?>
     <?php endif;
 
-    $all_scores = $model->get_all_scores($quiz_id, $this->offset, $most_recent);
+    $all_scores = $model->get_all_scores($quiz_id, $this->offset, $this->is_most_recent());
 
     $warn = sprintf(__('no scores yet for this quiz, ID: %d', self::LOC_DOMAIN), $quiz_id);
     if (count($all_scores) < 1): ?>
@@ -96,12 +96,12 @@ class JuxtaLearn_Quiz_Shortcode_All_Quiz_Scores extends JuxtaLearn_Quiz_Shortcod
   */
   protected function links_individual_user_scores($all_scores) {
 
-    ?><p id="jlq-links-user-scores" title="Individual scores"><?php
-    $oldest_param = '';   //Not required:  $most_recent ? '' : '?oldest=1';
+    ?><p id="jlq-links-user-scores" title="<?php
+      echo __('Individual scores') ?>" role="navigation"><?php
 
     foreach ($all_scores as $score): ?>
       <a href="<?php echo site_url(sprintf(self::SCORE_URL, $score->score_id))
-        . $oldest_param ?>"><?php echo $score->user_name ?></a> |
+        ?>"><?php echo $score->user_name ?></a> |
 <?php
     endforeach;
     ?></p><?php
