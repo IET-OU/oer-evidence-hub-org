@@ -11,7 +11,9 @@
 .wp-admin.role-editor #menu-tools,
 .wp-admin.role-editor #menu-settings,
 .wp-admin.role-editor #toplevel_page_juxtalearn_hub,
-.wp-admin.role-editor #wp-admin-bar-new-page,
+.role-editor #wp-admin-bar-new-post,
+.role-editor #wp-admin-bar-new-media,
+.role-editor #wp-admin-bar-new-page,
 .wp-admin.role-editor #dashboard_right_now #wp-version-message,
 .wp-admin.role-editor #dashboard_quick_press,
 .wp-admin.role-editor #dashboard_recent_comments,
@@ -36,3 +38,9 @@
 }
 
 
+
+#wp_juxtalearn_hub_student_problem_tax_tool_section :focus {
+
+  outline: 2px solid blue;
+
+}
