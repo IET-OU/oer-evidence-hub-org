@@ -34,3 +34,6 @@
 [submodule "wp-accessify"]
 	path = wp-accessify
 	url = https://github.com/nfreear/wp-accessify.git
+[submodule "google-universal-analytics"]
+	path = google-universal-analytics
+	url = https://github.com/wp-plugins/google-universal-analytics.git
