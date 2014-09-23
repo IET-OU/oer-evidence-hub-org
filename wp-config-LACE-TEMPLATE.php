@@ -55,15 +55,20 @@ define('SMTP_PORT', 25);
 
 
 /* LACE SVG logo etc.
+*  @link https://github.com/mhawksey/wp-evidence-hub/issues/6
 */
-define( 'WP_EVIDENCE_HUB_SVG_STYLE', 'svg #barchart .positive {
+define( 'WP_EVIDENCE_HUB_SVG_STYLE',
+    'svg #barchart .positive, svg #map circle.positive {
   x-fill: rgb(255, 146, 6);  x-OER-Hub-orange: 1;
   fill: #43672B;  x-LACE-green: 1;
-}');
+}
+svg #barchart .negative, svg #map circle.negative {
+  fill: #596190;  x-LACE-blue: 1;
+}' );
 define( '_X_WP_EVIDENCE_HUB_SVG_LOGO', 'images/oer-evidence-hub-logo.svg' );
-define( '_X_WP_EVIDENCE_HUB_SVG_LOGO_SCALE', array( 0.7, 0.7 ));
+define( '_X_WP_EVIDENCE_HUB_SVG_LOGO_SCALE', '[ 0.7, 0.7 ]' );
 define( 'WP_EVIDENCE_HUB_SVG_LOGO', 'images/LACEweblogo.svg' );
-define( 'WP_EVIDENCE_HUB_SVG_LOGO_SCALE', array( 0.15, 0.15 ));
+define( 'WP_EVIDENCE_HUB_SVG_LOGO_SCALE', json_encode(array( 0.15, 0.15 )));
 
 
 
