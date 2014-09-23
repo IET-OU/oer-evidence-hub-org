@@ -1,10 +1,15 @@
-# OER Impact Map/ Juxtalearn sites
+# OER Impact Map, Juxtalearn & LACE Evidence Hub sites
 
+
+* <http://oermap.org>
+* <http://trickytopic.juxtalearn.net>
+* <http://evidence.laceproject.eu>
+
+Demos/blog posts:
 
 * Demo:  http://sites.hawksey.info/oerhub
 * Martin Hawksey's plugin: https://github.com/mhawksey/wp-evidence-hub
-* JuxtaLearn trick topic tool: <http://juxtalearn.net>
-* Martin's Juxtalearn plugin: <https://github.com/mhawksey/wp-juxtalearn-hub>
+* Juxtalearn plugin: <https://github.com/IET-OU/wp-juxtalearn-hub>
 * Martin Hawksey's blog: [mashe.hawksey.info/2013/10/building-an-evidence-..][blog-build-plugin]
 
 (Note, the OER Impact Map site was called the "OER Evidence Hub".)

@@ -1,8 +1,8 @@
 <?php
 /**
- * JuxtaLearn Tricky Topic tool ("Hub").
+ * LACE Evidence Hub (Learning Analytics Community Exchange).
  *
- * @link http://trickytopic.juxtalearn.net/
+ * @link http://evidence.laceproject.eu/
  */
 
 
@@ -23,10 +23,10 @@
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define('DB_NAME', 'juxtalearn_hub_wp');
+define('DB_NAME', 'oer_evidence_hub_wp');
 
 /** MySQL database username */
-define('DB_USER', 'juxtalearn_user');
+define('DB_USER', 'evidencehub_user');
 
 /** MySQL database password */
 define('DB_PASSWORD', '*****');
@@ -53,22 +53,17 @@ define('SMTP_PORT', 25);
 //ini_set('SMTP', 'smtpmail.open.ac.uk');
 
 
-/*
-  NDF: API stuff, May 2014.
-*/
-define( 'JXL_COOKIE_SECRET_KEY', NULL );
-define( 'JXL_COOKIE_DOMAIN', '.juxtalearn.net' );
-//define( 'JXL_COOKIE_DOMAIN', '.escet.urjc.es' );
-define( 'JXL_CLIPIT_BASE_URL', 'http://clipit.juxtalearn.net/clipit_apionly' );
-//define( 'JXL_CLIPIT_BASE_URL', 'http://jxl1.escet.urjc.es/clipit_dev' );
-define( 'JXL_CLIPIT_LOGIN', NULL );
-define( 'JXL_CLIPIT_PASSWORD', NULL );
-//define( 'JXL_CLIPIT_WP_SET_AUTH_COOKIE', TRUE );
-# Legacy.
-#define('JXL_CLIPIT_API_URL', 'http://jxl1.escet.urjc.es/clipit_dev/services/api/rest/%s/');
 
-// NDF: Hack, 4 July 2014.
-define( 'JXL_CLIPIT_AUTH_ACCOUNT_CONNECT_RE', '@(Chem|Drama)1\d?@' );
+/* LACE SVG logo etc.
+*/
+define( 'WP_EVIDENCE_HUB_SVG_STYLE', 'svg #barchart .positive {
+  x-fill: rgb(255, 146, 6);  x-OER-Hub-orange: 1;
+  fill: #43672B;  x-LACE-green: 1;
+}');
+define( '_X_WP_EVIDENCE_HUB_SVG_LOGO', 'images/oer-evidence-hub-logo.svg' );
+define( '_X_WP_EVIDENCE_HUB_SVG_LOGO_SCALE', array( 0.7, 0.7 ));
+define( 'WP_EVIDENCE_HUB_SVG_LOGO', 'images/LACEweblogo.svg' );
+define( 'WP_EVIDENCE_HUB_SVG_LOGO_SCALE', array( 0.15, 0.15 ));
 
 
 
@@ -98,7 +93,7 @@ define('NONCE_SALT',       'put your unique phrase here');
  * You can have multiple installations in one database if you give each a unique
  * prefix. Only numbers, letters, and underscores please!
  */
-$table_prefix  = 'wp_4_';
+$table_prefix  = 'wp_';
 
 /**
  * WordPress Localized Language, defaults to English.
