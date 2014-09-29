@@ -1,12 +1,13 @@
 
 #juxtalearn-clipit-client/lib
-juxtalearn-clipit-client/php/juxtalearn-cookie-authentication
-custom-functions/conditional_script.php
+#juxtalearn-clipit-client/php/juxtalearn-cookie-authentication
+#custom-functions/conditional_script.php
 #wp-accessify
 
 
 Thumbs.db
 .DS_Store
+*- Copy.*
 
 wp-config.php
 wp-content/plugins/wordpress-importer

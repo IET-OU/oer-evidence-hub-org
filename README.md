@@ -1,15 +1,29 @@
 # OER Impact Map, Juxtalearn & LACE Evidence Hub sites
 
 
+The web sites:
+
 * <http://oermap.org>
 * <http://trickytopic.juxtalearn.net>
 * <http://evidence.laceproject.eu>
 
+Principle WordPress plugins:
+
+* [@mhawksey/wp-evidence-hub][]
+* [@IET-OU/wp-juxtalearn-hub][]
+* [@IET-OU/oer-ev ../wp-juxtalearn-quiz][]
+* [@IET-OU/oer-ev ../juxtalearn-clipit-client][]
+
+Other plugins and libraries:
+
+* [@juxtalearn/juxtalearn-cookie-authentication][]
+* [@jewlofthelotus/SlickQuiz-WordPress][]
+* [@nfreear/wp-accessify][]
+
+
 Demos/blog posts:
 
 * Demo:  http://sites.hawksey.info/oerhub
-* Martin Hawksey's plugin: https://github.com/mhawksey/wp-evidence-hub
-* Juxtalearn plugin: <https://github.com/IET-OU/wp-juxtalearn-hub>
 * Martin Hawksey's blog: [mashe.hawksey.info/2013/10/building-an-evidence-..][blog-build-plugin]
 
 (Note, the OER Impact Map site was called the "OER Evidence Hub".)
@@ -21,8 +35,11 @@ Please refer to [installing WordPress][wp-install], and [@mhawksey's Readme][plu
 
 1. Preparation (Redhat or CentOS Linux),
 
+    ```sh
         yum -y install  git
         yum -y install  php-mysql
+        # Other preparation ...
+    ```
 
 2. We're using [Git submodules][submodules], so please clone using the recursive flag,
 
@@ -81,6 +98,18 @@ Tiny Forge, version 1.4.1 - a snapshot is included in this Git repo.
 [blog-build-plugin]: http://mashe.hawksey.info/2013/10/building-an-evidence-hub-plugin-for-wordpress
 [submodules]: http://git-scm.com/book/en/Git-Tools-Submodules
 [submodules-cheat]: http://blog.jacius.info/git-submodule-cheat-sheet/
+
+[@mhawksey/wp-evidence-hub]:  https://github.com/mhawksey/wp-evidence-hub
+[@IET-OU/wp-juxtalearn-hub]:  https://github.com/IET-OU/wp-juxtalearn-hub
+[@IET-OU/oer-ev ../wp-juxtalearn-quiz]:
+    https://github.com/IET-OU/oer-evidence-hub-org/tree/juxtalearn/wp-juxtalearn-quiz
+[@IET-OU/oer-ev ../juxtalearn-clipit-client]: https://github.com/IET-OU/oer-evidence-hub-org/tree/juxtalearn/juxtalearn-clipit-client
+
+[@IET-OU/oer-ev ../simple_embed.php]: https://github.com/IET-OU/oer-evidence-hub-org/blob/juxtalearn/custom-functions/simple_embed.php
+[IET-OU/oer-ev ../ou-attribution]: https://github.com/IET-OU/oer-evidence-hub-org/blob/juxtalearn/ou-attribution/
+[@juxtalearn/juxtalearn-cookie-authentication]: https://github.com/juxtalearn/juxtalearn-cookie-authentication
+[@nfreear/wp-accessify]:  https://github.com/nfreear/wp-accessify
+[@jewlofthelotus/SlickQuiz-WordPress]: https://github.com/jewlofthelotus/SlickQuiz-WordPress
 
 
 [End]: http://example
