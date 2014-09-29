@@ -47,6 +47,7 @@ class OU_Attribution_Plugin {
   public function wp_head_css_style() { ?>
 
     <style id="ou-attribution-css">
+    .ou-attribution-part { margin: .85em 0; line-height: 1.55em; }
     #ou-attribution {
       background:
         url(<?php $this->print_avatar_url( 'iet-webmaster@open.ac.uk' ) ?>) no-repeat bottom right;
@@ -91,7 +92,7 @@ class OU_Attribution_Plugin {
   */
   protected function print_copyright_html() { ?>
 
-    <div id="ou-copyright">
+    <div id="ou-copyright" class="ou-attribution-part">
     <?php $this->print_option(
      'ou_attribution_copyright_html',
      '© %s <a href="http://www.laceproject.eu/">LACE Consortium</a> and contributors.',
@@ -128,7 +129,7 @@ class OU_Attribution_Plugin {
       }
       ?>
 
-  <div id="ou-license">
+  <div id="ou-license" class="ou-attribution-part">
     <a rel="license"
       href="http://creativecommons.org/licenses/<?php echo "$license/$version" ?>/"><img
       alt="Creative Commons License" style="border-width:0"
@@ -142,15 +143,14 @@ class OU_Attribution_Plugin {
     endif;
   }
 
-  /** The "Developed by" link.
+  /** The "Developed by" link(s).
   */
   protected function print_developed_by_html() { ?>
 
-    <div id="ou-attribution">
+    <div id="ou-attribution" class="ou-attribution-part">
     <?php $this->print_option(
       'ou_attribution_developed_by_html',
-      'Developed by <a href="http://mashe.hawksey.info/2013/10/building-an-evidence-hub-plugin-for-wordpress" title="Martin Hawksey">@mha
-wksey</a>
+      'Developed by <a href="http://mashe.hawksey.info/2013/10/building-an-evidence-hub-plugin-for-wordpress" title="Martin Hawksey">@mhawksey</a>
       and the <div><a href="http://iet.open.ac.uk/">Institute of Educational Technology</a> at The Open University</div>'
     ) ?>
     </div>
