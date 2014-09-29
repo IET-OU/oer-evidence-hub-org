@@ -1,12 +1,12 @@
 <?php
 /*
 Plugin Name: OU Attribution
-Plugin URI: https://github.com/IET-OU/
-Description: Add "Developed by" and "Fork me" links (IET-OU)
+Plugin URI: https://gist.github.com/nfreear/56d6f4a76413fb7a4ae4
+Description: Add "Developed by" and "Fork me" links to IET's sites (IET-OU)
 Version: 0.1.0
 Author: Nick Freear
 Author URI: https://github.com/IET-OU/
-License: GPL2
+License: GPL2+
 */
 
 
@@ -18,7 +18,7 @@ License: GPL2
 *
 *
 * @link https://github.com/mhawksey/wp-evidence-hub/issues/12
-* NDF, 25 September 2014.
+* @copyright Nick Freear, 25 September 2014.
 */
 
 
@@ -42,17 +42,21 @@ class OU_Attribution_Links_Plugin {
     #ou-attribution {
       background:
         url(<?php $this->print_avatar_url( 'iet-webmaster@open.ac.uk' ) ?>) no-repeat right;
-      padding: 0 36px 1px 0;
+      padding-right: 36px;
+      vertical-align: top;
     }
     #ou-fork-me img { position: absolute; top: 0; right: 0; border: 0; z-index: 100010; }
-
-    <?php $this->print_option(
+    <?php
+    $this->print_option(
       'ou_attribution_style',
-      '#site-generator { max-width: 30rem; x-max: 14.285714286rem; }'
+      '#site-generator { max-width: 200px; max-width: 26rem;  x-max: 14.286rem; }
+    #site-info { max-width: 500px; max-width: 35rem;  x-max: 750px, 53.571rem; }
+    #site-info, #site-generator { font-size: .77rem; }'
     ) ?>
     </style>
 <?php
   }
+
 
   /** The "Developed by" link.
   */
