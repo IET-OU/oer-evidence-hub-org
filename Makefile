@@ -1,4 +1,4 @@
-# GNU Make file for OER Evidence Hub/ Juxtalearn/ ..
+# GNU Make file for OER Map, JuxtaLearn & LACE evidence hub..
 
 # Environment.
 PLUGIN_DIR=wordpress/wp-content/plugins
@@ -11,35 +11,37 @@ JSHINT=../node_modules/jshint/bin/jshint
 
 
 help:
-	@echo OER Evidence Hub/ Juxtalearn installer.
+	@echo
+	@echo OER Map/ JuxtaLearn/ LACE Evidence Hub installer.
 	@echo
 	@echo "	Commands:"
 	@echo "		make install-oer"
 	@echo "		make install-juxta"
+	@echo "		make install-lace"
 	@echo "		make update"
 	@echo "		make jl-quiz-pot"
 	@echo "		make jl-quiz-lint"
 	@echo
 
-
-sym-links:
+sym-links-common:
 	#cd oer_evidence_hub/
 	ln -sf ../../../wordpress-importer/trunk $(PLUGIN_DIR)/wordpress-importer
 	ln -sf  ../../../wpmail-smtp  $(PLUGIN_DIR)/wpmail-smtp
 	ln -sf  ../../../wp-accessify $(PLUGIN_DIR)/wp-accessify
+	ln -sf  ../../../ou-attribution  $(PLUGIN_DIR)/ou-attribution
 	#cd ../themes
 	ln -sf  ../../../tiny-forge/1.5.4.2  wordpress/wp-content/themes/tiny-forge
 	ln -s ../../translations wordpress/wp-content/translations
 
-install-cmn: update sym-links
+install-common: update sym-links-common
 	mkdir  wordpress/wp-content/files/
 	-chown -R apache:apache  wordpress/wp-content/files/
 	# "-" cross-OS compatibility - ignore errors.
 	mkdir  wordpress/wp-content/uploads/
 	-chown -R apache:apache  wordpress/wp-content/uploads/
 
-install-oer: install-cmn
-	@echo Installing OER Evidence Hub...
+install-oer: install-common
+	@echo Installing OER MAP...
 	cp  ./wp-config-OER-TEMPLATE.php  wordpress/wp-config.php
 	ln -sf  ../../../social-connect  $(PLUGIN_DIR)/social-connect
 	#Bug: ln -sf  ../../../jetpack  $(PLUGIN_DIR)/jetpack
@@ -48,8 +50,14 @@ install-oer: install-cmn
 	ln -sf ../../../google-sitemap-generator $(PLUGIN_DIR)/google-sitemap-generator
 	ln -sf  ../../../wp-evidence-hub  $(PLUGIN_DIR)/wp-evidence-hub
 
-install-juxta: install-cmn
-	@echo Installing Juxtalearn...
+install-lace: install-common
+	@echo Installing LACE Evidence Hub...
+	cp  ./wp-config-LACE-TEMPLATE.php  wordpress/wp-config.php
+	cp -r  jetpack  $(PLUGIN_DIR)/jetpack
+	ln -sf  ../../../wp-evidence-hub  $(PLUGIN_DIR)/wp-evidence-hub
+
+install-juxta: install-common
+	@echo Installing JuxtaLearn...
 	cp  ./wp-config-JUXTA-TEMPLATE.php  wordpress/wp-config.php
 	#git clone https://github.com/wp-plugins/slickquiz.git slickquiz
 	cp -r SlickQuiz-WordPress  wordpress/wp-content/plugins/slickquiz
@@ -110,6 +118,6 @@ test-2:
 	ln -sf ../../../feedwordpress  $(PLUGIN_DIR)/feedwordpress
 	ln -sf ../../../google-sitemap-generator $(PLUGIN_DIR)/google-sitemap-generator
 
-.PHONY: help test jl-quiz-pot jl-hub-pot install-juxta install-oer install-cmn sym-links install-dev jl-quiz-lint
+.PHONY: help test jl-quiz-pot jl-hub-pot install-juxta install-oer install-lace install-common sym-links install-dev jl-quiz-lint
 
 #End.
