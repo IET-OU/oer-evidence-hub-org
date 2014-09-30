@@ -1,11 +1,11 @@
 <?php
 /*
-Plugin Name: OU Attribution
+Plugin Name: IET Attribution
 Plugin URI:  https://github.com/IET-OU/oer-evidence-hub-org
 Description: Add copyright, Creative Commons, "Developed by" and "Fork me" links to WordPress sites run by IET at The Open University [LACE]
-Version: 0.1.0
-Author:  Nick Freear [@IET-OU]
-Author URI: https://github.com/IET-OU/
+Version:     0.1
+Author:      Nick Freear [@IET-OU]
+Author URI:  https://github.com/IET-OU/
 License: GPL2+
 */
 
@@ -13,12 +13,12 @@ License: GPL2+
 /**
 * WordPress configuration/customization -- wp-config.php (or the DB `options` table):
 *
-* define( 'OU_ATTRIBUTION_DEVELOPED_BY_HTML', '[ custom HTML ]' );
-* define( 'OU_ATTRIBUTION_AVATAR_ID, 'name@example' );
-* define( 'OU_ATTRIBUTION_CSS', '[ custom CSS styles ]' );
-* define( 'OU_ATTRIBUTION_FORK_ME_URL', 'https://github.com/example/project' );
-* define( 'OU_ATTRIBUTION_LICENSE_CURIE', 'cc:by/4.0/88x31' );
-* define( 'OU_ATTRIBUTION_COPYRIGHT_HTML', '[ custom HTML ]' );
+* define( 'IET_ATTRIBUTION_DEVELOPED_BY_HTML', '[ custom HTML ]' );
+* define( 'IET_ATTRIBUTION_AVATAR_ID', 'name@example' );
+* define( 'IET_ATTRIBUTION_CSS', '[ custom CSS styles ]' );
+* define( 'IET_ATTRIBUTION_FORK_ME_URL', 'https://github.com/example/project' );
+* define( 'IET_ATTRIBUTION_LICENSE_CURIE', 'cc:by/4.0/88x31' );
+* define( 'IET_ATTRIBUTION_COPYRIGHT_HTML', '[ custom HTML ]' );
 *
 *
 * @link  https://github.com/mhawksey/wp-evidence-hub/issues/12
@@ -26,11 +26,11 @@ License: GPL2+
 * @copyright Nick Freear, 25 September 2014.
 */
 
-define('OU_ATTRIBUTION_REGISTER_FILE', preg_replace('@\/var\/www\/[^\/]+@', '', __FILE__));
+define('IET_ATTRIBUTION_REGISTER_FILE', preg_replace('@\/var\/www\/[^\/]+@', '', __FILE__));
 
 
 
-class OU_Attribution_Plugin {
+class IET_Attribution_Plugin {
 
   protected $already_called = FALSE;
 
@@ -42,24 +42,24 @@ class OU_Attribution_Plugin {
   }
 
 
-  /** Custom CSS styles.
+  /** CSS styles for IET attribution in page footer.
   */
   public function wp_head_css_style() { ?>
 
-    <style id="ou-attribution-css">
-    .ou-attribution-part { margin: .85em 0; line-height: 1.55em; }
-    #ou-attribution {
+    <style id="iet-attribution-css">
+    .iet-attribution-part { margin: .85em 0; line-height: 1.55em; }
+    #iet-attribution {
       background:
         url(<?php $this->print_avatar_url( 'iet-webmaster@open.ac.uk' ) ?>) no-repeat bottom right;
       x-padding: 0 36px 1px 0;
       padding: 0 0 32px 0;
     }
-    #ou-fork-me img { position: absolute; top: 0; right: 0; border: 0; z-index: 100010; }
+    #iet-fork-me img { position: absolute; top: 0; right: 0; border: 0; z-index: 100010; }
 
     #site-generator a[href *= 'wordpress.org'], .el-icon-wordpress { display: none; }
 
     <?php $this->print_option(
-      'ou_attribution_css',
+      'iet_attribution_css',
       '#site-generator { max-width: 200px; max-width: 26rem;  x-max: 14.286rem; }
     #site-info { max-width: 500px; max-width: 35rem;  x-max: 750px, 53.571rem; }
     #site-info, #site-generator { font-size: .77rem; }'
@@ -91,9 +91,9 @@ class OU_Attribution_Plugin {
   */
   protected function print_copyright_html() { ?>
 
-    <div id="ou-copyright" class="ou-attribution-part">
+    <div id="iet-copyright" class="iet-attribution-part">
     <?php $this->print_option(
-     'ou_attribution_copyright_html',
+     'iet_attribution_copyright_html',
      '© %s <a href="http://www.laceproject.eu/">LACE Consortium</a> and contributors.',
      date( 'Y' )
     ) ?>
@@ -108,7 +108,7 @@ class OU_Attribution_Plugin {
   */
   protected function print_license_html() {
 
-    $license_compact_url = get_option( 'ou_attribution_license_curie', 'cc:by/4.0/88x31' );
+    $license_compact_url = get_option( 'iet_attribution_license_curie', 'cc:by/4.0/88x31' );
 
     if (preg_match(
         '@cc:(?<license>[a-z\-]+)\/(?P<version>[\d\.]+)\/(?P<size>[\dx]+)@',
@@ -128,7 +128,7 @@ class OU_Attribution_Plugin {
       }
       ?>
 
-  <div id="ou-license" class="ou-attribution-part">
+  <div id="iet-license" class="iet-attribution-part">
     <a rel="license"
       href="http://creativecommons.org/licenses/<?php echo "$license/$version" ?>/"><img
       alt="Creative Commons License" style="border-width:0"
@@ -146,9 +146,9 @@ class OU_Attribution_Plugin {
   */
   protected function print_developed_by_html() { ?>
 
-    <div id="ou-attribution" class="ou-attribution-part">
+    <div id="iet-attribution" class="iet-attribution-part">
     <?php $this->print_option(
-      'ou_attribution_developed_by_html',
+      'iet_attribution_developed_by_html',
       'Developed by <a href="http://mashe.hawksey.info/2013/10/building-an-evidence-hub-plugin-for-wordpress" title="Martin Hawksey">@mhawksey</a>
       and the <div><a href="http://iet.open.ac.uk/">Institute of Educational Technology</a> at The Open University</div>'
     ) ?>
@@ -163,9 +163,9 @@ class OU_Attribution_Plugin {
   */
   protected function print_fork_me_html() { ?>
     <a
-      id="ou-fork-me"
+      id="iet-fork-me"
       href="<?php $this->print_option(
-        'ou_attribution_fork_me_url',
+        'iet_attribution_fork_me_url',
         'https://github.com/IET-OU/oer-evidence-hub-org' ) ?>"
       ><img src=
 "https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67"
@@ -192,11 +192,11 @@ class OU_Attribution_Plugin {
   /** Get the URL for an organization's icon/avatar.
   */
   protected function print_avatar_url( $default_id_or_email = NULL ) {
-    $id_or_email = $this->get_option( 'ou_attribution_avatar_id', $default_id_or_email );
+    $id_or_email = $this->get_option( 'iet_attribution_avatar_id', $default_id_or_email );
 
     # Option 1: a path to an image.
     if (preg_match( '/\.(png|jpe?g|svg)/', $id_or_email )) {
-      echo plugins_url( $id_or_email, OU_ATTRIBUTION_REGISTER_FILE );
+      echo plugins_url( $id_or_email, IET_ATTRIBUTION_REGISTER_FILE );
     }
 
     # Option 2: an email or user login.
@@ -207,7 +207,7 @@ class OU_Attribution_Plugin {
   }
 
 }
-$ou_attribution = new OU_Attribution_Plugin();
+$iet_attribution = new IET_Attribution_Plugin();
 
 
 #End.
