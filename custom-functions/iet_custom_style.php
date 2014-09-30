@@ -13,6 +13,7 @@ Version:     0.1
 * @link https://github.com/IET-OU/oer-evidence-hub-org/blob/juxtalearn/custom-functions/my_custom_functions.php#L57
 * @copyright Nick Freear, 30 September 2014.
 */
+define('IET_CUSTOM_STYLE_REGISTER_FILE', preg_replace('@\/var\/www\/[^\/]+@', '', __FILE__));
 
 
 class IET_Custom_Style_Plugin {
@@ -31,33 +32,9 @@ class IET_Custom_Style_Plugin {
         '.main-navigation ul > .menu-item-type-custom a[href *= clipit]' );
     ?>
 
+  <link rel="stylesheet" href="<?php echo plugins_url(
+        'css/iet-custom-style.css', IET_CUSTOM_STYLE_REGISTER_FILE ))?>" />
   <style id="iet-custom-style-plugin">
-
-  /* LACE menu link(s).
-  */
-  .evidence-laceproject-eu .main-navigation li a[href *= 'www.laceproject'],
-  .evidence-laceproject-eu .main-navigation .menu-item-121 > a {
-    x-display: inline-block;
-    text-transform: none; /*uppercase*/
-    background: #fcfcfc;
-    color: #43673B;
-    border: 1px solid #43672B;
-    border-radius: 3px;
-    line-height: 1.6em;
-    padding: 3px 10px;
-    font-weight: bold;
-    font-size: 1.15em;
-  }
-
-  .evidence-laceproject-eu .main-navigation .menu-item-121 > a {
-    border-style: dashed;
-  }
-
-  /* JuxtaLearn...
-  */
-
-  /* Custom.
-  */
   <?php echo self::get_option( 'iet_custom_style_css' ) ?>
   </style>
 

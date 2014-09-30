@@ -1,0 +1,30 @@
+/* IET_Custom_Style_Plugin.
+*/
+
+
+/* LACE menu link(s).
+*/
+.evidence-laceproject-eu .main-navigation li a[href *= 'www.laceproject'],
+.evidence-laceproject-eu .main-navigation .menu-item-121 > a {
+  x-display: inline-block;
+  text-transform: none; /*uppercase*/
+  background: #fcfcfc;
+  color: #43673B;
+  border: 1px solid #43672B;
+  border-radius: 3px;
+  line-height: 1.6em;
+  padding: 3px 10px;
+  font-weight: bold;
+  font-size: 1.15em;
+}
+
+.evidence-laceproject-eu .main-navigation .menu-item-121 > a {
+  border-style: dashed;
+}
+
+/* JuxtaLearn...
+*/
+
+
+
+/*End. */
