@@ -2,9 +2,9 @@
 /*
 Plugin Name: OU Attribution
 Plugin URI:  https://github.com/IET-OU/oer-evidence-hub-org
-Description: Add copyright, Creative Commons, "Developed by" and "Fork me" links to IET's WordPress sites (IET-OU)
+Description: Add copyright, Creative Commons, "Developed by" and "Fork me" links to WordPress sites run by IET at The Open University [LACE]
 Version: 0.1.0
-Author:  Nick Freear
+Author:  Nick Freear [@IET-OU]
 Author URI: https://github.com/IET-OU/
 License: GPL2+
 */
@@ -65,7 +65,6 @@ class OU_Attribution_Plugin {
     #site-info, #site-generator { font-size: .77rem; }'
     ) ?>
 
-    ) ?>
     </style>
 <?php
   }
@@ -169,8 +168,7 @@ class OU_Attribution_Plugin {
         'ou_attribution_fork_me_url',
         'https://github.com/IET-OU/oer-evidence-hub-org' ) ?>"
       ><img src=
-"https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875
-622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67"
+"https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67"
       alt="Fork me on GitHub" title="Fork me on GitHub"
       data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"
     ></a>
