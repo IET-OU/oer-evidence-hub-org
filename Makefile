@@ -28,7 +28,9 @@ sym-links-common:
 	ln -sf ../../../wordpress-importer/trunk $(PLUGIN_DIR)/wordpress-importer
 	ln -sf  ../../../wpmail-smtp  $(PLUGIN_DIR)/wpmail-smtp
 	ln -sf  ../../../wp-accessify $(PLUGIN_DIR)/wp-accessify
-	ln -sf  ../../../ou-attribution  $(PLUGIN_DIR)/ou-attribution
+	#ln -sf  ../../../ou-attribution  $(PLUGIN_DIR)/ou-attribution
+	#ln -sf  ../../../custom-functions  $(PLUGIN_DIR)/jxl-custom-functions
+	ln -sf  ../../../iet-custom-plugins  $(PLUGIN_DIR)/iet-custom-plugins
 	#cd ../themes
 	ln -sf  ../../../tiny-forge/1.5.4.2  wordpress/wp-content/themes/tiny-forge
 	ln -s ../../translations wordpress/wp-content/translations
@@ -61,7 +63,6 @@ install-juxta: install-common
 	cp  ./wp-config-JUXTA-TEMPLATE.php  wordpress/wp-config.php
 	#git clone https://github.com/wp-plugins/slickquiz.git slickquiz
 	cp -r SlickQuiz-WordPress  wordpress/wp-content/plugins/slickquiz
-	ln -sf  ../../../custom-functions   $(PLUGIN_DIR)/jxl-custom-functions
 	ln -sf  ../../../wp-juxtalearn-hub  $(PLUGIN_DIR)/wp-juxtalearn-hub
 	ln -sf  ../../../wp-juxtalearn-quiz $(PLUGIN_DIR)/wp-juxtalearn-quiz
 	ln -sf  ../../../juxtalearn-clipit-client $(PLUGIN_DIR)/juxtalearn-clipit-client

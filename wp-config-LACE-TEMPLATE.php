@@ -53,9 +53,9 @@ define('SMTP_PORT', 25);
 //ini_set('SMTP', 'smtpmail.open.ac.uk');
 
 
-
-/* LACE SVG logo etc.
+/* LACE SVG logo, URL field, etc.
 *  @link https://github.com/mhawksey/wp-evidence-hub/issues/6
+*  @link https://github.com/mhawksey/wp-evidence-hub/issues/21
 */
 define( 'WP_EVIDENCE_HUB_SVG_STYLE',
     'svg #barchart .positive, svg #map circle.positive {
@@ -69,7 +69,7 @@ define( '_X_WP_EVIDENCE_HUB_SVG_LOGO', 'images/oer-evidence-hub-logo.svg' );
 define( '_X_WP_EVIDENCE_HUB_SVG_LOGO_SCALE', '[ 0.7, 0.7 ]' );
 define( 'WP_EVIDENCE_HUB_SVG_LOGO', 'images/LACEweblogo.svg' );
 define( 'WP_EVIDENCE_HUB_SVG_LOGO_SCALE', json_encode(array( 0.15, 0.15 )));
-
+define( 'WP_EVIDENCE_HUB_URL_FIELD', TRUE );
 
 
 /**#@+
