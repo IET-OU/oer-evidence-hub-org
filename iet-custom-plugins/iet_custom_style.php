@@ -33,7 +33,7 @@ class IET_Custom_Style_Plugin {
     ?>
 
   <link rel="stylesheet" href="<?php echo plugins_url(
-        'css/iet-custom-style.css', IET_CUSTOM_STYLE_REGISTER_FILE ))?>" />
+        'css/iet-custom-style.css', IET_CUSTOM_STYLE_REGISTER_FILE ) ?>" />
   <style id="iet-custom-style-plugin">
   <?php echo self::get_option( 'iet_custom_style_css' ) ?>
   </style>
