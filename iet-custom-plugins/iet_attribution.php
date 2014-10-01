@@ -82,7 +82,7 @@ class IET_Attribution_Plugin {
     $this->print_copyright_html();
     $this->print_license_html();
     $this->print_developed_by_html();
-    $this->print_fork_me_html();
+    $this->print_view_code_fork_me_html();
   }
 
 
@@ -158,10 +158,12 @@ class IET_Attribution_Plugin {
   }
 
 
-  /** The "Fork me" ribbon link (green, right-aligned).
+  /** A discreet "View code" footer link or a "Fork me" ribbon link (green, right-aligned).
   * @link https://github.com/blog/273-github-ribbons
+  * @link https://github.com/petethepig/github-ribbons-css -- Mobile friendly CSS?!
   */
-  protected function print_fork_me_html() { ?>
+  protected function print_view_code_fork_me_html() {
+    if ($this->get_option( 'iet_attribution_as_fork_me' )): ?>
     <a
       id="iet-fork-me"
       href="<?php $this->print_option(
@@ -173,6 +175,14 @@ class IET_Attribution_Plugin {
       data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"
     ></a>
 <?php
+    else: ?>
+    <div id="iet-view-code" class="iet-attribution-part"><a
+      href="<?php $this->print_option(
+        'iet_attribution_fork_me_url',
+        'https://github.com/IET-OU/oer-evidence-hub-org' ) ?>"
+      >View source code on GitHub</a></div>
+<?php
+    endif;
   }
 
 
@@ -194,12 +204,12 @@ class IET_Attribution_Plugin {
   protected function print_avatar_url( $default_id_or_email = NULL ) {
     $id_or_email = $this->get_option( 'iet_attribution_avatar_id', $default_id_or_email );
 
-    # Option 1: a path to an image.
+    # Option 1: parameter is a path to an image.
     if (preg_match( '/\.(png|jpe?g|svg)/', $id_or_email )) {
       echo plugins_url( $id_or_email, IET_ATTRIBUTION_REGISTER_FILE );
     }
 
-    # Option 2: an email or user login.
+    # Option 2: parameter is an email or user login.
     $avatar = get_avatar( $id_or_email, 32 );
     if (preg_match( "/src='([^']+)'/", $avatar, $matches )) {
       echo $matches[ 1 ];
