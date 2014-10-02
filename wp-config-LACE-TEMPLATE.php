@@ -69,7 +69,9 @@ define( '_X_WP_EVIDENCE_HUB_SVG_LOGO', 'images/oer-evidence-hub-logo.svg' );
 define( '_X_WP_EVIDENCE_HUB_SVG_LOGO_SCALE', '[ 0.7, 0.7 ]' );
 define( 'WP_EVIDENCE_HUB_SVG_LOGO', 'images/LACEweblogo.svg' );
 define( 'WP_EVIDENCE_HUB_SVG_LOGO_SCALE', json_encode(array( 0.15, 0.15 )));
+
 define( 'WP_EVIDENCE_HUB_URL_FIELD', TRUE );
+define( 'IET_ATTRIBUTION_AVATAR_ID', 'images/iet-logo-lace-green-28px.png' );
 
 
 /**#@+

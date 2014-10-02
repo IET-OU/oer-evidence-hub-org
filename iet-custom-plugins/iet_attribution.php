@@ -207,6 +207,7 @@ class IET_Attribution_Plugin {
     # Option 1: parameter is a path to an image.
     if (preg_match( '/\.(png|jpe?g|svg)/', $id_or_email )) {
       echo plugins_url( $id_or_email, IET_ATTRIBUTION_REGISTER_FILE );
+      return;
     }
 
     # Option 2: parameter is an email or user login.

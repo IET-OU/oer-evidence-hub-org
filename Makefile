@@ -73,6 +73,10 @@ update:
 	# git checkout quiz/CR1/scaffold
 	# git push origin quiz/CR1/scaffold:quiz/CR1/scaffold
 
+accessify:
+	git submodule update --init wp-accessify
+	cd wp-accessify; git submodule update --init; cd ..
+
 jl-quiz-pot:
 	# Extract text for translation (i18n) to GetText POT templates.
 	find "wp-juxtalearn-quiz" -type f -name "*.php" \
