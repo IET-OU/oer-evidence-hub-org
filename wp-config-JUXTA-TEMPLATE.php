@@ -42,19 +42,18 @@ define('DB_COLLATE', '');
 
 
 
-/* NDF: HTTP proxy (http://wpengineer.com/1227/wordpress-proxysupport)
+/* Open University-specific configuration. 
+   HTTP proxy (http://wpengineer.com/1227/wordpress-proxysupport)
 */
 define('WP_PROXY_HOST', 'wwwcache.open.ac.uk');
 define('WP_PROXY_PORT', '80');
-
 
 define('SMTP_HOST', 'smtpmail.open.ac.uk');
 define('SMTP_PORT', 25);
 //ini_set('SMTP', 'smtpmail.open.ac.uk');
 
 
-/*
-  NDF: API stuff, May 2014.
+/* JuxtaLearn API stuff, May 2014.
 */
 define( 'JXL_COOKIE_SECRET_KEY', NULL );
 define( 'JXL_COOKIE_DOMAIN', '.juxtalearn.net' );
@@ -69,6 +68,13 @@ define( 'JXL_CLIPIT_PASSWORD', NULL );
 
 // NDF: Hack, 4 July 2014.
 define( 'JXL_CLIPIT_AUTH_ACCOUNT_CONNECT_RE', '@(Chem|Drama)1\d?@' );
+
+
+/* IET attribution - what license ?
+*/
+define( 'IET_ATTRIBUTION_COPYRIGHT_HTML',
+  '&copy; %s <a href="http://juxtalearn.eu/">JuxtaLearn project</a> partners &amp; contributors' );
+define( 'IET_ATTRIBUTION_LICENSE_CURIE', NULL );  #'cc:by/4.0/88x31' );
 
 
 

@@ -13,7 +13,7 @@ License: GPL2+
 /**
 * WordPress configuration/customization -- wp-config.php (or the DB `options` table):
 *
-* define( 'IET_ATTRIBUTION_DEVELOPED_BY_HTML', '[ custom HTML ]' );
+* define( 'IET_ATTRIBUTION_DEVELOPED_BY_HTML', '[ © %s <a href>PROJECT</a> - custom HTML ]' );
 * define( 'IET_ATTRIBUTION_AVATAR_ID', 'name@example' );
 * define( 'IET_ATTRIBUTION_CSS', '[ custom CSS styles ]' );
 * define( 'IET_ATTRIBUTION_FORK_ME_URL', 'https://github.com/example/project' );
@@ -31,6 +31,8 @@ define('IET_ATTRIBUTION_REGISTER_FILE', preg_replace('@\/var\/www\/[^\/]+@', '',
 
 
 class IET_Attribution_Plugin {
+
+  const LICENSE_CURIE_REGEX = '@cc:(?<license>[a-z\-]+)\/(?P<version>[\d\.]+)\/(?P<size>[\dx]+)@';
 
   protected $already_called = FALSE;
 
@@ -94,7 +96,7 @@ class IET_Attribution_Plugin {
     <div id="iet-copyright" class="iet-attribution-part">
     <?php $this->print_option(
      'iet_attribution_copyright_html',
-     '© %s <a href="http://www.laceproject.eu/">LACE Consortium</a> and contributors.',
+     '© %s <a href="#Project-URL">PROJECT</a> partners and contributors.',
      date( 'Y' )
     ) ?>
     </div>
@@ -107,12 +109,12 @@ class IET_Attribution_Plugin {
   * @link http://embed.open.ac.uk/oembed?url=cc:by/4.0/88x31&title=[MY+WORK]
   */
   protected function print_license_html() {
+    $license_compact_url = get_option( 'iet_attribution_license_curie', NULL );  //'cc:by/4.0/88x31'
+    if ( ! $license_compact_url ) {
+      return;
+    }
 
-    $license_compact_url = get_option( 'iet_attribution_license_curie', 'cc:by/4.0/88x31' );
-
-    if (preg_match(
-        '@cc:(?<license>[a-z\-]+)\/(?P<version>[\d\.]+)\/(?P<size>[\dx]+)@',
-        $license_compact_url, $matches )):
+    if (preg_match( self::LICENSE_CURIE_REGEX, $license_compact_url, $matches )):
 
       $license = $matches[ 'license' ];
       $version = $matches[ 'version' ];

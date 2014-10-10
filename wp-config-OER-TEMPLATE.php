@@ -35,17 +35,24 @@ define('DB_COLLATE', '');
 
 
 
-/* NDF: HTTP proxy (http://wpengineer.com/1227/wordpress-proxysupport)
+/* Open University-specific configuration. 
+   HTTP proxy (http://wpengineer.com/1227/wordpress-proxysupport)
 */
 define('WP_PROXY_HOST', 'wwwcache.open.ac.uk');
 define('WP_PROXY_PORT', '80');
-
-
 
 define('SMTP_HOST', 'smtpmail.open.ac.uk');
 define('SMTP_PORT', 25);
 //ini_set('SMTP', 'smtpmail.open.ac.uk');
 
+
+/* IET attribution.
+*/
+define( 'IET_ATTRIBUTION_COPYRIGHT_HTML',
+  '&copy; %s <a href="http://oerresearchhub.org/"><abbr title=' .
+  '"Open Educational Resources">OER</abbr> Research Hub</a> project &amp; contributors' );
+define( 'IET_ATTRIBUTION_LICENSE_CURIE', 'cc:by/4.0/88x31' );
+#define( 'IET_ATTRIBUTION_DEVELOPED_BY_HTML', '[]' );  #By... for the Hewlett Foundation.
 
 
 /**#@+

@@ -42,15 +42,16 @@ define('DB_COLLATE', '');
 
 
 
-/* NDF: HTTP proxy (http://wpengineer.com/1227/wordpress-proxysupport)
+/* Open University-specific configuration. 
+   HTTP proxy (http://wpengineer.com/1227/wordpress-proxysupport)
 */
 define('WP_PROXY_HOST', 'wwwcache.open.ac.uk');
 define('WP_PROXY_PORT', '80');
 
-
 define('SMTP_HOST', 'smtpmail.open.ac.uk');
 define('SMTP_PORT', 25);
 //ini_set('SMTP', 'smtpmail.open.ac.uk');
+
 
 
 /* LACE SVG logo, URL field, etc.
@@ -71,7 +72,16 @@ define( 'WP_EVIDENCE_HUB_SVG_LOGO', 'images/LACEweblogo.svg' );
 define( 'WP_EVIDENCE_HUB_SVG_LOGO_SCALE', json_encode(array( 0.15, 0.15 )));
 
 define( 'WP_EVIDENCE_HUB_URL_FIELD', TRUE );
+
+
+/* IET attribution.
+*/
+define( 'IET_ATTRIBUTION_COPYRIGHT_HTML',
+  '&copy; %s <a href="http://www.laceproject.eu/"><abbr title=' .
+  '"Learning Analytics Community Exchange">LACE</abbr> Consortium</a> and contributors' );
+define( 'IET_ATTRIBUTION_LICENSE_CURIE', 'cc:by/4.0/88x31' );
 define( 'IET_ATTRIBUTION_AVATAR_ID', 'images/iet-logo-lace-green-28px.png' );
+
 
 
 /**#@+

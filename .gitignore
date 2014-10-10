@@ -7,7 +7,7 @@
 
 Thumbs.db
 .DS_Store
-*- Copy.*
+*Copy.*
 
 wp-config.php
 wp-content/plugins/wordpress-importer
@@ -15,7 +15,8 @@ wp-content/plugins/wp-evidence-hub
 wp-content/plugins/wp-juxtalearn-hub
 wp-content/themes/tiny-forge
 
-/test.php
+/*.php
+/*.htm*
 /_dev
 /*.sql
 *.diff
