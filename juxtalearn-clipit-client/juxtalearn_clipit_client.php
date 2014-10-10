@@ -7,6 +7,13 @@ Author:      Nick Freear
 Author URI:  https://github.com/nfreear
 Version:     0.1
 */
+
+
+/* Class hierarchy -- see UML: ./docs/
+
+  JuxtaLearn_ClipIt_Client_Plugin > *_ClipIt_Auth > *_Worker > *_HTTP_Lib > *_Model
+*/
+
 define('JXL_CLIPIT_CLIENT_REGISTER_FILE',
   preg_replace('@/Users/[^\/]+/[^\/]+/[^\/]+@', '',    # Mac OS X
     preg_replace('@\/var\/www\/[^\/]+@', '', __FILE__) # Linux
@@ -19,7 +26,7 @@ error_reporting( E_ALL );
 require_once 'php/juxtalearn_clipit_auth.php';
 
 
-class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
+class JuxtaLearn_ClipIt_Client_Plugin extends JuxtaLearn_ClipIt_Auth {
 
   const LOC_DOMAIN = 'juxtalearn-clipit-client';
 
@@ -33,6 +40,8 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
 
     add_action( 'wp_ajax_clipit_props_test', array(&$this, 'clipit_properties_test') );
     add_action( 'wp_ajax_clipit_quiz_test', array(&$this, 'clipit_quiz_test') );
+
+    add_action( 'pre_post_update', array( &$this, 'pre_post_update' ));
   }
 
 
@@ -197,5 +206,9 @@ class JuxtaLearn_ClipIt_Client extends JuxtaLearn_ClipIt_Auth {
     print_r( $this->get_messages() );
   }
 
+
+  public function pre_post_update( $arg_1 ) {
+    $this->debug( __FUNCTION__, $arg_1 );
+  }
 }
-$clipit_client = new JuxtaLearn_ClipIt_Client();
+$clipit_client = new JuxtaLearn_ClipIt_Client_Plugin();

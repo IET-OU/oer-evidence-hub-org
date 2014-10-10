@@ -39,6 +39,10 @@ class JuxtaLearn_ClipIt_Model {
     return $quiz_model->get_quiz( $quiz_id );
   }
 
+  protected function quiz_get_clipit_id( $quiz ) {
+    return $quiz && $quiz->clipit_id > 0 ? $quiz->clipit_id : NULL;
+  }
+
   protected function quiz_set_clipit_id( $quiz_id, $clipit_id ) {
     global $wpdb;
     $db_name = $wpdb->prefix . self::DB_SCAFFOLD;
@@ -128,5 +132,11 @@ class JuxtaLearn_ClipIt_Model {
       GROUP BY meta_key" );
   }
 
+  /** Get a WP configuration option from a PHP define() or the database.
+  */
+  protected function get_option( $option, $default = NULL ) {
+    $KEY = strtoupper( $option );
+    return defined( $KEY ) ? constant( $KEY ) : get_option( $option, $default );
+  }
 }
 

@@ -31,10 +31,12 @@ class JuxtaLearn_ClipIt_HTTP_Lib extends JuxtaLearn_ClipIt_Model {
       $this->error( 'Error. Missing PHP define(): '. self::DEF_BASE_URL );
       //throw new Exception(..)
     }
+    $this->debug(array( 'clipit_url' => $this->get_option( 'jxl_clipit_base_url' )));
 
     add_action('admin_notices', array(&$this, 'admin_notices'));
     add_action( 'admin_init', array(&$this, 'ajax_authenticate') );
 
+    add_action( 'current_screen', array( &$this, 'admin_screen_debug' ));
     add_action( 'wp_ajax_clipit_test', array(&$this, 'clipit_api_test') );
   }
 
@@ -170,6 +172,26 @@ class JuxtaLearn_ClipIt_HTTP_Lib extends JuxtaLearn_ClipIt_Model {
     $resp->url = $url;
     $resp->http_method = $is_get ? 'GET' : 'POST';
     return $resp;
+  }
+
+  /** Debug headers.. */
+  public function admin_screen_debug( $screen ) {
+    $post_id = $this->_get( 'post' );
+    $action = $this->_get( 'action' );
+    $page = $this->_get( 'page' );
+    $p_quiz_id = $this->_get( 'id' );
+
+    if ($screen->base == 'post') {
+      $clipit_id = $this->post_get_clipit_id( $post_id );
+      $this->debug(array( __FUNCTION__, 'post_id' => $post_id, 'clipit_id' => $clipit_id, 'type' => $screen->post_type ));
+    }
+    elseif ($page == 'slickquiz-edit') {
+      $quiz = $this->quiz_get_scaffold( $p_quiz_id );
+      $clipit_id = $this->quiz_get_clipit_id( $quiz );
+      $this->debug(array( __FUNCTION__, 'quiz_id' => $p_quiz_id, 'clipit_id' => $clipit_id, 'tt_id' => $quiz->tricky_topic_id ));
+    } else {
+      $this->debug( 'other' );
+    }
   }
 
 
