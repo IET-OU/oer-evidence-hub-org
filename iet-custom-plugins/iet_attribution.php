@@ -54,7 +54,6 @@ class IET_Attribution_Plugin {
     #X--iet-attribution {
       background:
         url(<?php echo $this->get_avatar_url( 'iet-webmaster@open.ac.uk' ) ?>) no-repeat bottom right;
-      x-padding: 0 36px 1px 0;
       padding: 0 0 32px 0;
     }
     #iet-fork-me img { position: absolute; top: 0; right: 0; border: 0; z-index: 100010; }
@@ -153,16 +152,17 @@ class IET_Attribution_Plugin {
       'Developed by <a href="http://mashe.hawksey.info/2013/10/building-an-evidence-hub-plugin-for-wordpress" title="Martin Hawksey">@mhawksey</a>
       and the <div><a href="http://iet.open.ac.uk/">Institute of Educational Technology</a> at The Open University</div>'
     ) ?>
+    <?php $this->svg_load_script() ?>
     </div>
 
 <?php
-    $this->svg_load_script();
   }
 
 
   protected function svg_load_script( $url = null, $id = 'iet-attribution-logo' ) {
     $url = $url ? $url : $this->get_avatar_url( 'images/iet-ou-logo-400px.svg' ); #plugins_url('images/..svg', __FILE__ );
     ?>
+  <div id="<?php echo $id ?>"></div>
   <script>
   (function (url, id) {
     var xhr = new XMLHttpRequest();
