@@ -3,15 +3,23 @@
 Plugin Name: JuxtaLearn ClipIt Client
 Plugin URI:  https://github.com/IET-OU/oer-evidence-hub-org/#Juxtalearn
 Description: Push tricky topic data to the ClipIt API / Cookie authentication.
-Author:      Nick Freear
+Author:      Nick Freear [@IET-OU]
 Author URI:  https://github.com/nfreear
 Version:     0.1
 */
 
 
-/* Class hierarchy -- see UML: ./docs/
-
-  JuxtaLearn_ClipIt_Client_Plugin > *_ClipIt_Auth > *_Worker > *_HTTP_Lib > *_Model
+/**
+* Class hierarchy -- see UML: ./docs/
+*
+*   JuxtaLearn_ClipIt_Client_Plugin > *_ClipIt_Auth > *_Worker > *_HTTP_Lib > *_Model
+*
+* DEBUG tool -- Postman REST Client add-on for Chrome
+* @link https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm?
+*
+* @author Nick Freear (IET), 6 May 2014.
+* @copyright 2014 The Open University.
+* @package JuxtaLearn_ClipIt_Client
 */
 
 define('JXL_CLIPIT_CLIENT_REGISTER_FILE',
@@ -54,7 +62,7 @@ class JuxtaLearn_ClipIt_Client_Plugin extends JuxtaLearn_ClipIt_Auth {
 
     $scaffold = $this->quiz_get_scaffold( $quiz_id );
 
-    $clipit_id = $scaffold && $scaffold->clipit_id > 0 ? $scaffold->clipit_id : NULL;
+    $clipit_id = $this->quiz_get_clipit_id( $scaffold );
 
     if (!$scaffold || !$scaffold->tricky_topic_id) {
       $this->debug( 'Not pushing Score to ClipIt: no linked Tricky Topic. Quiz ID: '. $quiz_id );
@@ -78,7 +86,7 @@ class JuxtaLearn_ClipIt_Client_Plugin extends JuxtaLearn_ClipIt_Auth {
       return;
     }
 
-    $clipit_id = $quiz && $quiz->clipit_id > 0 ? $quiz->clipit_id : NULL;
+    $clipit_id = $this->quiz_get_clipit_id( $quiz );
     if (!$quiz || !$quiz->tricky_topic_id) {
       $this->debug( 'Not pushing Quiz to ClipIt: no linked Tricky Topic. Quiz ID: '. $quiz_id );
       return;
