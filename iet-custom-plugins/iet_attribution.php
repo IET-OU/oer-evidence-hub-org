@@ -60,13 +60,11 @@ class IET_Attribution_Plugin {
     #iet-fork-me img { position: absolute; top: 0; right: 0; border: 0; z-index: 100010; }
 
     #site-generator a[href *= 'wordpress.org'], .el-icon-wordpress { display: none; }
-
-    <?php $this->print_option(
-      'iet_attribution_css',
-      '#site-generator { max-width: 200px; max-width: 26rem;  x-max: 14.286rem; }
+	#site-generator { max-width: 200px; max-width: 26rem;  x-max: 14.286rem; }
     #site-info { max-width: 500px; max-width: 35rem;  x-max: 750px, 53.571rem; }
-    #site-info, #site-generator { font-size: .77rem; }'
-    ) ?>
+    #site-info, #site-generator { font-size: .77rem; }
+
+    <?php $this->print_option( 'iet_attribution_css', '' ) ?>
 
     </style>
 <?php
@@ -163,7 +161,7 @@ class IET_Attribution_Plugin {
 
 
   protected function svg_load_script( $url = null, $id = 'iet-attribution-logo' ) {
-    $url = $url ? $url : $this->get_gravatar_url( 'images/iet-ou-logo-400px.svg' ); #plugins_url('images/..svg', __FILE__ );
+    $url = $url ? $url : $this->get_avatar_url( 'images/iet-ou-logo-400px.svg' ); #plugins_url('images/..svg', __FILE__ );
     ?>
   <script>
   (function (url, id) {
