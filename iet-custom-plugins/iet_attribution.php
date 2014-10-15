@@ -50,7 +50,7 @@ class IET_Attribution_Plugin {
 
     <style id="iet-attribution-css">
     .iet-attribution-part { margin: .85em 0; line-height: 1.55em; }
-    #iet-attribution-logo svg { width: 32px; height: 32px; }
+    #iet-attribution-logo svg { width: 42px; height: 42px; } /*Was: 32px*/
     #X--iet-attribution {
       background:
         url(<?php echo $this->get_avatar_url( 'iet-webmaster@open.ac.uk' ) ?>) no-repeat bottom right;
@@ -62,7 +62,6 @@ class IET_Attribution_Plugin {
 	#site-generator { max-width: 200px; max-width: 26rem;  x-max: 14.286rem; }
     #site-info { max-width: 500px; max-width: 35rem;  x-max: 750px, 53.571rem; }
     #site-info, #site-generator { font-size: .77rem; }
-
     <?php $this->print_option( 'iet_attribution_css', '' ) ?>
 
     </style>
