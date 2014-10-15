@@ -144,8 +144,8 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_Worker {
       $this->error( 'ClipIt authentication: missing or invalid sanitized field.' );
       return FALSE;
     }
-    $user->role = isset(self::$roles_map[ $user->role ])
-            ? self::$roles_map[ $user->role ] : NULL;
+    $user->role = isset(static::$roles_map[ $user->role ])  //'static::$..' or 'self:$..' -- ??
+            ? static::$roles_map[ $user->role ] : NULL;
     $user->email_alt =
             $user->user_name . '+VIA+ClipIt@juxtalearn.net';
     $user->first_name = preg_replace(
