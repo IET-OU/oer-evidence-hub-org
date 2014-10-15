@@ -42,14 +42,14 @@ class JuxtaLearn_ClipIt_Client_Plugin extends JuxtaLearn_ClipIt_Auth {
   public function __construct() {
     parent::__construct();
 
-    add_action( 'save_post', array(&$this, 'save_post_to_clipit') );
+    add_action( 'save_post', array(&$this, 'save_post') );  #Was: 'save_post_to_clipit'
+    add_action( 'pre_post_update', array( &$this, 'pre_post_update_to_clipit' ));
     add_action( 'slickquiz_save_quiz', array(&$this, 'save_quiz_to_clipit') );
     add_action( 'juxtalearn_quiz_save_score', array(&$this, 'save_score_to_clipit') );
 
     add_action( 'wp_ajax_clipit_props_test', array(&$this, 'clipit_properties_test') );
     add_action( 'wp_ajax_clipit_quiz_test', array(&$this, 'clipit_quiz_test') );
 
-    add_action( 'pre_post_update', array( &$this, 'pre_post_update' ));
   }
 
 
@@ -141,7 +141,7 @@ class JuxtaLearn_ClipIt_Client_Plugin extends JuxtaLearn_ClipIt_Auth {
   * Handles WP post-types: Tricky Topic, Student Problem, STA/Teaching activity.
   * @param int $post_id
   */
-  public function save_post_to_clipit( $post_id ) {
+  public function pre_post_update_to_clipit( $post_id ) {
     $post_type = get_post_type( $post_id );
 
     if ('publish' != get_post_status( $post_id )) {
@@ -158,6 +158,7 @@ class JuxtaLearn_ClipIt_Client_Plugin extends JuxtaLearn_ClipIt_Auth {
     $clipit_id = $this->post_get_clipit_id( $post_id );
 
     $this->debug( __FUNCTION__ .'. Clipit ID: '. $clipit_id );
+    $this->file_logger(array( __FUNCTION__, 'clipit_id' => $clipit_id, 'post_id' => $post_id ));
 
     $clipit_type = strtolower(str_replace('Clipit', '', self::$types_map[ $post_type ]));
     $clipit_method = $clipit_type .'.';
@@ -215,8 +216,10 @@ class JuxtaLearn_ClipIt_Client_Plugin extends JuxtaLearn_ClipIt_Auth {
   }
 
 
-  public function pre_post_update( $arg_1 ) {
-    $this->debug( __FUNCTION__, $arg_1 );
+  /** Debug only. */
+  public function save_post( $post_id ) {
+    $this->debug(array( __FUNCTION__, 'post_id' => $post_id ));
+    $this->file_logger(array( __FUNCTION__, 'post_id' => $post_id ));
   }
 }
 $clipit_client = new JuxtaLearn_ClipIt_Client_Plugin();
