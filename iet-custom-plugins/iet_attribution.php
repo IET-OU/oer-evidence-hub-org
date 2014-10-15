@@ -50,9 +50,10 @@ class IET_Attribution_Plugin {
 
     <style id="iet-attribution-css">
     .iet-attribution-part { margin: .85em 0; line-height: 1.55em; }
-    #iet-attribution {
+    #iet-attribution-logo svg { width: 32px; height: 32px; }
+    #X--iet-attribution {
       background:
-        url(<?php $this->print_avatar_url( 'iet-webmaster@open.ac.uk' ) ?>) no-repeat bottom right;
+        url(<?php echo $this->get_avatar_url( 'iet-webmaster@open.ac.uk' ) ?>) no-repeat bottom right;
       x-padding: 0 36px 1px 0;
       padding: 0 0 32px 0;
     }
@@ -157,6 +158,27 @@ class IET_Attribution_Plugin {
     </div>
 
 <?php
+    $this->svg_load_script();
+  }
+
+
+  protected function svg_load_script( $url = null, $id = 'iet-attribution-logo' ) {
+    $url = $url ? $url : $this->get_gravatar_url( 'images/iet-ou-logo-400px.svg' ); #plugins_url('images/..svg', __FILE__ );
+    ?>
+  <script>
+  (function (url, id) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, false);
+        // Following line is just to be on the safe side;
+        // not needed if your server delivers SVG with correct MIME type
+        xhr.overrideMimeType("image/svg+xml");
+        xhr.send("");
+        document.getElementById(id)
+                .appendChild(xhr.responseXML.documentElement);
+
+  })("<?php echo $url ?>", "<?php echo $id ?>");
+  </script>
+<?php
   }
 
 
@@ -203,19 +225,18 @@ class IET_Attribution_Plugin {
 
   /** Get the URL for an organization's icon/avatar.
   */
-  protected function print_avatar_url( $default_id_or_email = NULL ) {
+  protected function get_avatar_url( $default_id_or_email = NULL ) {
     $id_or_email = $this->get_option( 'iet_attribution_avatar_id', $default_id_or_email );
 
     # Option 1: parameter is a path to an image.
     if (preg_match( '/\.(png|jpe?g|svg)/', $id_or_email )) {
-      echo plugins_url( $id_or_email, IET_ATTRIBUTION_REGISTER_FILE );
-      return;
+      return plugins_url( $id_or_email, IET_ATTRIBUTION_REGISTER_FILE );
     }
 
     # Option 2: parameter is an email or user login.
     $avatar = get_avatar( $id_or_email, 32 );
     if (preg_match( "/src='([^']+)'/", $avatar, $matches )) {
-      echo $matches[ 1 ];
+      return $matches[ 1 ];
     }
   }
 
