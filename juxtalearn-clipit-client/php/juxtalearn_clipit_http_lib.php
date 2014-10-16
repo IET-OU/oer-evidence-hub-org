@@ -150,9 +150,11 @@ class JuxtaLearn_ClipIt_HTTP_Lib extends JuxtaLearn_ClipIt_Model {
       'ua' => 'Tricky Topic tool (WP/PHP/cURL) (+http://juxtalearn.net)',
       'data' => $payload,
     ));
+    $resp->input = $payload;
 
     if ($resp->success) {
       $resp->obj = json_decode($resp->data);
+      $resp->data = $resp->obj ? -1 : $resp->data;
 
       if (0 === $resp->obj->status) {
         $this->debug( "ClipIt API: OK, $resp->http_code: $url" );
@@ -193,7 +195,7 @@ class JuxtaLearn_ClipIt_HTTP_Lib extends JuxtaLearn_ClipIt_Model {
       $clipit_id = $this->quiz_get_clipit_id( $quiz );
       $this->debug(array( __FUNCTION__, 'quiz_id' => $p_quiz_id, 'clipit_id' => $clipit_id, 'tt_id' => $quiz->tricky_topic_id ));
     } else {
-      $this->debug( 'other' );
+      $this->debug(array( __FUNCTION__, 'other' ));
     }
   }
 
