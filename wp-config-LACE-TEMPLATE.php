@@ -80,7 +80,8 @@ define( 'IET_ATTRIBUTION_COPYRIGHT_HTML',
   '&copy; %s <a href="http://www.laceproject.eu/"><abbr title=' .
   '"Learning Analytics Community Exchange">LACE</abbr> Consortium</a> and contributors' );
 define( 'IET_ATTRIBUTION_LICENSE_CURIE', 'cc:by/4.0/88x31' );
-define( 'IET_ATTRIBUTION_AVATAR_ID', 'images/iet-logo-lace-green-28px.png' );
+define( 'IET_ATTRIBUTION_CSS', '#iet-attribution-logo svg g { fill: #596190 }' );
+#define( 'IET_ATTRIBUTION_AVATAR_ID', 'images/iet-logo-lace-green-28px.png' );
 
 
 

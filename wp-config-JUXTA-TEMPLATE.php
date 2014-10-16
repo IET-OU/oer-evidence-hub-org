@@ -63,8 +63,8 @@ define( 'JXL_CLIPIT_BASE_URL', 'http://clipit.juxtalearn.net/clipit_apionly' );
 define( 'JXL_CLIPIT_LOGIN', NULL );
 define( 'JXL_CLIPIT_PASSWORD', NULL );
 //define( 'JXL_CLIPIT_WP_SET_AUTH_COOKIE', TRUE );
-# Legacy.
-#define('JXL_CLIPIT_API_URL', 'http://jxl1.escet.urjc.es/clipit_dev/services/api/rest/%s/');
+//define( 'JXL_CLIPIT_FILE_LOG', TRUE );
+#define( 'JUXTALEARN_CLIPIT_CLIENT_FILE_LOG', TRUE );
 
 // NDF: Hack, 4 July 2014.
 define( 'JXL_CLIPIT_AUTH_ACCOUNT_CONNECT_RE', '@(Chem|Drama)1\d?@' );
@@ -75,7 +75,7 @@ define( 'JXL_CLIPIT_AUTH_ACCOUNT_CONNECT_RE', '@(Chem|Drama)1\d?@' );
 define( 'IET_ATTRIBUTION_COPYRIGHT_HTML',
   '&copy; %s <a href="http://juxtalearn.eu/">JuxtaLearn project</a> partners &amp; contributors' );
 define( 'IET_ATTRIBUTION_LICENSE_CURIE', NULL );  #'cc:by/4.0/88x31' );
-
+define( 'IET_ATTRIBUTION_CSS', '#iet-attribution-logo svg g { fill: #32b4e5 }' );
 
 
 /**#@+

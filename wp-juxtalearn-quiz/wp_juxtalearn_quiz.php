@@ -3,9 +3,16 @@
 Plugin Name: WP JuxtaLearn Quiz
 Plugin URI:  https://github.com/IET-OU/oer-evidence-hub-org/#Juxtalearn
 Description: Add scaffolding and results visualization to Slick Quiz quizzes [Requires: SlickQuiz 1.3+, WP JuxtaLearn Hub].
-Author:  Nick Freear
+Author:  Nick Freear [@IET-OU]
 Author URI:  https://github.com/nfreear
 */
+
+/**
+* @copyright 2014 The Open University.
+* @author Nick Freear, 19 March 2014.
+* @package JuxtaLearn_Quiz
+*/
+
 define('JUXTALEARN_QUIZ_REGISTER_FILE',
   preg_replace('@/Users/[^\/]+/[^\/]+/[^\/]+@', '',    # Mac OS X
     preg_replace('@\/var\/www\/[^\/]+@', '', __FILE__) # Linux
@@ -14,7 +21,7 @@ define('JUXTALEARN_QUIZ_REGISTER_FILE',
 require_once 'php/juxtalearn_quiz_model.php';
 
 
-class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
+class Wp_JuxtaLearn_Quiz_Plugin extends JuxtaLearn_Quiz_Model {
 
   const LOC_DOMAIN = 'juxtalearn-quiz';
 
@@ -60,5 +67,5 @@ class Wp_JuxtaLearn_Quiz extends JuxtaLearn_Quiz_Model {
   }
 
 }
-$juxtalearn_quiz = new Wp_JuxtaLearn_Quiz();
+$juxtalearn_quiz = new Wp_JuxtaLearn_Quiz_Plugin();
 
