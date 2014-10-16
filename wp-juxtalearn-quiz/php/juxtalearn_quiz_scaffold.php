@@ -13,7 +13,7 @@
 
 class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
 
-  const LOC_DOMAIN = Wp_JuxtaLearn_Quiz::LOC_DOMAIN;
+  const LOC_DOMAIN = Wp_JuxtaLearn_Quiz_Plugin::LOC_DOMAIN;
 
   protected $quiz;
 
