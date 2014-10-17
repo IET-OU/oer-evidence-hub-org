@@ -52,6 +52,8 @@ define('SMTP_HOST', 'smtpmail.open.ac.uk');
 define('SMTP_PORT', 25);
 //ini_set('SMTP', 'smtpmail.open.ac.uk');
 
+// Set true for localhost development.
+//define( 'IET_CUSTOM_STYLE_NO_GOOGLE_FONT', true );
 
 
 /* JuxtaLearn API stuff, May 2014.

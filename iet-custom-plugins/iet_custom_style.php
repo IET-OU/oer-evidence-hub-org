@@ -19,10 +19,20 @@ define('IET_CUSTOM_STYLE_REGISTER_FILE', preg_replace('@\/var\/www\/[^\/]+@', ''
 class IET_Custom_Style_Plugin {
 
   public function __construct() {
-    add_action( 'wp_head',   array( $this, 'wp_head_style' ));
-    add_action( 'wp_footer', array( $this, 'wp_footer_javascript' ));
+    if ($this->get_option( 'iet_custom_style_no_google_font' )) {
+      $this->add_action( 'wp_enqueue_scripts', 'wp_enqueue_scripts', 20 );
+    }
+    $this->add_action( 'wp_head', 'wp_head_style' );
+    $this->add_action( 'wp_footer', 'wp_footer_javascript' );
   }
 
+
+  /** De-register remote Google Font styles for local devs.
+  */
+  public function wp_enqueue_scripts() {
+    wp_deregister_style( 'tinyforge-fonts' );
+    wp_deregister_style( 'open-sans' );
+  }
 
   /** Custom CSS styles.
   */
@@ -65,6 +75,11 @@ class IET_Custom_Style_Plugin {
     $_KEY = strtoupper( $key );
     $default = !$default && defined( $_KEY ) ? constant( $_KEY ) : $default;
     return get_option( $key, $default );
+  }
+
+
+  protected function add_action( $hook, $function = '', $priority = 10 ) {
+    add_action( $hook, array( &$this, $function ), $priority );
   }
 
 }
