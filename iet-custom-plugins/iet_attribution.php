@@ -50,7 +50,7 @@ class IET_Attribution_Plugin {
 
     <style id="iet-attribution-css">
     .iet-attribution-part { margin: .85em 0; line-height: 1.55em; }
-    #iet-attribution-logo { height: 32px; }
+    #iet-attribution-logo { height: 35px; }
     #iet-attribution-logo svg { width: 44px; height: 44px; } /*Was: 32px*/
     #X--iet-attribution {
       background:
@@ -152,14 +152,16 @@ class IET_Attribution_Plugin {
       'Developed by <a href="http://mashe.hawksey.info/2013/10/building-an-evidence-hub-plugin-for-wordpress" title="Martin Hawksey">@mhawksey</a>
       and the <div><a href="http://iet.open.ac.uk/">Institute of Educational Technology</a> at The Open University</div>'
     ) ?>
-    <?php $this->svg_load_script() ?>
+    <?php $this->svg_load_javascript() ?>
     </div>
 
 <?php
   }
 
-
-  protected function svg_load_script( $url = null, $id = 'iet-attribution-logo' ) {
+  /** Embed SVG logo via Javascript.
+  * @link http://stackoverflow.com/questions/14068031/embedding-external-svg-in-html-for-javascript-manipulation#14070928
+  */
+  protected function svg_load_javascript( $url = null, $id = 'iet-attribution-logo' ) {
     $url = $url ? $url : $this->get_avatar_url( 'images/iet-ou-logo-400px.svg' ); #plugins_url('images/..svg', __FILE__ );
     ?>
   <div id="<?php echo $id ?>"></div>
@@ -167,6 +169,9 @@ class IET_Attribution_Plugin {
   (function (url, id) {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url, false);
+
+    if (!xhr.overrideMimeType) { return; } // MSIE 7/8 returns here..gracefully!
+
         // Following line is just to be on the safe side;
         // not needed if your server delivers SVG with correct MIME type
         xhr.overrideMimeType("image/svg+xml");
