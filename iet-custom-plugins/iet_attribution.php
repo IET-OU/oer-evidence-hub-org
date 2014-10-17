@@ -50,7 +50,8 @@ class IET_Attribution_Plugin {
 
     <style id="iet-attribution-css">
     .iet-attribution-part { margin: .85em 0; line-height: 1.55em; }
-    #iet-attribution-logo svg { width: 42px; height: 42px; } /*Was: 32px*/
+    #iet-attribution-logo { height: 32px; }
+    #iet-attribution-logo svg { width: 44px; height: 44px; } /*Was: 32px*/
     #X--iet-attribution {
       background:
         url(<?php echo $this->get_avatar_url( 'iet-webmaster@open.ac.uk' ) ?>) no-repeat bottom right;
