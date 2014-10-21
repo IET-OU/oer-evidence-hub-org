@@ -32,7 +32,7 @@ sym-links-common:
 	#ln -sf  ../../../custom-functions  $(PLUGIN_DIR)/jxl-custom-functions
 	ln -sf  ../../../iet-custom-plugins  $(PLUGIN_DIR)/iet-custom-plugins
 	#cd ../themes
-	ln -sf  ../../../tiny-forge/1.5.4.2  wordpress/wp-content/themes/tiny-forge
+	ln -sf  ../../../tiny-forge/1.5.9  wordpress/wp-content/themes/tiny-forge
 	ln -s ../../translations wordpress/wp-content/translations
 
 install-common: update sym-links-common
