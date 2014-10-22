@@ -25,7 +25,8 @@ help:
 
 sym-links-common:
 	#cd oer_evidence_hub/
-	ln -sf ../../../wordpress-importer/trunk $(PLUGIN_DIR)/wordpress-importer
+	ln -sf  ../../../google-universal-analytics $(PLUGIN_DIR)/google-universal-analytics
+	#ln -sf ../../../wordpress-importer/trunk $(PLUGIN_DIR)/wordpress-importer
 	ln -sf  ../../../wpmail-smtp  $(PLUGIN_DIR)/wpmail-smtp
 	ln -sf  ../../../wp-accessify $(PLUGIN_DIR)/wp-accessify
 	#ln -sf  ../../../ou-attribution  $(PLUGIN_DIR)/ou-attribution
