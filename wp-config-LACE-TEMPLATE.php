@@ -56,6 +56,10 @@ define('SMTP_PORT', 25);
 //define( 'IET_CUSTOM_STYLE_NO_GOOGLE_FONT', true );
 
 
+// Set to TRUE for LACE.
+define( 'EVIDENCE_POST_TYPE_NO_REWRITE', TRUE );
+
+
 /* LACE SVG logo, URL field, etc.
 *  @link https://github.com/mhawksey/wp-evidence-hub/issues/6
 *  @link https://github.com/mhawksey/wp-evidence-hub/issues/21
