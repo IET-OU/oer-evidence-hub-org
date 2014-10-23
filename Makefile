@@ -124,6 +124,9 @@ test-2:
 	ln -sf ../../../feedwordpress  $(PLUGIN_DIR)/feedwordpress
 	ln -sf ../../../google-sitemap-generator $(PLUGIN_DIR)/google-sitemap-generator
 
+
+.DEFAULT_GOAL: help
+
 .PHONY: help test jl-quiz-pot jl-hub-pot install-juxta install-oer install-lace install-common sym-links install-dev jl-quiz-lint
 
 #End.
