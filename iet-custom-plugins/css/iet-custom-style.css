@@ -26,6 +26,7 @@
 /*.type-page a[href *= 'page_id=114']:after {
   content: " (lock) ";
 }*/
+
 a[href] .icon-webfont {
   font-size: .85em;
   display: inline-block;
@@ -35,6 +36,15 @@ a[href] .icon-webfont {
 }
 a[href] .el-icon-user {
   display: none;
+}
+
+
+.tagcloud.x_display_count-after a:after {
+  content: "(" attr( title ) ")";
+  display: inline-block;
+  padding: 0 0.5em;
+  text-decoration: none;
+  color: #222;
 }
 
 
