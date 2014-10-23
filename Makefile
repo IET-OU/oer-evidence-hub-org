@@ -64,6 +64,7 @@ install-juxta: install-common
 	cp  ./wp-config-JUXTA-TEMPLATE.php  wordpress/wp-config.php
 	#git clone https://github.com/wp-plugins/slickquiz.git slickquiz
 	cp -r SlickQuiz-WordPress  wordpress/wp-content/plugins/slickquiz
+	ln -sf  ../../../duplicate-post  $(PLUGIN_DIR)/duplicate-post
 	ln -sf  ../../../wp-juxtalearn-hub  $(PLUGIN_DIR)/wp-juxtalearn-hub
 	ln -sf  ../../../wp-juxtalearn-quiz $(PLUGIN_DIR)/wp-juxtalearn-quiz
 	ln -sf  ../../../juxtalearn-clipit-client $(PLUGIN_DIR)/juxtalearn-clipit-client

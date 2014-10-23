@@ -37,3 +37,6 @@
 [submodule "google-universal-analytics"]
 	path = google-universal-analytics
 	url = https://github.com/wp-plugins/google-universal-analytics.git
+[submodule "duplicate-post"]
+	path = duplicate-post
+	url = https://github.com/wp-plugins/duplicate-post.git
