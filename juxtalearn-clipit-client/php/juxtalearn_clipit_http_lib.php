@@ -205,13 +205,14 @@ class JuxtaLearn_ClipIt_HTTP_Lib extends JuxtaLearn_ClipIt_Model {
   protected function file_logger( $data ) {
     $bytes = -1;
     if ($this->get_option( 'jxl_clipit_file_log' )) {  #Was: 'juxtalearn_clipit_client_file_log'
-      $path = $this->get_option( 'jxl_clipit_file_log_path', '/var/www/logs/{http_host}-clipit-client-{date+Y-m-d.H}.log' );
+      $path = $this->get_option( 'jxl_clipit_file_log_path',
+	      '/var/www/logs/{http_host}-clipit-client-{date+Y-m-d.H}.log' );
       $path = strtr( $path, array( '{http_host}' => $_SERVER[ 'HTTP_HOST' ] ));
       if (preg_match( '@\{date ?\+([^\}]+)\}@', $path, $matches)) {
         $path = str_replace( $matches[ 0 ], date($matches[ 1 ]), $path );
       }
       $bytes = file_put_contents( $path, json_encode( array(
-          date( 'c' ), $data ) ). "\n\n", FILE_APPEND );
+          date( 'c' ), $_SERVER[ 'REQUEST_URI' ], $data ) ). "\n\n", FILE_APPEND );
     }
     $this->debug( __FUNCTION__ .'; bytes='. $bytes );
     return $data;
