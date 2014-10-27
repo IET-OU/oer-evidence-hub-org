@@ -1,6 +1,10 @@
 /* IET_Custom_Style_Plugin.
 */
 
+.entry-header .entry-title {
+  color: #333;
+}
+
 
 /* LACE menu link(s).
 */
@@ -48,9 +52,94 @@ a[href] .el-icon-user {
 }
 
 
-/* JuxtaLearn...
+/* JuxtaLearn print.
+
+  TODO:  Inject author-name in quiz..
 */
 
+.entry-title {
+  width: 90%;
+}
+button.jxl-print {
+  background-color: #ddd;
+  color: #333; /*rgb(51, 51, 51)*/
+  font-size: 1em;
+  float: right;
+  padding: 3px 6px;
+  position: relative;
+  top: -2em;
+}
+.wp-admin .jxl-print {
+  background: #eee;
+  position: static;
+  font-size: .6em;
+  cursor: pointer;
+}
+.jxl-print i:before /*, .dashicons-lightbulb:before*/ {
+  font-family: "dashicons";
+  content: "\f339";
+  font-style: normal;
+  display: inline-block;
+  padding: 0 4px 0 0;
+}
+.home.page .jxl-print {
+  display: none;
+}
+
+@media print {
+
+  button.jxl-print,
+  #adminmenuwrap, #wpadminbar,
+  .message, .updated,
+  .wp-admin .leaflet-container,
+  .wp-admin .add-new-h2,
+  .wp-admin #wpfooter,
+  .wp-admin #screen-options-link-wrap,
+  .wp-admin #ed_toolbar,
+  .wp-admin #wp-content-editor-tools,
+  .wp-admin a.button {
+    display: none;
+  }
+
+  .wp-admin #wpcontent {
+    margin-left: 0;
+  }
+
+  .wp-admin .wp-editor-area {
+    height: 18em !important;
+    margin-top: 1em !important;
+  }
+
+  .wp-admin .wp-editor-wrap {
+    padding: 0 !important;
+    margin: 1em 0;
+    position: static;
+  }
+
+  .wp-admin .postbox {
+    page-break-inside: avoid;
+  }
+
+  .wp-admin.js .postbox.closed .inside {
+    display: block;
+  }
+}
+
+
+/* Slick Quiz print CSS.
+*/
+@media print {
+
+  .slickQuizWrapper .questions li.question {
+    display: block;
+  }
+
+  .slickQuizWrapper a.button,
+  .slickQuizWrapper .questionCount {
+    display: none !important;
+  }
+
+}
 
 
 /*End. */

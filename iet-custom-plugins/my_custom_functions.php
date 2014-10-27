@@ -34,14 +34,21 @@ class JxL_Custom_Functions {
 
   const DEV_SERVER_REGEX = '@(test|approval|acct|dev)@';
 
+  protected $host;
 
   public function __construct() {
+    $this->host = self::get_option( 'iet_custom_style_hostname', $_SERVER[ 'HTTP_HOST' ]);
+
     add_filter('admin_body_class', array(&$this, 'admin_body_class'));
     add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
     add_action('wp_enqueue_scripts', array(&$this, 'front_enqueue_scripts'));
 
     add_action('wp_head', array(&$this, 'head_custom_style'));
     add_action('wp_footer', array(&$this, 'footer_browser_sniff'));
+
+    if ($this->is_juxtalearn()) {
+      add_action( 'admin_footer', array( &$this, 'admin_footer_javascript' ));
+    }
 
     if (preg_match(self::DEV_SERVER_REGEX, $_SERVER['HTTP_HOST'])) {
       add_filter( 'robots_txt', array(&$this, 'robots_txt'), 10, 2 );
@@ -160,8 +167,31 @@ class JxL_Custom_Functions {
     <?php /*
     <script src="//cdn.jsdelivr.net/modernizr/2.7.1/modernizr.min.js"></script>
     <?php */
+
+    $this->print_button_javascript();
   }
 
+
+  protected function print_button_javascript( $selector = '.logged-in .entry-header', $title='' ) {
+    if (!$this->is_juxtalearn()) return;
+
+    $selector = json_encode( $selector );
+    $title = json_encode(esc_attr( $title ));
+    ?>
+
+  <script id="jxl-custom-functions-js">
+  jQuery(function ($) {
+    $(<?php echo $selector ?>).append(
+      '<button class="jxl-print" onclick="window.print()" title=<?php
+        echo $title ?>><i></i><span>Print</span></button>');
+  });
+  </script>
+<?php
+  }
+
+  public function admin_footer_javascript() {
+    $this->print_button_javascript( '.wp-admin.post-php h2', 'Try landscape to print "Edit" pages!' );
+  }
 
   // Utility.
 
@@ -173,8 +203,12 @@ class JxL_Custom_Functions {
    */
   public static function get_option( $key, $default = NULL ) {
     $_KEY = strtoupper( $key );
-    $default = !$default && defined( $_KEY ) ? constant( $_KEY ) : $default;
+    $default = /*!$default &&*/ defined( $_KEY ) ? constant( $_KEY ) : $default;
     return get_option( $key, $default );
+  }
+
+  protected function is_juxtalearn() {
+    return 'trickytopic.juxtalearn.net' == $this->host;
   }
 
 }

@@ -2,7 +2,7 @@
 /*
 Plugin Name: IET Custom Style
 Plugin URI:  https://github.com/IET-OU/wp-evidence-hub
-Description: Custom CSS for WordPress sites run by IET at The Open University [LACE].
+Description: Custom CSS for WordPress sites run by IET at The Open University [LACE]+
 Author:      Nick Freear [@IET-OU]
 Author URI:  https://github.com/IET-OU/
 Version:     0.1
@@ -18,7 +18,15 @@ define('IET_CUSTOM_STYLE_REGISTER_FILE', preg_replace('@\/var\/www\/[^\/]+@', ''
 
 class IET_Custom_Style_Plugin {
 
+  protected $host;
+
   public function __construct() {
+    $this->host = self::get_option( 'iet_custom_style_hostname', $_SERVER[ 'HTTP_HOST' ]);
+
+    if ($this->is_juxtalearn()) {
+      #$this->add_action( 'admin_enqueue_scripts', .. );
+      $this->add_action( 'admin_head', 'wp_head_style' );
+    }
     if ($this->get_option( 'iet_custom_style_no_google_font' )) {
       $this->add_action( 'wp_enqueue_scripts', 'wp_enqueue_scripts', 20 );
     }
@@ -55,10 +63,11 @@ class IET_Custom_Style_Plugin {
   /** Javascript to add a <html> class based on the hostname.
   */
   public function wp_footer_javascript() {
-    $host = json_encode(self::get_option( 'iet_custom_style_hostname' ));
+    $host = json_encode( $this->host );
     ?>
 
   <script>
+  //
   document.documentElement.className += " " + (<?php echo $host ?> || document.location.hostname).replace(/\./g, "-");
   </script>
 
@@ -73,13 +82,16 @@ class IET_Custom_Style_Plugin {
    */
   public static function get_option( $key, $default = NULL ) {
     $_KEY = strtoupper( $key );
-    $default = !$default && defined( $_KEY ) ? constant( $_KEY ) : $default;
+    $default = /*!$default &&*/ defined( $_KEY ) ? constant( $_KEY ) : $default;
     return get_option( $key, $default );
   }
 
-
   protected function add_action( $hook, $function = '', $priority = 10 ) {
     add_action( $hook, array( &$this, $function ), $priority );
+  }
+
+  protected function is_juxtalearn() {
+    return 'trickytopic.juxtalearn.net' == $this->host;
   }
 
 }
