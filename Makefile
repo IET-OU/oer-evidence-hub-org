@@ -11,16 +11,11 @@ JSHINT=../node_modules/jshint/bin/jshint
 
 
 help:
+	# OER Map/ JuxtaLearn/ LACE Evidence Hub installer.
 	@echo
-	@echo OER Map/ JuxtaLearn/ LACE Evidence Hub installer.
-	@echo
-	@echo "	Commands:"
-	@echo "		make install-oer"
-	@echo "		make install-juxta"
-	@echo "		make install-lace"
-	@echo "		make update"
-	@echo "		make jl-quiz-pot"
-	@echo "		make jl-quiz-lint"
+	# Available targets:
+	@echo "		install-oer, install-juxta, install-lace"
+	@echo "		update, jl-quiz-pot, jl-quiz-lint ..."
 	@echo
 
 sym-links-common:
@@ -76,8 +71,8 @@ update:
 	# git push origin quiz/CR1/scaffold:quiz/CR1/scaffold
 
 accessify:
-	git submodule update --init wp-accessify
-	cd wp-accessify; git submodule update --init; cd ..
+	git submodule update --init --recursive  wp-accessify
+	# cd wp-accessify; git submodule update --init; cd ..
 
 jl-quiz-pot:
 	# Extract text for translation (i18n) to GetText POT templates.
@@ -126,7 +121,7 @@ test-2:
 	ln -sf ../../../google-sitemap-generator $(PLUGIN_DIR)/google-sitemap-generator
 
 
-.DEFAULT_GOAL: help
+#.DEFAULT_GOAL: help
 
 .PHONY: help test jl-quiz-pot jl-hub-pot install-juxta install-oer install-lace install-common sym-links install-dev jl-quiz-lint
 

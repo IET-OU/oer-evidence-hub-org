@@ -54,6 +54,7 @@ define('SMTP_PORT', 25);
 
 // Set true for localhost development.
 //define( 'IET_CUSTOM_STYLE_NO_GOOGLE_FONT', true );
+//define( 'IET_CUSTOM_STYLE_HOSTNAME', 'evidence.laceproject.eu' );
 
 
 // Set to TRUE for LACE.
