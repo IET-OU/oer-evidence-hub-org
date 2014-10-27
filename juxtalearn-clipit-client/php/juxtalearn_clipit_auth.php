@@ -5,7 +5,8 @@
  * @copyright 2014 The Open University (IET).
  */
 require_once 'juxtalearn_clipit_worker.php';
-require_once 'juxtalearn-cookie-authentication/juxtalearn_cookie_authentication.php';
+require_once __DIR__ .
+  '/../lib/juxtalearn-cookie-authentication/juxtalearn_cookie_authentication.php';
 
 
 class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_Worker {
