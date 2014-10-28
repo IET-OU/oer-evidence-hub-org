@@ -40,3 +40,6 @@
 [submodule "duplicate-post"]
 	path = duplicate-post
 	url = https://github.com/wp-plugins/duplicate-post.git
+[submodule "iet-custom-plugins/html5shiv"]
+	path = iet-custom-plugins/html5shiv
+	url = https://github.com/aFarkas/html5shiv.git

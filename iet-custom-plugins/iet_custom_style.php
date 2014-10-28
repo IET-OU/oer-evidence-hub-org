@@ -30,7 +30,7 @@ class IET_Custom_Style_Plugin {
     if ($this->get_option( 'iet_custom_style_no_google_font' )) {
       $this->add_action( 'wp_enqueue_scripts', 'wp_enqueue_scripts', 20 );
     }
-    $this->add_action( 'wp_head', 'wp_head_style' );
+    $this->add_action( 'wp_head', 'wp_head_style', 999 );
     $this->add_action( 'wp_footer', 'wp_footer_javascript' );
   }
 
@@ -48,15 +48,20 @@ class IET_Custom_Style_Plugin {
 
     $css_selector = self::get_option( 'iet_custom_style_menu_special_selector',
         '.main-navigation ul > .menu-item-type-custom a[href *= clipit]' );
+    $custom_css = self::get_option( 'iet_custom_style_css' );
     ?>
 
-  <link rel="stylesheet" href="<?php echo plugins_url(
+  <link id="iet-custom-style-link" rel="stylesheet" href="<?php echo plugins_url(
         'css/iet-custom-style.css', IET_CUSTOM_STYLE_REGISTER_FILE ) ?>" />
-  <style id="iet-custom-style-plugin">
-  <?php echo self::get_option( 'iet_custom_style_css' ) ?>
+<?php if ($custom_css): ?>
+  <style id="iet-custom-style-css">
+  <?php echo $custom_css ?>
   </style>
 
 <?php
+    endif;
+
+    $this->msie_print_shiv();
   }
 
 
@@ -74,6 +79,19 @@ class IET_Custom_Style_Plugin {
 <?php
   }
 
+
+  /** HTML5 print shiv/shim for Internet Explorer [Bug: #31].
+  */
+  protected function msie_print_shiv() {
+    if (!$this->is_juxtalearn()) return; ?>
+<!--[if lt IE 9]>
+  <script src="<?php echo plugins_url(
+      'html5shiv/dist/html5shiv-printshiv.min.js',
+      IET_CUSTOM_STYLE_REGISTER_FILE ) ?>"></script>
+<![endif]-->
+
+<?php
+  }
 
   /** Get values for a named option from the options database table.
    * Uses WordPress `get_option()`. Falls back to a PHP defined() constant.
