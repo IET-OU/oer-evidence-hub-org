@@ -66,6 +66,37 @@ a[href] .el-icon-user {
 }
 
 
+/* ===================================================== */
+
+/* JuxtaLearn ClipIt menu link.
+*/
+.trickytopic-juxtalearn-net .main-navigation li {
+  margin: 0 1.7rem 0 0;  /*right: 2.85rem, 2rem*/
+}
+.trickytopic-juxtalearn-net .main-navigation li:last-child {
+  margin: 0;
+}
+/* Option:jxl_menu_clipit_selector */
+.trickytopic-juxtalearn-net .main-navigation ul > .menu-item-type-custom a[href *= clipit] {
+  text-transform: none;  /*uppercase*/
+  color: #32b4e5;  /* Option:jxl_menu_clipit_color */
+  background: #fbfbfb;
+  border: 1px solid #32b4e5; /*#0066cc, #32b4e5, #f7931e*/
+  border-radius: 3px;
+  line-height: 1.6em;
+  padding: 3px 11px;
+  font-weight: bold;
+  font-size: 1.15em;
+}
+.trickytopic-juxtalearn-net .main-navigation ul > .menu-item-type-custom a[href *= clipit]:hover {
+  background: #f6f6f6;
+  border-color: #fc9f00;
+  color: #fc9f00;  /*orange*/
+}
+
+
+/* ===================================================== */
+
 /* JuxtaLearn print CSS [Bug: #31]
 
   TODO:  Inject author-name in quiz..

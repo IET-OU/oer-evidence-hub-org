@@ -43,7 +43,7 @@ class JxL_Custom_Functions {
     add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
     add_action('wp_enqueue_scripts', array(&$this, 'front_enqueue_scripts'));
 
-    add_action('wp_head', array(&$this, 'head_custom_style'));
+    //add_action('wp_head', array(&$this, 'head_custom_style'));
     add_action('wp_footer', array(&$this, 'footer_browser_sniff'));
 
     if (self::is_juxtalearn()) {
@@ -58,45 +58,6 @@ class JxL_Custom_Functions {
     add_filter('body_class', array(&$this, 'body_class'));
 
     $this->security_remove_wp_links();
-  }
-
-
-  public function head_custom_style() {
-    $css_selector = self::get_option( 'jxl_menu_clipit_selector',
-        '.main-navigation ul > .menu-item-type-custom a[href *= clipit]' );
-        //'.main-navigation ul #menu-item-609 a' );
-    $css_color    = self::get_option( 'jxl_menu_clipit_color', '#32b4e5' );
-    $css_custom   = self::get_option( 'jxl_custom_style', '/* Option:jxl_custom_style */' );
-      ?>
-  <style id=jxl-custom-style >
-  /* ClipIt menu link.
-  */
-  body .main-navigation li {
-    margin: 0 1.7rem 0 0;  /*right: 2.85rem, 2rem*/
-  }
-  body .main-navigation li:last-child {
-    margin: 0;
-  }
-  /* Option:jxl_menu_clipit_selector */
-  body <?php echo $css_selector ?> {
-    text-transform: none;  /*uppercase*/
-    color: <?php echo $css_color ?>;  /* Option:jxl_menu_clipit_color */
-    background: #fbfbfb;
-    border: 1px solid <?php echo $css_color ?>; /*#0066cc, #32b4e5, #f7931e*/
-    border-radius: 3px;
-    line-height: 1.6em;
-    padding: 3px 11px;
-    font-weight: bold;
-    font-size: 1.15em;
-  }
-  body <?php echo $css_selector ?>:hover {
-    background: #f6f6f6;
-    border-color: #fc9f00;
-    color: #fc9f00;  /*orange*/
-  }
-  <?php echo $css_custom ?>
-  </style>
-    <?php
   }
 
 
