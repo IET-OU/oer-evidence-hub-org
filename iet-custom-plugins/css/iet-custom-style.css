@@ -1,6 +1,20 @@
 /* IET_Custom_Style_Plugin.
 */
 
+.test-site .site-header h1 a {
+  color: orange;
+}
+
+.trickytopic-juxtalearn-net .site-header h1 {
+  padding-left: .1em;
+  letter-spacing: 0.12em;
+}
+
+.evidence-laceproject-eu .site-header h1 {
+  letter-spacing: 0.03em;
+}
+
+
 .entry-header .entry-title {
   color: #333;
 }
@@ -52,7 +66,7 @@ a[href] .el-icon-user {
 }
 
 
-/* JuxtaLearn print.
+/* JuxtaLearn print CSS [Bug: #31]
 
   TODO:  Inject author-name in quiz..
 */

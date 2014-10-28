@@ -32,12 +32,12 @@ define('JXL_CUSTOM_FUNC_REGISTER_FILE',
 
 class JxL_Custom_Functions {
 
-  const DEV_SERVER_REGEX = '@(test|approval|acct|dev)@';
+  const TEST_SERVER_REGEX = '@(test|approval|acct|dev|localhost)@';
 
-  protected $host;
+  protected static $host;
 
   public function __construct() {
-    $this->host = self::get_option( 'iet_custom_style_hostname', $_SERVER[ 'HTTP_HOST' ]);
+    self::$host = self::get_option( 'iet_custom_style_hostname', $_SERVER[ 'HTTP_HOST' ]);
 
     add_filter('admin_body_class', array(&$this, 'admin_body_class'));
     add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
@@ -46,16 +46,16 @@ class JxL_Custom_Functions {
     add_action('wp_head', array(&$this, 'head_custom_style'));
     add_action('wp_footer', array(&$this, 'footer_browser_sniff'));
 
-    if ($this->is_juxtalearn()) {
+    if (self::is_juxtalearn()) {
       add_action( 'admin_footer', array( &$this, 'admin_footer_javascript' ));
     }
 
-    if (preg_match(self::DEV_SERVER_REGEX, $_SERVER['HTTP_HOST'])) {
+    if (self::is_test_site()) {
       add_filter( 'robots_txt', array(&$this, 'robots_txt'), 10, 2 );
     }
 
-    add_filter('admin_body_class', array(&$this, 'debug_body_class'));
-    add_filter('body_class', array(&$this, 'debug_body_class'));
+    add_filter('admin_body_class', array(&$this, 'body_class'));
+    add_filter('body_class', array(&$this, 'body_class'));
 
     $this->security_remove_wp_links();
   }
@@ -100,13 +100,22 @@ class JxL_Custom_Functions {
   }
 
 
-  public function debug_body_class( $classes ) {
-    if (!isset($_GET['debug'])) return $classes;
+  public function body_class( $classes ) {
 
-    if (is_array($classes)) {
-      $classes[] = 'debug';
-    } else {
-      $classes .= ' debug';  //'admin_body_class'
+    if (self::is_debug()) {
+      if (is_array( $classes )) {
+        $classes[] = 'debug';
+      } else {
+        $classes .= ' debug';  //'admin_body_class'
+      }
+    }
+
+    if (self::is_test_site()) {
+      if (is_array( $classes )) {
+        $classes[] = 'test-site';
+      } else {
+        $classes .= ' test-site';
+      }
     }
     return $classes;
   }
@@ -173,7 +182,7 @@ class JxL_Custom_Functions {
 
 
   protected function print_button_javascript( $selector = '.logged-in .entry-header', $title='' ) {
-    if (!$this->is_juxtalearn()) return;
+    if (!self::is_juxtalearn()) return;
 
     $selector = json_encode( $selector );
     $title = json_encode(esc_attr( $title ));
@@ -207,8 +216,16 @@ class JxL_Custom_Functions {
     return get_option( $key, $default );
   }
 
-  protected function is_juxtalearn() {
-    return 'trickytopic.juxtalearn.net' == $this->host;
+  public static function is_debug() {
+    return isset($_GET[ 'debug' ]);
+  }
+
+  public static function is_test_site() {
+    return preg_match( self::TEST_SERVER_REGEX, $_SERVER[ 'HTTP_HOST' ]);
+  }
+
+  public function is_juxtalearn() {
+    return 'trickytopic.juxtalearn.net' == self::$host;
   }
 
 }
