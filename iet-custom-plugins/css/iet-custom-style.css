@@ -1,12 +1,12 @@
 /* IET_Custom_Style_Plugin.
 */
 
-.test-site .site-header h1 a {
+.X-test-site .site-header h1 a {
   color: orange;
 }
 
 .trickytopic-juxtalearn-net .site-header h1 {
-  padding-left: .1em;
+  padding-left: 0.1em;
   letter-spacing: 0.12em;
 }
 
@@ -17,6 +17,30 @@
 
 .entry-header .entry-title {
   color: #333;
+}
+
+
+/* SVG maps, charts and logos.
+*/
+.trickytopic-juxtalearn-net svg #barchart .positive,
+.trickytopic-juxtalearn-net svg #map circle.positive {
+  fill: #32b4e5;
+}
+
+.evidence-laceproject-eu svg #barchart .positive,
+.evidence-laceproject-eu svg #map circle.positive {
+  fill: #43672B;  /* LACE green */
+}
+.evidence-laceproject-eu svg #barchart .negative,
+.evidence-laceproject-eu svg #map circle.negative {
+  fill: #596190;  /* LACE blue */
+}
+
+.evidence-laceproject-eu #iet-attribution-logo svg g {
+  fill: #43672B;
+}
+.trickytopic-juxtalearn-net #iet-attribution-logo svg g {
+  fill: #1daa9e;
 }
 
 

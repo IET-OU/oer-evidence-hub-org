@@ -70,7 +70,7 @@ define( 'EVIDENCE_POST_TYPE_NO_REWRITE', TRUE );
 *  (OER Hub orange:	rgb(255, 146, 6); )
 *  (IET pink:		#e52771;  rgb(229, 39, 113); )
 */
-define( 'WP_EVIDENCE_HUB_SVG_STYLE',
+define( '_M_WP_EVIDENCE_HUB_SVG_STYLE',
     'svg #barchart .positive, svg #map circle.positive {
   fill: #43672B;  x-LACE-green: 1;
 }
@@ -91,7 +91,7 @@ define( 'IET_ATTRIBUTION_COPYRIGHT_HTML',
   '&copy; %s <a href="http://www.laceproject.eu/"><abbr title=' .
   '"Learning Analytics Community Exchange">LACE</abbr> Consortium</a> and contributors' );
 define( 'IET_ATTRIBUTION_LICENSE_CURIE', 'cc:by/4.0/88x31' );
-define( 'IET_ATTRIBUTION_CSS', '#iet-attribution-logo svg g { fill: #43672B; }' );
+define( '_M_IET_ATTRIBUTION_CSS', '#iet-attribution-logo svg g { fill: #43672B; }' );
 #define( 'IET_ATTRIBUTION_AVATAR_ID', 'images/iet-logo-lace-green-28px.png' );
 
 

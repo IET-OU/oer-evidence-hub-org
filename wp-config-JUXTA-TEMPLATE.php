@@ -84,7 +84,7 @@ define( 'JXL_CLIPIT_AUTH_ACCOUNT_CONNECT_RE', '@(Chem|Drama)1\d?@' );
 define( 'IET_ATTRIBUTION_COPYRIGHT_HTML',
   '&copy; %s <a href="http://juxtalearn.eu/">JuxtaLearn project</a> partners &amp; contributors' );
 define( 'IET_ATTRIBUTION_LICENSE_CURIE', NULL );  #'cc:by/4.0/88x31' );
-define( 'IET_ATTRIBUTION_CSS', '#iet-attribution-logo svg g { fill: #1daa9e; }' );  //Was: #32b4e5;
+define( '_M_IET_ATTRIBUTION_CSS', '#iet-attribution-logo svg g { fill: #1daa9e; }' );  //Was: #32b4e5;
 
 
 /**#@+
