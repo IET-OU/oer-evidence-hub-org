@@ -78,14 +78,7 @@ html body.simple-embed .site {
 
   Quiz score visualizations.
 */
-#jlq-score h2 {
-  font-size: 1.4em;
-  margin: .3em 0;
-}
-#jlq-score table th {
-  font-size: 1.2em;
-  min-width: 7em;
-}
+
 .entry-content #jlq-score table {
   color: #333;
 }

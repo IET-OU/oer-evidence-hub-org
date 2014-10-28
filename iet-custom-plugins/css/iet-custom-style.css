@@ -119,6 +119,17 @@ a[href] .el-icon-user {
 }
 
 
+/* JuxtaLearn - quiz score visualizations.
+*/
+#jlq-score h2 {
+  font-size: 1.4em;
+  margin: .3em 0;
+}
+#jlq-score table th, #jlq-score table td {
+  font-size: 1.3em;
+  min-width: 7em;
+}
+
 /* ===================================================== */
 
 /* JuxtaLearn print CSS [Bug: #31]
@@ -157,6 +168,16 @@ button.jxl-print {
 
 @media print {
 
+  .entry-content {
+    text-align: left;
+  }
+
+  .entry-content a:link:after,
+  .entry-content a:visited:after {
+    font-size: 0.8em;
+    letter-spacing: -0.05em;
+  }
+
   button.jxl-print,
   #adminmenuwrap, #wpadminbar,
   .message, .updated,
@@ -166,7 +187,8 @@ button.jxl-print {
   .wp-admin #screen-options-link-wrap,
   .wp-admin #ed_toolbar,
   .wp-admin #wp-content-editor-tools,
-  .wp-admin a.button {
+  .wp-admin a.button,
+  #jlq-links-recent-switch {
     display: none;
   }
 
