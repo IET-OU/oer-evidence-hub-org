@@ -155,13 +155,16 @@ button.jxl-print {
   font-size: .6em;
   cursor: pointer;
 }
-.jxl-print i:before /*, .dashicons-lightbulb:before*/ {
-  font-family: "dashicons";
-  content: "\f339";
+.jxl-print i:before /*, .el-icon-print:before, .dashicons-lightbulb:before*/ {
+  font-family: "Elusive-Icons";
+  content: "\e660";
+  /*font-family: "dashicons";
+  content: "\f339";*/
   font-style: normal;
   display: inline-block;
   padding: 0 4px 0 0;
 }
+.wp-admin .jxl-print i,
 .home.page .jxl-print {
   display: none;
 }

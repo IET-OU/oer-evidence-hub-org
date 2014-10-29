@@ -142,8 +142,13 @@ class JxL_Custom_Functions {
   }
 
 
-  protected function print_button_javascript( $selector = '.logged-in .entry-header', $title='' ) {
+  protected function print_button_javascript( $selector = NULL, $title='' ) {
     if (!self::is_juxtalearn()) return;
+
+    if (!$selector) {
+      $selector = self::get_option( 'jxl_custom_fn_print_button_selector',
+        '.entry-header, .wp-admin.post-php h2' );
+    }
 
     $selector = json_encode( $selector );
     $title = json_encode(esc_attr( $title ));
@@ -160,7 +165,7 @@ class JxL_Custom_Functions {
   }
 
   public function admin_footer_javascript() {
-    $this->print_button_javascript( '.wp-admin.post-php h2', 'Try landscape to print "Edit" pages!' );
+    $this->print_button_javascript( NULL, 'Try landscape to print "Edit" pages!' );
   }
 
   // Utility.
