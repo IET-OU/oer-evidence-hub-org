@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: IET Custom Style
-Plugin URI:  https://github.com/IET-OU/wp-evidence-hub
+Plugin URI:  https://github.com/IET-OU/oer-evidence-hub-org
 Description: Custom CSS for WordPress sites run by IET at The Open University [LACE]+
 Author:      Nick Freear [@IET-OU]
-Author URI:  https://github.com/IET-OU/
-Version:     0.1
+Author URI:  https://github.com/IET-OU
+Version:     0.2
 */
 
 

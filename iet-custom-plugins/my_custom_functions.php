@@ -1,27 +1,23 @@
 <?php
 /*
-Plugin Name: JuxtaLearn Custom Functions
+Plugin Name: IET Custom Functions
 Plugin URI:  https://gist.github.com/nfreear/9049532
-Description: Search user-interface hack; admin UI simplifications for teachers/editors [JuxtaLearn].
-Author:  Nick Freear
+Description: Search user-interface hack; admin UI simplifications for teachers/editors; print button... [JuxtaLearn]+.
+Author:      Nick Freear [@IET-OU]
 Author URI:  https://github.com/IET-OU/oer-evidence-hub-org/#Juxtalearn
-Version:  1.2
+Version:     1.3
 */
-// FILE: juxtalearn_hub/wordpress/wp-content/plugins/my-custom-functions.php
 
 // http://wphidedash.org/2011/04/best-practice-for-adding-custom-functions/
 // http://wpmututorials.com/basics/what-is-the-mu-plugins-folder/
 
 
-/* Disallow direct access to the plugin file */
-
 if (basename($_SERVER['PHP_SELF']) == basename (__FILE__)) {
         die('Sorry, but you cannot access this page directly.');
 }
 
-/** START ADDING CODE BELOW THIS LINE **/
 
-define('JXL_CUSTOM_FUNC_REGISTER_FILE',
+define('IET_CUSTOM_FUNC_REGISTER_FILE',
   preg_replace('@/Users/[^\/]+/[^\/]+/[^\/]+@', '',    # Mac OS X
     preg_replace('@\/var\/www\/[^\/]+@', '', __FILE__) # Linux
 ));
@@ -30,7 +26,7 @@ define('JXL_CUSTOM_FUNC_REGISTER_FILE',
 //remove_filter ('the_content', 'wpautop');
 
 
-class JxL_Custom_Functions {
+class IET_Custom_Functions {
 
   const TEST_SERVER_REGEX = '@(test|approval|acct|dev|localhost)@';
 
@@ -91,16 +87,16 @@ class JxL_Custom_Functions {
 
 
   public function admin_enqueue_scripts() {
-    wp_enqueue_style('my-custom-functions-admin', plugins_url(
-      'css/custom-admin.css', JXL_CUSTOM_FUNC_REGISTER_FILE
+    wp_enqueue_style( 'iet-custom-functions-admin', plugins_url(
+      'css/custom-admin.css', IET_CUSTOM_FUNC_REGISTER_FILE
     ));
   }
 
 
   public function front_enqueue_scripts() {
-    wp_enqueue_script('my-custom-functions-front', plugins_url(
-      'js/facetious-hack.js', JXL_CUSTOM_FUNC_REGISTER_FILE
-    ), array('jquery'), false, $in_footer = TRUE);
+    wp_enqueue_script( 'iet-custom-functions-front', plugins_url(
+      'js/facetious-hack.js', IET_CUSTOM_FUNC_REGISTER_FILE
+    ), array( 'jquery' ), false, $in_footer = TRUE );
   }
 
 
@@ -146,7 +142,7 @@ class JxL_Custom_Functions {
     if (!self::is_juxtalearn()) return;
 
     if (!$selector) {
-      $selector = self::get_option( 'jxl_custom_fn_print_button_selector',
+      $selector = self::get_option( 'iet_custom_fn_print_button_selector',
         '.entry-header, .wp-admin.post-php h2' );
     }
 
@@ -154,7 +150,7 @@ class JxL_Custom_Functions {
     $title = json_encode(esc_attr( $title ));
     ?>
 
-  <script id="jxl-custom-functions-js">
+  <script id="iet-custom-functions-js">
   jQuery(function ($) {
     $(<?php echo $selector ?>).append(
       '<button class="jxl-print" onclick="window.print()" title=<?php
@@ -168,10 +164,10 @@ class JxL_Custom_Functions {
     $this->print_button_javascript( NULL, 'Try landscape to print "Edit" pages!' );
   }
 
-  // Utility.
 
-  /**
-   * Get values for a named option from the options database table.
+  // Utilities.
+
+  /** Get values for a named option from the options database table.
    * Uses WordPress `get_option()`. Falls back to a PHP defined() constant.
    *
    * @link https://codex.wordpress.org/Function_Reference/get_option
@@ -195,9 +191,7 @@ class JxL_Custom_Functions {
   }
 
 }
-$jxl_custom_functions = new JxL_Custom_Functions();
+$iet_custom_functions = new IET_Custom_Functions();
 
 
-/** STOP ADDING CODE NOW**/
-
-/* That's all folks! */
+#End.
