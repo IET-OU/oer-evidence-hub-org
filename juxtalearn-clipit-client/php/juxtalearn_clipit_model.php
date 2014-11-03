@@ -89,6 +89,10 @@ class JuxtaLearn_ClipIt_Model {
           $properties[ 'resource_url' ] = $meta->meta_value ? $meta->meta_value : NULL;
           break;
         case 'juxtalearn_hub_trickytopic_id':
+          if ('student_problem' == $post->post_type && $this->get_option( 'jxl_clipit_student_problem_no_tricky_topic' )) {
+            $this->debug( 'No tricky topic reference in student problem' );
+            break;
+          }
           $properties[ 'tricky_topic' ] = $this->post_get_clipit_id( $meta->meta_value );
           break;
         case 'juxtalearn_hub_location_id': //TODO: Not used.
