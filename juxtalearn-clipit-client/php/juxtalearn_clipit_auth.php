@@ -35,11 +35,11 @@ class JuxtaLearn_ClipIt_Auth extends JuxtaLearn_ClipIt_Worker {
       // Allow users to login if they need to!!
       $this->debug( 'Cookie auth: exclude login/logout/register pages' );
     } else {
-      add_action('init', array(&$this, 'init_authenticate'));
-      add_action('admin_init', array(&$this, 'init_authenticate'));
+      $this->add_action( 'init', 'init_authenticate' );
+      $this->add_action( 'admin_init', 'init_authenticate' );
     }
 
-    add_action('wp_ajax_clipit_cookie', array(&$this, 'clipit_cookie_test'));
+    $this->add_action( 'wp_ajax_clipit_cookie', 'clipit_cookie_test' );
   }
 
 

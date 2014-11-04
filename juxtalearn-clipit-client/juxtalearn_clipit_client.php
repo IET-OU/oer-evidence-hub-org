@@ -42,14 +42,14 @@ class JuxtaLearn_ClipIt_Client_Plugin extends JuxtaLearn_ClipIt_Auth {
   public function __construct() {
     parent::__construct();
 
-    add_action( 'save_post', array(&$this, 'save_post') );  #Was: 'save_post_to_clipit'
-    add_action( 'pre_post_update', array( &$this, 'pre_post_update_to_clipit' ));
-    add_action( 'publish_post', array( &$this, 'publish_post_to_clipit' ));
-    add_action( 'slickquiz_save_quiz', array(&$this, 'save_quiz_to_clipit') );
-    add_action( 'juxtalearn_quiz_save_score', array(&$this, 'save_score_to_clipit') );
+    $this->add_action( 'save_post', 'save_post' );  #Was: 'save_post_to_clipit'
+    $this->add_action( 'pre_post_update', 'pre_post_update_to_clipit' );
+    $this->add_action( 'publish_post', 'publish_post_to_clipit' );
+    $this->add_action( 'slickquiz_save_quiz', 'save_quiz_to_clipit' );
+    $this->add_action( 'juxtalearn_quiz_save_score', 'save_score_to_clipit' );
 
-    add_action( 'wp_ajax_clipit_props_test', array(&$this, 'clipit_properties_test') );
-    add_action( 'wp_ajax_clipit_quiz_test', array(&$this, 'clipit_quiz_test') );
+    $this->add_action( 'wp_ajax_clipit_props_test', 'clipit_properties_test' );
+    $this->add_action( 'wp_ajax_clipit_quiz_test', 'clipit_quiz_test' );
 
   }
 

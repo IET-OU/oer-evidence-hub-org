@@ -33,11 +33,11 @@ class JuxtaLearn_ClipIt_HTTP_Lib extends JuxtaLearn_ClipIt_Model {
     }
     $this->debug(array( 'clipit_url' => $this->get_option( 'jxl_clipit_base_url' )));
 
-    add_action('admin_notices', array(&$this, 'admin_notices'));
-    add_action( 'admin_init', array(&$this, 'ajax_authenticate') );
+    $this->add_action( 'admin_notices', 'admin_notices' );
+    $this->add_action( 'admin_init', 'ajax_authenticate' );
 
-    add_action( 'current_screen', array( &$this, 'admin_screen_debug' ));
-    add_action( 'wp_ajax_clipit_test', array(&$this, 'clipit_api_test') );
+    $this->add_action( 'current_screen', 'admin_screen_debug' );
+    $this->add_action( 'wp_ajax_clipit_test', 'clipit_api_test' );
   }
 
 
@@ -223,6 +223,11 @@ class JuxtaLearn_ClipIt_HTTP_Lib extends JuxtaLearn_ClipIt_Model {
   protected function get_token() {
     return $this->auth_token;
   }
+
+  protected function add_action( $hook, $function, $priority = 10, $accepted_args = 1 ) {
+    add_action( $hook, array( &$this, $function ), $priority, $accepted_args );
+  }
+
   protected function error( $text ) {
     return $this->message( $text, 'error' );
   }

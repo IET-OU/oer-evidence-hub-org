@@ -12,14 +12,14 @@ Version:     1.3
 // http://wpmututorials.com/basics/what-is-the-mu-plugins-folder/
 
 
-if (basename($_SERVER['PHP_SELF']) == basename (__FILE__)) {
-        die('Sorry, but you cannot access this page directly.');
+if (basename($_SERVER[ 'PHP_SELF' ]) == basename( __FILE__ )) {
+    die( 'Sorry, but you cannot access this page directly.' );
 }
 
 
-define('IET_CUSTOM_FUNC_REGISTER_FILE',
-  preg_replace('@/Users/[^\/]+/[^\/]+/[^\/]+@', '',    # Mac OS X
-    preg_replace('@\/var\/www\/[^\/]+@', '', __FILE__) # Linux
+define( 'IET_CUSTOM_FUNC_REGISTER_FILE',
+  preg_replace( '@/Users/[^\/]+/[^\/]+/[^\/]+@', '',    # Mac OS X
+    preg_replace( '@\/var\/www\/[^\/]+@', '', __FILE__) # Linux
 ));
 
 //http://wordpress.org/support/topic/stop-wordpress-from-adding-p-tags-and-removing-line-break
@@ -32,18 +32,19 @@ class IET_Custom_Functions {
 
   protected static $host;
 
+
   public function __construct() {
     self::$host = self::get_option( 'iet_custom_style_hostname', $_SERVER[ 'HTTP_HOST' ]);
 
     add_filter('admin_body_class', array(&$this, 'admin_body_class'));
-    add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
-    add_action('wp_enqueue_scripts', array(&$this, 'front_enqueue_scripts'));
+    $this->add_action( 'admin_enqueue_scripts', 'admin_enqueue_scripts' );
+    $this->add_action( 'wp_enqueue_scripts', 'front_enqueue_scripts' );
 
     //add_action('wp_head', array(&$this, 'head_custom_style'));
-    add_action('wp_footer', array(&$this, 'footer_browser_sniff'));
+    $this->add_action( 'wp_footer', 'footer_browser_sniff' );
 
     if (self::is_juxtalearn()) {
-      add_action( 'admin_footer', array( &$this, 'admin_footer_javascript' ));
+      $this->add_action( 'admin_footer', 'admin_footer_javascript' );
     }
 
     if (self::is_test_site()) {
@@ -167,6 +168,10 @@ class IET_Custom_Functions {
 
   // Utilities.
 
+  protected function add_action( $hook, $function, $priority = 10, $accepted_args = 1 ) {
+    add_action( $hook, array( &$this, $function ), $priority, $accepted_args );
+  }
+
   /** Get values for a named option from the options database table.
    * Uses WordPress `get_option()`. Falls back to a PHP defined() constant.
    *
@@ -186,7 +191,7 @@ class IET_Custom_Functions {
     return preg_match( self::TEST_SERVER_REGEX, $_SERVER[ 'HTTP_HOST' ]);
   }
 
-  public function is_juxtalearn() {
+  public static function is_juxtalearn() {
     return 'trickytopic.juxtalearn.net' == self::$host;
   }
 
