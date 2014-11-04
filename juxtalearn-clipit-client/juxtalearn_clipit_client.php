@@ -44,6 +44,7 @@ class JuxtaLearn_ClipIt_Client_Plugin extends JuxtaLearn_ClipIt_Auth {
 
     add_action( 'save_post', array(&$this, 'save_post') );  #Was: 'save_post_to_clipit'
     add_action( 'pre_post_update', array( &$this, 'pre_post_update_to_clipit' ));
+    add_action( 'publish_post', array( &$this, 'publish_post_to_clipit' ));
     add_action( 'slickquiz_save_quiz', array(&$this, 'save_quiz_to_clipit') );
     add_action( 'juxtalearn_quiz_save_score', array(&$this, 'save_score_to_clipit') );
 
@@ -137,11 +138,19 @@ class JuxtaLearn_ClipIt_Client_Plugin extends JuxtaLearn_ClipIt_Auth {
   }
 
 
+  public function publish_post_to_clipit( $ID, $post ) {
+    $this->debug( __FUNCTION__ );
+    $this->file_logger(array( __FUNCTION__, 'x_post_id' => $ID ));
+
+    return $this->pre_post_update_to_clipit( $ID, __FUNCTION__ );
+  }
+
   /** WordPress action to create or update a JuxtaLearn object in ClipIt.
   * Handles WP post-types: Tricky Topic, Student Problem, STA/Teaching activity.
   * @param int $post_id
   */
-  public function pre_post_update_to_clipit( $post_id ) {
+  public function pre_post_update_to_clipit( $post_id, $function_name = NULL ) {
+    $function_name = $function_name ? $function_name : __FUNCTION__;
     $post_type = get_post_type( $post_id );
 
     if ('publish' != get_post_status( $post_id )) {
@@ -157,8 +166,8 @@ class JuxtaLearn_ClipIt_Client_Plugin extends JuxtaLearn_ClipIt_Auth {
 
     $clipit_id = $this->post_get_clipit_id( $post_id );
 
-    $this->debug( __FUNCTION__ .'. Clipit ID: '. $clipit_id );
-    $this->file_logger(array( __FUNCTION__, 'clipit_id' => $clipit_id, 'post_id' => $post_id ));
+    $this->debug( $function_name .'. Clipit ID: '. $clipit_id );
+    $this->file_logger(array( $function_name, 'clipit_id' => $clipit_id, 'post_id' => $post_id ));
 
     $clipit_type = strtolower(str_replace('Clipit', '', self::$types_map[ $post_type ]));
     $clipit_method = $clipit_type .'.';
