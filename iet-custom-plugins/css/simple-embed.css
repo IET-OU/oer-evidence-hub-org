@@ -3,8 +3,9 @@
 
 .simple-embed .site > header,
 .simple-embed .site > footer,
-#wpadminbar,
-#secondary {
+.simple-embed article > footer,
+.simple-embed #wpadminbar,
+.simple-embed #secondary {
   display: none;
 }
 

@@ -60,8 +60,7 @@ class JuxtaLearn_Quiz_Shortcode_User_Quiz_Scores extends JuxtaLearn_Quiz_Shortco
 
     <!--JLQ AUTH: <?php echo $auth_reason ?> -->
 
-    <h3 ><?php echo $user->user_nicename ?></h3><?php
-
+    <?php
     $warn = sprintf(__('no scores yet for this user, ID: %d', self::LOC_DOMAIN), $user_id);
     if (count($user_scores) < 1): ?>
       <p class="jl-error-msg no-sc"><?php echo sprintf(
@@ -71,20 +70,22 @@ class JuxtaLearn_Quiz_Shortcode_User_Quiz_Scores extends JuxtaLearn_Quiz_Shortco
 
     ob_start();
     ?>
-    <ul id=score-list >
+    <div id="jlq-score"><table id="score-list">
+    <tr><th> Score </th><th> Date </th><th> Quiz </th></tr>
 
   <?php
     foreach ($user_scores as $sc): ?>
-      <li><a href="<?php echo $sc->score_url ?>"><?php echo $sc->score ?></a>
-        <span><?php echo $sc->createdDate ?></span>
-        <a href="<?php echo $sc->quiz_url ?>"><?php echo $sc->name ?></a>
+      <tr><td><a href="<?php echo $sc->score_url ?>"><?php echo $sc->score ?></a>
+        </td><td><span><?php echo $sc->createdDate ?></span></td><td>
+        <a href="<?php echo $sc->quiz_url ?>"><?php echo $sc->name ?></a></td></tr>
 
   <?php
     endforeach;
-    ?></ul>
+    ?></table></div>
 
   <?php
     $this->print_utility_javascripts( $user_scores );
+    $this->amend_title_javascript( $user->user_nicename );
     $this->end();
 
     return ob_get_clean();

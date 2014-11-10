@@ -21,6 +21,27 @@ abstract class JuxtaLearn_Quiz_Shortcode extends JuxtaLearn_Quiz_Model {
   }
 
 
+  protected function amend_title_javascript( $replacement, $page_replace = 'ID: $1' ) {
+    $replacement = json_encode( $replacement );
+    $page_replace = json_encode( $page_replace ); ?>
+  <script>
+  jQuery(function ($) {
+    var
+      $post_title = $(".entry-title:first"),
+      $page_title = $("title:first"),
+      text = $post_title.html(),
+      new_val = <?php echo $replacement ?>,
+      replace = text.match(/%s/) ? text.replace("%s", new_val) : new_val;
+
+    $post_title.html(replace);
+    $page_title.html($page_title.html()
+        .replace(text, replace).replace(/Page (\d+)/, <?php echo $page_replace ?>));
+  });
+  </script>
+<?php
+  }
+
+
   protected function end($shortcode = NULL) {
     $shortcode = $shortcode ? $shortcode : get_class($this) .' jxl-'. static::SHORTCODE;
     ?>
