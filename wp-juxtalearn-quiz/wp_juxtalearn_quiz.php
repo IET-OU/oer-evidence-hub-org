@@ -47,6 +47,9 @@ class Wp_JuxtaLearn_Quiz_Plugin extends JuxtaLearn_Quiz_Model {
     require_once 'shortcodes/quiz_list.php';
     $shortcode_quiz_list = new JuxtaLearn_Quiz_Shortcode_List();
 
+    require_once 'shortcodes/user_quiz_scores.php';
+    $shortcode_user_scores = new JuxtaLearn_Quiz_Shortcode_User_Quiz_Scores();
+
     $this->plugin_name = basename( dirname( __FILE__ ) ) . '/' . basename( __FILE__ );
 
     // Activate for New Installs

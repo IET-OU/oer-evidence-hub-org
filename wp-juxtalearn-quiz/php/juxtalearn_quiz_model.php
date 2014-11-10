@@ -25,6 +25,7 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
 
   // Was: 'juxtalearn-quiz-score/'
   const SCORE_URL = 'quiz-score/%d/';
+  const USER_SCORES_URL = 'user-quiz-scores/%d/';
   const QUIZ_URL  = 'juxtalearn-quiz/%d/';
   const TT_URL    = 'trickytopic/%s/';
 

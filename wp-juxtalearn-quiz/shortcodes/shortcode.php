@@ -16,8 +16,13 @@ abstract class JuxtaLearn_Quiz_Shortcode extends JuxtaLearn_Quiz_Model {
   const SHORTCODE = 'jl-quiz-shortcode';
 
 
+  protected function add_shortcode( $func ) {
+    add_shortcode( static::SHORTCODE, array( &$this, $func ));
+  }
+
+
   protected function end($shortcode = NULL) {
-    $shortcode = $shortcode ? $shortcode : get_class($this);
+    $shortcode = $shortcode ? $shortcode : get_class($this) .' jxl-'. static::SHORTCODE;
     ?>
   <script>
   document.documentElement.className += " jxl-shortcode <?php echo $shortcode ?>";
@@ -48,6 +53,9 @@ abstract class JuxtaLearn_Quiz_Shortcode extends JuxtaLearn_Quiz_Model {
     $b_continue = TRUE;
     $current_user = wp_get_current_user();
 
+    if (!$this->user_exists( $user_id )) {
+      return ! $b_continue;
+    }
     if ('public' == $permission) {
       $reason = 'permission public';
       return $b_continue;
@@ -69,6 +77,19 @@ abstract class JuxtaLearn_Quiz_Shortcode extends JuxtaLearn_Quiz_Model {
     <?php 
     return ! $b_continue;
   }
+
+
+  protected function user_exists( $user_id ) {
+    $user_exists = is_user_member_of_blog( $user_id );
+    if (!$user_exists): ?>
+    <script> document.documentElement.className += " jl-q-error 404 "; </script>
+    <p class=jl-error-msg ><?php echo
+        __('SORRY! (404) This user does not exist.') ?></p>
+<?php
+    endif;
+    return $user_exists;
+  }
+
 
   protected function error_404($reason = NULL) {
     @header("X-JuxtaLearn-Error: missing or invalid score ID.");
