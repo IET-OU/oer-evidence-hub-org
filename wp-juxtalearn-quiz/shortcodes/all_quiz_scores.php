@@ -16,7 +16,7 @@ class JuxtaLearn_Quiz_Shortcode_All_Quiz_Scores extends JuxtaLearn_Quiz_Shortcod
   const SHORTCODE = 'all_quiz_scores';
 
   public function __construct() {
-    add_shortcode(self::SHORTCODE, array(&$this, 'all_scores_shortcode'));
+    $this->add_shortcode( 'all_scores_shortcode' );
   }
 
 

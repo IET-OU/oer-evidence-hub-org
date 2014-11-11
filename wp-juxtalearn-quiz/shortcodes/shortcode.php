@@ -90,38 +90,34 @@ abstract class JuxtaLearn_Quiz_Shortcode extends JuxtaLearn_Quiz_Model {
       $reason = 'is editor';
       return $b_continue;
     }
-    status_header(403);
-  ?>
-    <script> document.documentElement.className += " jl-q-error 403 "; </script>
-    <p class=jl-error-msg ><?php echo
-        __('SORRY! (403) You don\'t have permission to access this page.') ?></p>
-    <?php 
+    $this->error_message(__( "You don't have permission to access this page." ), 403 );
     return ! $b_continue;
   }
 
 
   protected function user_exists( $user_id ) {
     $user_exists = is_user_member_of_blog( $user_id );
-    if (!$user_exists): ?>
-    <script> document.documentElement.className += " jl-q-error 404 "; </script>
-    <p class=jl-error-msg ><?php echo
-        __('SORRY! (404) This user does not exist.') ?></p>
-<?php
-    endif;
+    if (!$user_exists) {
+      $this->error_message(sprintf(__( 'This user does not exist, %s', self::LOC_DOMAIN ), $user_id ), 404);
+    }
     return $user_exists;
   }
 
 
-  protected function error_404($reason = NULL) {
-    @header("X-JuxtaLearn-Error: missing or invalid score ID.");
-    status_header(404);
-    nocache_headers();
+  protected function error_message( $reason, $http_code = 400, $template = NULL ) {
+    $template = $template ? $template : __( 'SORRY! (%2$s) %1$s', self::LOC_DOMAIN );
+    @header( 'X-JuxtaLearn-Error: '. $reason );
+    status_header( $http_code ); ?>
+    <script> document.documentElement.className += " jl-q-error $http_code "; </script>
+    <p class="jl-error-msg"><i class="el-icon-warning-sign"></i> <?php
+      echo sprintf( $template, $reason, $http_code )?></p><?php
+  }
 
-    if (!$reason) $reason = __('missing score ID.', self::LOC_DOMAIN);
-  ?>
-    <script> document.documentElement.className += " jl-q-error 404 "; </script>
-    <p class=jl-error-msg ><?php echo sprintf(
-        __('ERROR (404). Reason: %s', self::LOC_DOMAIN), $reason);
+
+  protected function error_404($reason = NULL) {
+    if (!$reason) $reason = __( 'Missing or invalid score ID.', self::LOC_DOMAIN );
+
+    $this->error_message( $reason, 404 );
     include( get_404_template() );
     exit;
   }

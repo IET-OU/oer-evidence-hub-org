@@ -15,7 +15,7 @@ class JuxtaLearn_Quiz_Shortcode_List extends JuxtaLearn_Quiz_Shortcode {
   const SHORTCODE = 'quiz_list';
 
   public function __construct() {
-    add_shortcode(self::SHORTCODE, array(&$this, 'quiz_list_shortcode'));
+    $this->add_shortcode( 'quiz_list_shortcode' );
   }
 
 

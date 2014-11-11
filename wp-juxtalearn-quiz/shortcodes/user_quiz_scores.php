@@ -20,7 +20,7 @@ class JuxtaLearn_Quiz_Shortcode_User_Quiz_Scores extends JuxtaLearn_Quiz_Shortco
 
     add_action( 'show_user_profile', array( &$this, 'show_user_profile' ));
     add_action( 'edit_user_profile', array( &$this, 'show_user_profile' ));
-    
+
     add_action( 'admin_bar_menu', array( &$this, 'admin_bar_menu' ), 100);
   }
 
@@ -32,11 +32,13 @@ class JuxtaLearn_Quiz_Shortcode_User_Quiz_Scores extends JuxtaLearn_Quiz_Shortco
   }
 
   public function admin_bar_menu( $wp_admin_bar ) {
+    $icon = '<i class="dashicons-before dashicons-awards"></i>';
     $wp_admin_bar->add_node(array(
       'id' => 'jlq-user-scores',
       'parent' => 'user-actions', //'my-account',
-      'title' => 'View my quiz scores',
+      'title' => '<span>'. __( 'My Quiz Scores', self::LOC_DOMAIN ) .'</span> '. $icon,
       'href' => $this->user_scores_url(),
+      'meta' => array('title' => __( 'View My Quiz Scores', self::LOC_DOMAIN )),
     ));
   }
 
@@ -61,12 +63,11 @@ class JuxtaLearn_Quiz_Shortcode_User_Quiz_Scores extends JuxtaLearn_Quiz_Shortco
     <!--JLQ AUTH: <?php echo $auth_reason ?> -->
 
     <?php
-    $warn = sprintf(__('no scores yet for this user, ID: %d', self::LOC_DOMAIN), $user_id);
-    if (count($user_scores) < 1): ?>
-      <p class="jl-error-msg no-sc"><?php echo sprintf(
-        __('Warning: %s', self::LOC_DOMAIN), $warn) ?></p>
-      <?php return; ?>
-    <?php endif;
+    $warn = sprintf(__('No scores yet for this user, ID: %s', self::LOC_DOMAIN), $user_id);
+    if (count( $user_scores ) < 1) {
+      $this->error_message( $warn, 404 );
+      return;
+    }
 
     ob_start();
     ?>

@@ -30,7 +30,7 @@ class JuxtaLearn_Quiz_Shortcode_Score extends JuxtaLearn_Quiz_Shortcode {
 
 
   public function __construct() {
-    add_shortcode(self::SHORTCODE, array(&$this, 'quiz_score_shortcode'));
+    $this->add_shortcode( 'quiz_score_shortcode' );
   }
 
   protected function set_score_options() {
