@@ -58,6 +58,7 @@ class Wp_JuxtaLearn_Quiz_Plugin extends JuxtaLearn_Quiz_Model {
     // Activate for Updates
     add_action( 'plugins_loaded', array( &$this, 'activate' ) );
 
+    $this->add_ajax( 'redirect', 'ajax_redirect' );
   }
 
 
@@ -67,6 +68,29 @@ class Wp_JuxtaLearn_Quiz_Plugin extends JuxtaLearn_Quiz_Model {
     #$this->create_quiz_table();
     $this->create_scaffold_table();
     $this->create_score_table();
+  }
+
+#/wp-admin/admin-ajax.php?action=juxtalearn_quiz_redirect&s=user_quiz_scores&u=chem8+chem8
+  public function ajax_redirect() {
+    $shortcodes = array( 'all_quiz_scores', 'quiz_list', 'quiz_score', 'user_quiz_scores' );
+    $shortcode = $this->_get( 's' );
+    $user_name = explode( ' ', $this->_get( 'u' ));
+    $url = $user = NULL;
+
+    if (in_array( $shortcode, $shortcodes )) {
+
+      if ('user_quiz_scores' == $shortcode) {
+
+        $user = get_user_by( 'slug', $user_name[ 0 ] );
+
+        if ($user) {
+          $url = site_url( str_replace( '_', '-', $shortcode) . '/' . $user->ID );
+          header( 'Location: ' . $url );
+          exit;
+        }
+      }
+    }
+    var_dump( $shortcode, $user_name, $url, $user );
   }
 
 }
