@@ -11,9 +11,14 @@ class JuxtaLearn_Quiz_API_Helper {
 
   const LOC_DOMAIN = Wp_JuxtaLearn_Quiz_Plugin::LOC_DOMAIN;
   const NONCE_ACTION = 'wp-admin/admin-ajax.php';
+  const AJAX_ACT = 'wp_ajax_juxtalearn_quiz_';
 
   protected $note;
 
+
+  protected function add_ajax( $hook, $function, $priority = 10 ) {
+    add_action( self::AJAX_ACT . $hook, array(&$this, $function), $priority );
+  }
 
   protected function api_init() {
     #error_reporting(E_ALL);

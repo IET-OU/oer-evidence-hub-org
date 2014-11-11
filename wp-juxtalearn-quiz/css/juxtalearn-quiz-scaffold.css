@@ -127,3 +127,16 @@
   content: "\f185"; /*.dashicons-chart-bar*/
   font-family: "dashicons";
 }
+.wp-admin .slickQuiz .table_scores .jlq-nn {
+  display: inline-block;
+  padding: 0;
+  min-width: 1.2em;
+  text-align: right;
+}
+/* Accessibility.
+*/
+.wp-admin .slickQuiz .table_scores .jlq-nn i, .offscreen {
+  display: block;
+  position: absolute;
+  top: -999px;
+}

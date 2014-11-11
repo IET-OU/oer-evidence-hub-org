@@ -42,6 +42,7 @@ class JuxtaLearn_Quiz_Shortcode_User_Quiz_Scores extends JuxtaLearn_Quiz_Shortco
     ));
   }
 
+
   /** WP shortcode action.
   */
   public function user_scores_shortcode( $attrs, $content = '', $name ) {
@@ -58,6 +59,7 @@ class JuxtaLearn_Quiz_Shortcode_User_Quiz_Scores extends JuxtaLearn_Quiz_Shortco
     }
 
     $user = get_user_by( 'id', $user_id );
+    $user_name = $user->user_nicename;
     ?>
 
     <!--JLQ AUTH: <?php echo $auth_reason ?> -->
@@ -71,7 +73,8 @@ class JuxtaLearn_Quiz_Shortcode_User_Quiz_Scores extends JuxtaLearn_Quiz_Shortco
 
     ob_start();
     ?>
-    <div id="jlq-score"><table id="score-list">
+    <div id="jlq-score" data-user_name="<?php echo esc_attr( $user_name )?>" data-user_id="<?php echo esc_attr( $user_id )?>">
+    <table id="score-list">
     <tr><th> Score </th><th> Date </th><th> Quiz </th></tr>
 
   <?php
@@ -86,7 +89,7 @@ class JuxtaLearn_Quiz_Shortcode_User_Quiz_Scores extends JuxtaLearn_Quiz_Shortco
 
   <?php
     $this->print_utility_javascripts( $user_scores );
-    $this->amend_title_javascript( $user->user_nicename );
+    $this->amend_title_javascript( $user_name );
     $this->end();
 
     return ob_get_clean();

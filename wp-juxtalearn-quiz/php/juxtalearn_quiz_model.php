@@ -387,6 +387,18 @@ class JuxtaLearn_Quiz_Model extends JuxtaLearn_Quiz_Create_Table  {
     ) );
   }
 
+  protected function count_scores_for_all_quizzes() {
+    global $wpdb;
+    $db_name = $wpdb->prefix . self::DB_SQ_SCORES;
+    $results = $wpdb->get_results( "SELECT COUNT(quiz_id) AS count_scores, quiz_id
+      FROM $db_name GROUP BY quiz_id");
+    $counts = array();
+    foreach ($results as $obj) {
+      $counts[ $obj->quiz_id ] = $obj->count_scores;
+    }
+    return $counts;
+  }
+
   // Legacy.
   protected function update_data($key, $values) {
     $result = $this->get_data($key);

@@ -19,13 +19,12 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
 
   public function __construct() {
 
-    $AJAX_ACT = 'wp_ajax_juxtalearn_quiz_';
-    add_action($AJAX_ACT . 'stumbling_blocks', array(&$this, 'ajax_get_stumbles'));
-    add_action($AJAX_ACT . 'student_problems', array(&$this, 'ajax_get_student_problems'));
+    $this->add_ajax( 'stumbling_blocks', 'ajax_get_stumbles' );
+    $this->add_ajax( 'student_problems', 'ajax_get_student_problems');
     //add_action('admin_init', array(&$this, 'admin_init'));
 
     if (defined('JXL_QUIZ_LEGACY_SAVE')) {
-      add_action($AJAX_ACT . 'edit', array(&$this, 'ajax_post_quiz_edit'));
+      $this->add_action( 'edit', 'ajax_post_quiz_edit' );
     } else {
       add_action( 'slickquiz_save_quiz', array(&$this, 'slickquiz_save_quiz') );
     }
@@ -35,7 +34,7 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
       add_action('admin_notices', array(&$this, 'admin_notices'));
     }
 
-    if ($this->is_quiz_edit_page()) {
+    if ($this->is_quiz_admin_page()) { //$this->is_quiz_edit_page()) {
       //add_filter('slickquiz_admin_options', array(&$this, 'custom_admin_options'));
 
       add_action('admin_print_footer_scripts', array(&$this, 'admin_footer_templates'));
@@ -44,6 +43,10 @@ class JuxtaLearn_Quiz_Scaffold extends JuxtaLearn_Quiz_Model {
 
   protected function is_quiz_admin_page() {
     return preg_match('/^slickquiz/', $this->_get('page'));
+  }
+
+  protected function is_quiz_list_page() {
+    return 'slickquiz' == $this->_get('page');
   }
 
   protected function is_quiz_edit_page() {
@@ -279,11 +282,25 @@ HTML;
     wp_enqueue_style('quiz-scaffold', plugins_url(
       'css/juxtalearn-quiz-scaffold.css', JUXTALEARN_QUIZ_REGISTER_FILE
     ));
+    wp_enqueue_script('when-call-js', plugins_url(
+      'js/when-call.js', JUXTALEARN_QUIZ_REGISTER_FILE
+    )); //, $scripts, false, $in_footer = FALSE);
   }
 
   public function admin_footer_templates() {
   //public function custom_admin_options( $options ) {
     //var_dump($GLOBALS['hook_suffix']); 'admin_page_slickquiz-edit'
+
+    if ($this->is_quiz_list_page()) {
+      $count_scores = $this->count_scores_for_all_quizzes(); ?>
+
+    <script id="jlq-score-counts">
+    JXL_Q_SCAFFOLD = window.JXL_Q_SCAFFOLD || {};
+
+    JXL_Q_SCAFFOLD.score_counts = <?php echo json_encode( $count_scores ) ?>;
+    </script>
+<?php
+    }
 
     if (!$this->is_quiz_edit_page()) return;
 

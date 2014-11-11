@@ -1,6 +1,8 @@
 /* JuxtaLearn Quiz - scaffolding for the SlickQuiz editor.
 */
 
+JXL_Q_SCAFFOLD = window.JXL_Q_SCAFFOLD || {};
+
 jQuery(function ($) {
 
   'use strict';
@@ -13,12 +15,18 @@ jQuery(function ($) {
     scores_url = 'all-quiz-scores/%d/',
     artificial_delay = 0, //Was: 100, 150ms.
     tricky_topic_id,
-    stumbling_blocks;
+    stumbling_blocks,
+    G = JXL_Q_SCAFFOLD;
 
-  log(">> JuxtaLearn Quiz scaffold.", qEdit);
+  when_call(function () {
+    return G.score_counts;
+  }, function () {
+    log(">> JuxtaLearn Quiz scaffold.", qEdit, G);
+
+    quiz_admin_table_links();
+  });
 
   quiz_edit_default_texts();
-  quiz_admin_table_links();
 
   // Quiz editor - insert scaffolding templates into page.
   $(".jlq-template").each(function (idx, el) {
@@ -283,7 +291,9 @@ jQuery(function ($) {
       var text = $(el).text(),
         $row = $(el).closest("tr"),
         $scores = $row.children(".table_scores"),
+        $score_link = $scores.children("a[href *= slickquiz-scores&]"),
         quiz_id = $row.children(".table_id").text(),
+        sc_count = G.score_counts[quiz_id] || 0,
         qz_url = site_url(quiz_url).replace("%d", quiz_id),
         sc_url = site_url(scores_url).replace("%d", quiz_id);
 
@@ -293,11 +303,16 @@ jQuery(function ($) {
           ' <a href="' + qz_url + '?embed=1" title="' + _t("Embed quiz: %s")
           .replace("%s", text) + '">' + _t("Embed") + '</a>');
 
+      $score_link.append('<i class=jlq-nn >%s<i> attempts</i></i>'.replace(/%s/, sc_count))
+          .attr("title", _t("View scores. Attempts: %s").replace(/%s/, sc_count))
+          .addClass("'jlq-sc");
+
       $scores.append(' <a class=jlq-v href="' + sc_url +
-          '" title="' + _t("Visualize quiz scores") +
+          '" title="' + _t("Visualize quiz scores. Attempts: %s")
+              .replace(/%s/, sc_count) +
           '"><span>' + _t("Visualize") + '</span></a>');
 
-      log(">> Quiz admin table:", text, qz_url);
+      log(">> Quiz admin table:", text, qz_url, quiz_id, sc_count);
     });
   }
 
@@ -311,7 +326,7 @@ jQuery(function ($) {
 window.log = function () {
   log.history = log.history || [];   // store logs to an array for reference
   log.history.push(arguments);
-  if (this.console) {
+  if (this.console && window.location.href.match(/(test|debug)/)) {
     console.log( Array.prototype.slice.call(arguments) );
   }
 };
