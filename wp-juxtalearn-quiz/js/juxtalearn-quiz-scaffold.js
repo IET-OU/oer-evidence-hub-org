@@ -12,7 +12,8 @@ jQuery(function ($) {
     stumblesAction = 'juxtalearn_quiz_stumbling_blocks',
     problemsAction = 'juxtalearn_quiz_student_problems',
     quiz_url = 'juxtalearn-quiz/%d/',
-    scores_url = 'all-quiz-scores/%d/',
+    score_url = 'quiz-score/%d/',
+    all_scores_url = 'all-quiz-scores/%d/',
     artificial_delay = 0, //Was: 100, 150ms.
     tricky_topic_id,
     stumbling_blocks,
@@ -26,6 +27,7 @@ jQuery(function ($) {
     quiz_admin_table_links();
   });
 
+  quiz_score_table_links();
   quiz_edit_default_texts();
 
   // Quiz editor - insert scaffolding templates into page.
@@ -283,6 +285,21 @@ jQuery(function ($) {
     $hd.html(ht.replace("SlickQuiz", _t("SlickQuiz<i>/ JuxtaLearn</i>")));
   }
 
+  function quiz_score_table_links() {
+    var $tbl_scores = $("table.quiz_scores td.table_score", qEdit);
+
+    $tbl_scores.each(function (j, el) {
+      var
+        $score = $(el),
+        $row = $score.closest("tr"),
+        score_id = $row.children(".table_id").text(),
+        sc_url = site_url(score_url).replace("%d", score_id);
+
+      $score.append(' <a class=jlq-v href="' + sc_url + '" title="' +
+        _t("Visualize quiz score") + '" ><span>' + _t("Visualize") + '</span></a>');
+    });
+  }
+
   //Was: add_admin_table_links()
   function quiz_admin_table_links() {
     var $tbl_name = $("table.quizzes td.table_name", qEdit);
@@ -295,20 +312,20 @@ jQuery(function ($) {
         quiz_id = $row.children(".table_id").text(),
         sc_count = G.score_counts[quiz_id] || 0,
         qz_url = site_url(quiz_url).replace("%d", quiz_id),
-        sc_url = site_url(scores_url).replace("%d", quiz_id);
+        sc_url = site_url(all_scores_url).replace("%d", quiz_id);
 
       //if (!/^\d+/.test(quiz_id)) return;
 
       $(el).html('<a class=jlq-q href="' + qz_url + '">' + text + '</a>' +
-          ' <a href="' + qz_url + '?embed=1" title="' + _t("Embed quiz: %s")
+          ' <a href="' + qz_url + '?embed=1" title="' + _t("Embed the quiz: %s")
           .replace("%s", text) + '">' + _t("Embed") + '</a>');
 
       $score_link.append('<i class=jlq-nn >%s<i> attempts</i></i>'.replace(/%s/, sc_count))
-          .attr("title", _t("View scores. Attempts: %s").replace(/%s/, sc_count))
+          .attr("title", _t("View scores.\n\u2219 Attempts: %s").replace(/%s/, sc_count))
           .addClass("'jlq-sc");
 
       $scores.append(' <a class=jlq-v href="' + sc_url +
-          '" title="' + _t("Visualize quiz scores. Attempts: %s")
+          '" title="' + _t("Visualize quiz scores.\n\u2219 Attempts: %s")
               .replace(/%s/, sc_count) +
           '"><span>' + _t("Visualize") + '</span></a>');
 
