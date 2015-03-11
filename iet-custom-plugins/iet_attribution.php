@@ -15,6 +15,8 @@ License: GPL2+
 *
 * define( 'IET_ATTRIBUTION_DEVELOPED_BY_HTML', '[ © %s <a href>PROJECT</a> - custom HTML ]' );
 * define( 'IET_ATTRIBUTION_AVATAR_ID', 'name@example' );
+* define( 'IET_ATTRIBUTION_URL', 'http://example.org' );
+* define( 'IET_ATTRIBUTION_NAME', '[ Example Organization Name ]' );
 * define( 'IET_ATTRIBUTION_CSS', '[ custom CSS styles ]' );
 * define( 'IET_ATTRIBUTION_FORK_ME_URL', 'https://github.com/example/project' );
 * define( 'IET_ATTRIBUTION_LICENSE_CURIE', 'cc:by/4.0/88x31' );
@@ -50,7 +52,8 @@ class IET_Attribution_Plugin {
 
     <style id="iet-attribution-css">
     .iet-attribution-part { margin: .85em 0; line-height: 1.55em; }
-    #iet-attribution-logo { height: 35px; }
+    #iet-attribution-logo { display: block; height: 35px; }
+    #iet-attribution-logo:hover svg { outline: 1px solid #bbb; }
     #iet-attribution-logo svg { width: 44px; height: 44px; } /*Was: 32px*/
     #X--iet-attribution {
       background:
@@ -60,7 +63,7 @@ class IET_Attribution_Plugin {
     #iet-fork-me img { position: absolute; top: 0; right: 0; border: 0; z-index: 100010; }
 
     #site-generator a[href *= 'wordpress.org'], .el-icon-wordpress { display: none; }
-	#site-generator { max-width: 200px; max-width: 26rem;  x-max: 14.286rem; }
+    #site-generator { max-width: 200px; max-width: 30rem;  x-max: 14.286rem; }
     #site-info { max-width: 500px; max-width: 35rem;  x-max: 750px, 53.571rem; }
     #site-info, #site-generator { font-size: .77rem; }
     <?php $this->print_option( 'iet_attribution_css', '' ) ?>
@@ -163,8 +166,11 @@ class IET_Attribution_Plugin {
   */
   protected function svg_load_javascript( $url = null, $id = 'iet-attribution-logo' ) {
     $url = $url ? $url : $this->get_avatar_url( 'images/iet-ou-logo-400px.svg' ); #plugins_url('images/..svg', __FILE__ );
-    ?>
-  <div id="<?php echo $id ?>"></div>
+    $name = $this->get_option( 'iet_attribution_name', 'Institute of Educational Technology' );
+     ?>
+  <a id="<?php echo $id ?>"
+    href="<?php $this->print_option( 'iet_attribution_url', 'http://iet.open.ac.uk/' ) ?>"
+    title="<?php echo $name ?>" aria-label="<?php echo $name ?>" ></a>
   <script>
   (function (url, id) {
     var xhr = new XMLHttpRequest();
@@ -195,7 +201,7 @@ class IET_Attribution_Plugin {
       id="iet-fork-me"
       href="<?php $this->print_option(
         'iet_attribution_fork_me_url',
-        'https://github.com/IET-OU/oer-evidence-hub-org' ) ?>"
+        'https://github.com/IET-OU/oer-evidence-hub-org#contributors' ) ?>"
       ><img src=
 "https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67"
       alt="Fork me on GitHub" title="Fork me on GitHub"
@@ -206,7 +212,7 @@ class IET_Attribution_Plugin {
     <div id="iet-view-code" class="iet-attribution-part"><a
       href="<?php $this->print_option(
         'iet_attribution_fork_me_url',
-        'https://github.com/IET-OU/oer-evidence-hub-org' ) ?>"
+        'https://github.com/IET-OU/oer-evidence-hub-org#contributors' ) ?>"
       >View source code on GitHub</a></div>
 <?php
     endif;

@@ -9,7 +9,7 @@ The web sites:
 
 Principle WordPress plugins:
 
-* [@mhawksey/wp-evidence-hub][]
+* [@IET-OU/wp-evidence-hub][]
 * [@IET-OU/wp-juxtalearn-hub][]
 * [@IET-OU/oer-ev ../wp-juxtalearn-quiz][]
 * [@IET-OU/oer-ev ../juxtalearn-clipit-client][]
@@ -23,8 +23,9 @@ Other plugins and libraries:
 
 Demos/blog posts:
 
-* Demo:  http://sites.hawksey.info/oerhub
+* Demo:  <http://sites.hawksey.info/oerhub>
 * Martin Hawksey's blog: [mashe.hawksey.info/2013/10/building-an-evidence-..][blog-build-plugin]
+* [Rob Farrow's blog about OER Map][blog-oer-map]
 
 (Note, the OER Impact Map site was called the "OER Evidence Hub".)
 
@@ -87,8 +88,22 @@ Please refer to [installing WordPress][wp-install], and [@mhawksey's Readme][plu
 
 Tiny Forge, version 1.4.1 - a snapshot is included in this Git repo.
 
-* http://wordpress.org/themes/tiny-forge
+* <http://wordpress.org/themes/tiny-forge>
 
+
+## Contributors
+
+* [@IET-OU/wp-evidence-hub][] - project: [OER Research Hub][]:
+    * [Martin Hawksey][] (original developer)
+    * Rob Farrow (lead researcher)
+    * Nick Freear (developer)
+* [@IET-OU/wp-juxtalearn-hub][], [@IET-OU/oer-ev ../wp-juxtalearn-quiz], [@IET-OU/oer-ev ../juxtalearn-clipit-client] - project: [JuxtaLearn]:
+    * Nick Freear (developer)
+    * Gill Clough (lead researcher)
+    * Martin Hawksey (developer, wp-juxtalearn-hub)
+
+---
+© 2015 The Open University. ([Institute of Educational Technology][])
 
 
 [wp-install]: http://codex.wordpress.org/Installing_WordPress
@@ -99,8 +114,8 @@ Tiny Forge, version 1.4.1 - a snapshot is included in this Git repo.
 [submodules]: http://git-scm.com/book/en/Git-Tools-Submodules
 [submodules-cheat]: http://blog.jacius.info/git-submodule-cheat-sheet/
 
-[@mhawksey/wp-evidence-hub]:  https://github.com/mhawksey/wp-evidence-hub
-[@IET-OU/wp-juxtalearn-hub]:  https://github.com/IET-OU/wp-juxtalearn-hub
+[@IET-OU/wp-evidence-hub]:   https://github.com/mhawksey/wp-evidence-hub
+[@IET-OU/wp-juxtalearn-hub]: https://github.com/IET-OU/wp-juxtalearn-hub
 [@IET-OU/oer-ev ../wp-juxtalearn-quiz]:
     https://github.com/IET-OU/oer-evidence-hub-org/tree/juxtalearn/wp-juxtalearn-quiz
 [@IET-OU/oer-ev ../juxtalearn-clipit-client]: https://github.com/IET-OU/oer-evidence-hub-org/tree/juxtalearn/juxtalearn-clipit-client
@@ -110,6 +125,10 @@ Tiny Forge, version 1.4.1 - a snapshot is included in this Git repo.
 [@juxtalearn/juxtalearn-cookie-authentication]: https://github.com/juxtalearn/juxtalearn-cookie-authentication
 [@nfreear/wp-accessify]:  https://github.com/nfreear/wp-accessify
 [@jewlofthelotus/SlickQuiz-WordPress]: https://github.com/jewlofthelotus/SlickQuiz-WordPress
-
+[Martin Hawksey]: https://mashe.hawksey.info/
+[OER Research Hub]: http://oerresearchhub.org/
+[blog-oer-map]: http://oerresearchhub.org/2014/05/14/visit-oer-impact-map-for-evidence-of-oer-impact/
+[JuxtaLearn]: http://juxtalearn.eu/
+[Institute of Educational Technology]: http://iet.open.ac.uk/
 
 [End]: http://example
