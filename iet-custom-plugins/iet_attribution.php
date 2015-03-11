@@ -152,8 +152,9 @@ class IET_Attribution_Plugin {
     <div id="iet-attribution" class="iet-attribution-part">
     <?php $this->print_option(
       'iet_attribution_developed_by_html',
-      'Developed by <a href="http://mashe.hawksey.info/2013/10/building-an-evidence-hub-plugin-for-wordpress" title="Martin Hawksey">@mhawksey</a>
-      and the <div><a href="http://iet.open.ac.uk/">Institute of Educational Technology</a> at The Open University</div>'
+      'Based on free/open source code developed for <a href=
+      "http://oerresearchhub.org/">OER Research Hub</a> at the
+      <div><a href="http://iet.open.ac.uk/">Institute of Educational Technology</a> at The Open University</div>'
     ) ?>
     <?php $this->svg_load_javascript() ?>
     </div>
@@ -213,7 +214,7 @@ class IET_Attribution_Plugin {
       href="<?php $this->print_option(
         'iet_attribution_fork_me_url',
         'https://github.com/IET-OU/oer-evidence-hub-org#contributors' ) ?>"
-      >View source code on GitHub</a></div>
+      >View source code &amp; contributors on GitHub</a></div>
 <?php
     endif;
   }

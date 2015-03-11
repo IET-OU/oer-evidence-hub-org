@@ -88,7 +88,7 @@ define( 'WP_EVIDENCE_HUB_URL_FIELD', TRUE );
 /* IET attribution.
 */
 define( 'IET_ATTRIBUTION_COPYRIGHT_HTML',
-  '&copy; %s <a href="http://www.laceproject.eu/"><abbr title=' .
+  'Content &copy; %s <a href="http://www.laceproject.eu/"><abbr title=' .
   '"Learning Analytics Community Exchange">LACE</abbr> Consortium</a> and contributors' );
 define( 'IET_ATTRIBUTION_LICENSE_CURIE', 'cc:by/4.0/88x31' );
 define( '_M_IET_ATTRIBUTION_CSS', '#iet-attribution-logo svg g { fill: #43672B; }' );

@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: LACE Javascript
-Plugin URI:  https://github.com/IET-OU/wp-evidence-hub
+Plugin URI:  https://github.com/IET-OU/oer-evidence-hub-org
 Description: Fix error page etc. for the WordPress site run by IET at The Open University [LACE] [Bug: #27]
 Author:      Nick Freear [@IET-OU]
 Author URI:  https://github.com/IET-OU/
