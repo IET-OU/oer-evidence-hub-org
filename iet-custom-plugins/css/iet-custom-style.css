@@ -46,18 +46,23 @@
 
 /* LACE menu link(s).
 */
+.evidence-laceproject-eu .main-navigation li a {
+  font-size: 1.15em;
+  color: #43673B;
+}
+.evidence-laceproject-eu .main-navigation .sub-menu li a {
+  font-size: 1em;
+}
 .evidence-laceproject-eu .main-navigation li a[href *= 'www.laceproject'],
 .evidence-laceproject-eu .main-navigation .menu-item-121 > a {
-  x-display: inline-block;
   text-transform: none; /*uppercase*/
   background: #fcfcfc;
-  color: #43673B;
-  border: 1px solid #43672B;
+  color: #555;
+  border: 1px solid #bbb;
   border-radius: 3px;
   line-height: 1.6em;
   padding: 3px 10px;
-  font-weight: bold;
-  font-size: 1.15em;
+  font-size: 1.05em;
 }
 
 .evidence-laceproject-eu .main-navigation .menu-item-121 > a {
