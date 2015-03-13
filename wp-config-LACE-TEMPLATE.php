@@ -60,6 +60,9 @@ define('SMTP_PORT', 25);
 // Set to TRUE for LACE.
 define( 'EVIDENCE_POST_TYPE_NO_REWRITE', TRUE );
 
+// Set to TRUE for LACE [Bug: #39]
+define( 'WP_EVIDENCE_HUB_IS_PROPOSITION', TRUE );
+
 
 /* LACE SVG logo, URL field, etc.
 *  @link https://github.com/mhawksey/wp-evidence-hub/issues/6
