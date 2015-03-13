@@ -1,4 +1,7 @@
 
+Options  +FollowSymLinks -Indexes
+
+
 # http://perishablepress.com/wordpress-xmlrpc-pingback-vulnerability/
 # protect xmlrpc
 <IfModule mod_alias.c>

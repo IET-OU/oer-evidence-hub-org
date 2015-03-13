@@ -154,7 +154,8 @@ class IET_Attribution_Plugin {
       'iet_attribution_developed_by_html',
       'Based on free/open source code developed for <a href=
       "http://oerresearchhub.org/">OER Research Hub</a> at the
-      <div><a href="http://iet.open.ac.uk/">Institute of Educational Technology</a> at The Open University</div>'
+      <div><a href="http://iet.open.ac.uk/">Institute of Educational
+      Technology</a> at The Open University<span>, UK</span></div>'
     ) ?>
     <?php $this->svg_load_javascript() ?>
     </div>
