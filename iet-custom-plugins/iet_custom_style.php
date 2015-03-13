@@ -33,6 +33,9 @@ class IET_Custom_Style_Plugin {
     $this->add_action( 'wp_head', 'wp_head_style', 999 );
     $this->add_action( 'wp_footer', 'wp_footer_javascript' );
     $this->add_action( 'init', 'init_rewrites' );
+
+    // Search form shortcode [Bug: #39]
+    add_shortcode( 'iet_search_form', 'get_search_form' );
   }
 
 
