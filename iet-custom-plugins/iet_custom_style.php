@@ -32,6 +32,7 @@ class IET_Custom_Style_Plugin {
     }
     $this->add_action( 'wp_head', 'wp_head_style', 999 );
     $this->add_action( 'wp_footer', 'wp_footer_javascript' );
+    $this->add_action( 'init', 'init_rewrites' );
   }
 
 
@@ -77,6 +78,15 @@ class IET_Custom_Style_Plugin {
   </script>
 
 <?php
+  }
+
+  /** Clean URLs [LACE]
+  */
+  public function init_rewrites() {
+    add_rewrite_rule( "^(post-type|list)/([^/]+)/?",
+        'index.php?post_type=$matches[2]', 'top' );
+    add_rewrite_rule( "^([^/]+)/(full)?-?list/?",
+	    'index.php?post_type=$matches[1]', 'top' );
   }
 
 
