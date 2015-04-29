@@ -1,45 +1,6 @@
-[submodule "wordpress"]
-	path = wordpress
-	url = https://github.com/WordPress/WordPress.git
-[submodule "wp-evidence-hub"]
-	path = wp-evidence-hub
-	url = https://github.com/mhawksey/wp-evidence-hub.git
-[submodule "wordpress-importer"]
-	path = wordpress-importer
-	url = https://github.com/svn2github/wordpress-importer.git
-[submodule "wp-juxtalearn-hub"]
-	path = wp-juxtalearn-hub
-	url = https://github.com/IET-OU/wp-juxtalearn-hub.git
-[submodule "tiny-forge"]
-	path = tiny-forge
-	url = https://github.com/svn2github/tiny-forge.git
-[submodule "social-connect"]
-	path = social-connect
-	url = https://github.com/wp-plugins/social-connect.git
-[submodule "jetpack"]
-	path = jetpack
-	url = https://github.com/wp-plugins/jetpack.git
-[submodule "feedwordpress"]
-	path = feedwordpress
-	url = https://github.com/wp-plugins/feedwordpress.git
-[submodule "google-sitemap-generator"]
-	path = google-sitemap-generator
-	url = https://github.com/wp-plugins/google-sitemap-generator.git
-[submodule "SlickQuiz-WordPress"]
-	path = SlickQuiz-WordPress
-	url = https://github.com/jewlofthelotus/SlickQuiz-WordPress.git
 [submodule "juxtalearn-clipit-client/lib/juxtalearn-cookie-authentication"]
 	path = juxtalearn-clipit-client/lib/juxtalearn-cookie-authentication
 	url = https://github.com/juxtalearn/juxtalearn-cookie-authentication.git
-[submodule "wp-accessify"]
-	path = wp-accessify
-	url = https://github.com/nfreear/wp-accessify.git
-[submodule "google-universal-analytics"]
-	path = google-universal-analytics
-	url = https://github.com/wp-plugins/google-universal-analytics.git
-[submodule "duplicate-post"]
-	path = duplicate-post
-	url = https://github.com/wp-plugins/duplicate-post.git
 [submodule "iet-custom-plugins/html5shiv"]
 	path = iet-custom-plugins/html5shiv
 	url = https://github.com/aFarkas/html5shiv.git
