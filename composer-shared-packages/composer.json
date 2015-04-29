@@ -1,0 +1,144 @@
+{
+  "name": "iet-ou/wp-composer-shared-packages",
+  "description": "Commonly used composer packages (WordPress). (https://github.com/IET-OU)",
+  "license": "proprietary",
+
+
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "http://wpackagist.org"
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "wordpress/wordpress",
+        "type": "webroot",
+        "version": "4.1",
+        "dist": {
+          "type": "zip",
+          "url": "https://github.com/WordPress/WordPress/archive/4.1.zip"
+        },
+        "require": {
+          "fancyguy/webroot-installer": "1.1.0"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "iet-ou/wp-evidence-hub",
+        "type": "wordpress-plugin",
+        "version": "1.1.4-beta",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/IET-OU/wp-evidence-hub.git",
+          "x-reference": "8ce7d63",
+          "reference": "CR38-lace"
+        },
+        "require": {
+          "composer/installers": "~1.0"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "iet-ou/wp-juxtalearn-hub",
+        "type": "wordpress-plugin",
+        "version": "0.9.0-beta",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/IET-OU/wp-juxtalearn-hub.git",
+          "reference": "master"
+        },
+        "require": {
+          "composer/installers": "~1.0"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "iet-ou/wp-juxtalearn-quiz",
+        "type": "wordpress-plugin",
+        "version": "0.9.0-beta",
+        "source": {
+          "type": "git",
+          "url": "https://bitbucket.org/nfreear/wp-juxtalearn-quiz.git",
+          "reference": "master"
+        },
+        "require": {
+          "composer/installers": "~1.0"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "iet-ou/wp-juxtalearn-clipit-client",
+        "type": "wordpress-plugin",
+        "version": "0.9.0-beta",
+        "source": {
+          "type": "git",
+          "url": "https://bitbucket.org/nfreear/wp-juxtalearn-clipit-client.git",
+          "reference": "master"
+        },
+        "require": {
+          "composer/installers": "~1.0"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "juxtalearn/juxtalearn-cookie-authentication",
+        "type": "wordpress-plugin",
+        "version": "0.9.0-beta",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/juxtalearn/juxtalearn-cookie-authentication.git",
+          "reference": "master"
+        },
+        "require": {
+          "composer/installers": "~1.0"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "iet-ou/wp-iet-generic-plugins",
+        "type": "wordpress-plugin",
+        "version": "v0.9.0-dev",
+        "source": {
+          "type": "git",
+          "url": "https://bitbucket.org/nfreear/wp-iet-generic-plugins.git",
+          "reference": "master"
+        },
+        "require": {
+          "composer/installers": "~1.0"
+        }
+      }
+    }
+  ],
+
+
+  "extra": {
+    "//": [
+      "https://roots.io/using-composer-with-wordpress/",
+      "http://composer.json.jolicode.com/",
+      "https://github.com/IET-OU/oer-evidence-hub-org",
+      "TODO: http://github.com/IET-OU/wp-iet-plugins [...]",
+      "https://wordpress.org/plugins/wordpress-seo -- YOAST",
+      "https://github.com/mhawksey/wp-evidence-hub/issues/42",
+	  "http://drupal-composer.org/",
+	  "https://packages.zendframework.com/",
+
+      "wp-config.php: define('WP_PLUGIN_DIR', __DIR__.'/../wp-content/plugins');",
+      ".. themes$ ln -s ../../../wp-content/themes/tiny-forge tiny-forge",
+
+      "afarkas/html5shiv\": \"~3.7.2"
+    ]
+  }
+}
