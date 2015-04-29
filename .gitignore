@@ -1,6 +1,10 @@
 
 /composer.json
 /composer.lock
+/vendor
+/wordpress
+/wp-content
+
 
 #juxtalearn-clipit-client/lib
 #juxtalearn-clipit-client/php/juxtalearn-cookie-authentication

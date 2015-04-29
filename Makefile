@@ -17,27 +17,30 @@ help:
 	@echo "	install-oer install-jl install-lace update jl-quiz-pot jl-quiz-lint ..."
 	@echo
 
+diag:
+	$(COMPOSER) diagnose
 
 install-common:
-	git checkout origin CR40-composer:CR40-composer
+	git checkout CR40-composer
 	cp composer-TEMPLATE.json composer.json
 	# vi composer.json
-	# $(COMPOSER) self-update
-	$(COMPOSER) diagnose
+	$(COMPOSER) self-update
+	#$(COMPOSER) diagnose
 	$(COMPOSER) require wikimedia/composer-merge-plugin:v1.0.0
-	$(COMPOSER) update --prefer-source
+	#$(COMPOSER) update --prefer-source
 
 install-oer: install-common
 	@echo Installing OER MAP...
-	cp  ./wp-config-OER-TEMPLATE.php  wordpress/wp-config.php
+	cp  ./wp-config-OER-TEMPLATE.php  wp-config.php
 
 install-lace: install-common
 	@echo Installing LACE Evidence Hub...
-	cp  ./wp-config-LACE-TEMPLATE.php  wordpress/wp-config.php
+	cp  ./wp-config-LACE-TEMPLATE.php  wp-config.php
+	ln -s wp-config.php wordpress/wp-config.php
 
 install-jl: install-common
 	@echo Installing JuxtaLearn...
-	cp  ./wp-config-JUXTA-TEMPLATE.php  wordpress/wp-config.php
+	cp  ./wp-config-JUXTA-TEMPLATE.php  wp-config.php
 
 update:
 	git pull
@@ -96,6 +99,6 @@ test-2:
 
 #.DEFAULT_GOAL: help
 
-.PHONY: help test jl-quiz-pot jl-hub-pot install-juxta install-oer install-lace install-common sym-links install-dev jl-quiz-lint
+.PHONY: help test jl-quiz-pot jl-hub-pot install-juxta install-oer install-lace install-common sym-links install-dev jl-quiz-lint diag
 
 #End.

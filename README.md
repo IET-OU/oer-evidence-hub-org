@@ -45,6 +45,7 @@ Please refer to [installing WordPress][wp-install], and [@mhawksey's Readme][plu
 2. We're using [Composer][] and [WPackagist][],
 
     ```sh
+        cd /var/www  # Or, wherever you put web sites.
         curl -sS https://getcomposer.org/installer | php
         git clone https://github.com/IET-OU/oer-evidence-hub-org.git
         cd oer-evidence-hub-org
@@ -53,9 +54,7 @@ Please refer to [installing WordPress][wp-install], and [@mhawksey's Readme][plu
 
 3. Edit the Wordpress configuration script,
 
-    ```sh
-        vi wordpress/wp-config.php
-    ```
+        vi  wp-config.php
 
 4. Edit Apache configuration,
 
