@@ -1,6 +1,0 @@
-[submodule "juxtalearn-clipit-client/lib/juxtalearn-cookie-authentication"]
-	path = juxtalearn-clipit-client/lib/juxtalearn-cookie-authentication
-	url = https://github.com/juxtalearn/juxtalearn-cookie-authentication.git
-[submodule "iet-custom-plugins/html5shiv"]
-	path = iet-custom-plugins/html5shiv
-	url = https://github.com/aFarkas/html5shiv.git
