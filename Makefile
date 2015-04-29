@@ -1,6 +1,7 @@
 # GNU Make file for OER Map, JuxtaLearn & LACE evidence hub..
 
 # Environment.
+COMPOSER=php ../composer.phar
 PLUGIN_DIR=wordpress/wp-content/plugins
 XGETTEXT=/usr/local/bin/xgettext
 WORDPRESS=--language=PHP --keyword=__:1 -k_e:1 -k_x:1
@@ -12,63 +13,35 @@ JSHINT=../node_modules/jshint/bin/jshint
 
 help:
 	# OER Map/ JuxtaLearn/ LACE Evidence Hub installer.
-	@echo
 	# Available targets:
-	@echo "		install-oer, install-juxta, install-lace"
-	@echo "		update, jl-quiz-pot, jl-quiz-lint ..."
+	@echo "	install-oer install-jl install-lace update jl-quiz-pot jl-quiz-lint ..."
 	@echo
 
-sym-links-common:
-	#cd oer_evidence_hub/
-	ln -sf  ../../../google-universal-analytics $(PLUGIN_DIR)/google-universal-analytics
-	#ln -sf ../../../wordpress-importer/trunk $(PLUGIN_DIR)/wordpress-importer
-	ln -sf  ../../../wpmail-smtp  $(PLUGIN_DIR)/wpmail-smtp
-	ln -sf  ../../../wp-accessify $(PLUGIN_DIR)/wp-accessify
-	#ln -sf  ../../../ou-attribution  $(PLUGIN_DIR)/ou-attribution
-	#ln -sf  ../../../custom-functions  $(PLUGIN_DIR)/jxl-custom-functions
-	ln -sf  ../../../iet-custom-plugins  $(PLUGIN_DIR)/iet-custom-plugins
-	#cd ../themes
-	ln -sf  ../../../tiny-forge/1.5.9  wordpress/wp-content/themes/tiny-forge
-	ln -s ../../translations wordpress/wp-content/translations
 
-install-common: update sym-links-common
-	mkdir  wordpress/wp-content/files/
-	-chown -R apache:apache  wordpress/wp-content/files/
-	# "-" cross-OS compatibility - ignore errors.
-	mkdir  wordpress/wp-content/uploads/
-	-chown -R apache:apache  wordpress/wp-content/uploads/
+install-common:
+	git checkout origin CR40-composer:CR40-composer
+	cp composer-TEMPLATE.json composer.json
+	# vi composer.json
+	# $(COMPOSER) self-update
+	$(COMPOSER) diagnose
+	$(COMPOSER) require wikimedia/composer-merge-plugin:v1.0.0
+	$(COMPOSER) update --prefer-source
 
 install-oer: install-common
 	@echo Installing OER MAP...
 	cp  ./wp-config-OER-TEMPLATE.php  wordpress/wp-config.php
-	ln -sf  ../../../social-connect  $(PLUGIN_DIR)/social-connect
-	#Bug: ln -sf  ../../../jetpack  $(PLUGIN_DIR)/jetpack
-	cp -r  jetpack  $(PLUGIN_DIR)/jetpack
-	ln -sf ../../../feedwordpress  $(PLUGIN_DIR)/feedwordpress
-	ln -sf ../../../google-sitemap-generator $(PLUGIN_DIR)/google-sitemap-generator
-	ln -sf  ../../../wp-evidence-hub  $(PLUGIN_DIR)/wp-evidence-hub
 
 install-lace: install-common
 	@echo Installing LACE Evidence Hub...
 	cp  ./wp-config-LACE-TEMPLATE.php  wordpress/wp-config.php
-	cp -r  jetpack  $(PLUGIN_DIR)/jetpack
-	ln -sf  ../../../wp-evidence-hub  $(PLUGIN_DIR)/wp-evidence-hub
 
-install-juxta: install-common
+install-jl: install-common
 	@echo Installing JuxtaLearn...
 	cp  ./wp-config-JUXTA-TEMPLATE.php  wordpress/wp-config.php
-	#git clone https://github.com/wp-plugins/slickquiz.git slickquiz
-	cp -r SlickQuiz-WordPress  wordpress/wp-content/plugins/slickquiz
-	ln -sf  ../../../duplicate-post  $(PLUGIN_DIR)/duplicate-post
-	ln -sf  ../../../wp-juxtalearn-hub  $(PLUGIN_DIR)/wp-juxtalearn-hub
-	ln -sf  ../../../wp-juxtalearn-quiz $(PLUGIN_DIR)/wp-juxtalearn-quiz
-	ln -sf  ../../../juxtalearn-clipit-client $(PLUGIN_DIR)/juxtalearn-clipit-client
 
 update:
 	git pull
-	git submodule update --init
-	# git checkout quiz/CR1/scaffold
-	# git push origin quiz/CR1/scaffold:quiz/CR1/scaffold
+	$(COMPOSER) update --prefer-source
 
 accessify:
 	git submodule update --init --recursive  wp-accessify

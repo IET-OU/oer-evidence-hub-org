@@ -1,4 +1,7 @@
 
+/composer.json
+/composer.lock
+
 #juxtalearn-clipit-client/lib
 #juxtalearn-clipit-client/php/juxtalearn-cookie-authentication
 #custom-functions/conditional_script.php

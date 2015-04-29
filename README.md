@@ -42,26 +42,22 @@ Please refer to [installing WordPress][wp-install], and [@mhawksey's Readme][plu
         # Other preparation ...
     ```
 
-2. We're using [Git submodules][submodules], so please clone using the recursive flag,
+2. We're using [Composer][] and [WPackagist][],
 
-        git clone --recursive https://github.com/IET-OU/oer-evidence-hub-org.git oer_evidence_hub
+    ```sh
+        curl -sS https://getcomposer.org/installer | php
+        git clone https://github.com/IET-OU/oer-evidence-hub-org.git
+        cd oer-evidence-hub-org
+        make install-lace
+    ```
 
-3. You may need to switch branches,
+3. Edit the Wordpress configuration script,
 
-        git checkout origin juxtalearn:juxtalearn
-
-4. You will then need to set up symbolic links, upload directories and so on...
-
-        make install-oer
-   Or
-
-        make install-juxta
-
-5. Edit the Wordpress configuration script,
-
+    ```sh
         vi wordpress/wp-config.php
+    ```
 
-6. Edit Apache configuration,
+4. Edit Apache configuration,
 
         vi /etc/httpd/conf.d/oerevidencehub-org.conf
 
@@ -72,13 +68,9 @@ Please refer to [installing WordPress][wp-install], and [@mhawksey's Readme][plu
 
 1. Pull latest modifications from Github,
 
-        git pull origin juxtalearn:juxtalearn
+        make update
 
-2. Ensure that submodules are correctly updated,
-
-        git submodule update --init
-
-3. Set up additional symbolic links - probably manually,
+3. Maybe, set up additional symbolic links - probably manually,
 
         more Makefile
         ln -sf  ../../../{NAME}  wordpress/wp-content/plugins/{NAME}
@@ -86,7 +78,7 @@ Please refer to [installing WordPress][wp-install], and [@mhawksey's Readme][plu
 
 ## Theme
 
-Tiny Forge, version 1.4.1 - a snapshot is included in this Git repo.
+Tiny Forge, version ? - a snapshot is included in this Git repo.
 
 * <http://wordpress.org/themes/tiny-forge>
 
@@ -130,5 +122,9 @@ Tiny Forge, version 1.4.1 - a snapshot is included in this Git repo.
 [blog-oer-map]: http://oerresearchhub.org/2014/05/14/visit-oer-impact-map-for-evidence-of-oer-impact/
 [JuxtaLearn]: http://juxtalearn.eu/
 [Institute of Educational Technology]: http://iet.open.ac.uk/
+
+
+[Composer]: https://getcomposer.org/doc/00-intro.md#system-requirements "Dependency Manager for PHP - getting started"
+[WPackagist]: http://wpackagist.org/ "This site mirrors the WordPress plugin and theme directories as a Composer repository."
 
 [End]: http://example
