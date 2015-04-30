@@ -120,6 +120,18 @@
           "composer/installers": "~1.0"
         }
       }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "nfreear/composer-suggest",
+        "version": "0.1-dev",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/nfreear/composer-suggest.git",
+          "reference": "master"
+        }
+      }
     }
   ],
 

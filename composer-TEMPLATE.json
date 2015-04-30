@@ -18,22 +18,33 @@
     "php": ">=5.3.3",
     "fancyguy/webroot-installer": "1.1.0",
     "wikimedia/composer-merge-plugin": "v1.0.0",
+    "nfreear/composer-suggest": "0.*",
 
     "wordpress/wordpress": "4.1",
 
     "wpackagist-plugin/google-universal-analytics": "2.3.4",
-    "wpackagist-plugin/slickquiz": "1.3.7.1",
     "wpackagist-plugin/wordpress-seo": "1.7.4",
     "wpackagist-plugin/cookie-notice": "1.2.17",
-    "wpackagist-plugin/wp-markdown": "1.5.1",
     "wpackagist-plugin/custom-post-type-list-shortcode": "1.4.4",
 
     "wpackagist-theme/tiny-forge": "1.5.9",
     "wpackagist-theme/make": "1.5.0",
 
     "iet-ou/wp-evidence-hub": "~1.1",
-    "iet-ou/wp-iet-generic-plugins": "~0.9",
-    "juxtalearn/juxtalearn-cookie-authentication": "~0.9"
+    "iet-ou/wp-iet-generic-plugins": "~0.9"
+  },
+  "suggest": {
+    "wpackagist-plugin/wp-markdown": "1.5.1",
+    "wpackagist-plugin/slickquiz": "1.3.7.1; For [Juxtalearn] project only.",
+
+    "iet-ou/wp-juxtalearn-hub": "0.9.*; For [JuxtaLearn] project.",
+    "iet-ou/wp-juxtalearn-quiz": "0.9.*; For [JuxtaLearn] project.",
+    "juxtalearn/juxtalearn-cookie-authentication": "~0.9; For [JuxtaLearn] project"
+  },
+  "scripts": {
+    "my-test": "nfreear\\Composer\\Composer_Suggest::install",
+    "install-suggest": "php -f vendor/nfreear/composer-suggest/src/Composer_Suggest.php",
+    "install-jl": "php -f vendor/nfreear/composer-suggest/src/Composer_Suggest.php -- 'Ju?X(ta)?L'"
   },
   "config": {
     "preferred-install": "source",
