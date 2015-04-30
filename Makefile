@@ -3,6 +3,9 @@
 # Environment.
 COMPOSER=php ../composer.phar
 PLUGIN_DIR=wordpress/wp-content/plugins
+THEME_DIR=wordpress/wp-content/themes/
+THEME_SRC=../../../wp-content/themes/
+BRANCH=CR40-composer
 XGETTEXT=/usr/local/bin/xgettext
 WORDPRESS=--language=PHP --keyword=__:1 -k_e:1 -k_x:1
 PO_DIR=translations/
@@ -17,17 +20,22 @@ help:
 	@echo "	install-oer install-jl install-lace update jl-quiz-pot jl-quiz-lint ..."
 	@echo
 
-diag:
-	$(COMPOSER) diagnose
 
 install-common:
-	git checkout CR40-composer
+	git checkout $(BRANCH)
 	cp composer-TEMPLATE.json composer.json
 	# vi composer.json
 	$(COMPOSER) self-update
 	#$(COMPOSER) diagnose
 	$(COMPOSER) require wikimedia/composer-merge-plugin:v1.0.0
 	#$(COMPOSER) update --prefer-source
+
+sym-links:
+	[ -d "$(PLUGIN_DIR)-BAK" ] || mv $(PLUGIN_DIR) $(PLUGIN_DIR)-BAK
+	[ -L $(PLUGIN_DIR) ] || ln -s ../../wp-content/plugins $(PLUGIN_DIR)
+	[ -L $(THEME_DIR)tiny-forge ] || ln -s $(THEME_SRC)tiny-forge $(THEME_DIR)tiny-forge
+	[ -L wordpress/wp-config.php ] || ln -s ../wp-config.php wordpress/wp-config.php
+	[ -L wordpress/.htaccess ] || ln -s ../.htaccess-TEMPLATE wordpress/.htaccess
 
 install-oer: install-common
 	@echo Installing OER MAP...
@@ -36,14 +44,15 @@ install-oer: install-common
 install-lace: install-common
 	@echo Installing LACE Evidence Hub...
 	cp  ./wp-config-LACE-TEMPLATE.php  wp-config.php
-	ln -s wp-config.php wordpress/wp-config.php
+	$(COMPOSER) run-script install-lace
+	make sym-links
 
 install-jl: install-common
 	@echo Installing JuxtaLearn...
 	cp  ./wp-config-JUXTA-TEMPLATE.php  wp-config.php
 
 update:
-	git pull
+	git pull origin $(BRANCH):$(BRANCH)
 	$(COMPOSER) update --prefer-source
 
 accessify:
@@ -96,9 +105,21 @@ test-2:
 	ln -sf ../../../feedwordpress  $(PLUGIN_DIR)/feedwordpress
 	ln -sf ../../../google-sitemap-generator $(PLUGIN_DIR)/google-sitemap-generator
 
+find-ln:
+	# find -L  ~/workspace/lace-wp-2  -type l
+	ls -lR . | grep ^l
+
+
+diag:
+	$(COMPOSER) diagnose -vvv
+status:
+	$(COMPOSER) status -vvv
+	git status
+self:
+	$(COMPOSER) self-update -vvv
 
 #.DEFAULT_GOAL: help
 
-.PHONY: help test jl-quiz-pot jl-hub-pot install-juxta install-oer install-lace install-common sym-links install-dev jl-quiz-lint diag
+.PHONY: help test jl-quiz-pot jl-hub-pot install-jl install-oer install-lace install-common sym-links install-dev jl-quiz-lint find-ln diag status self
 
 #End.

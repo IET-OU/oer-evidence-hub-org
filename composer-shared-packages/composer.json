@@ -124,6 +124,22 @@
     {
       "type": "package",
       "package": {
+        "name": "nfreear/wp-accessify",
+        "type": "wordpress-plugin",
+        "version": "0.1-alpha",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/nfreear/wp-accessify.git",
+          "reference": "master"
+        },
+        "require": {
+          "composer/installers": "~1.0"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
         "name": "nfreear/composer-suggest",
         "version": "0.1-dev",
         "source": {
