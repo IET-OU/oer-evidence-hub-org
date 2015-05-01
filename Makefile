@@ -21,14 +21,12 @@ help:
 	@echo
 
 
-install-common:
+install-common: self
 	git checkout $(BRANCH)
+	$(COMPOSER) require wikimedia/composer-merge-plugin:v1.0.0
 	cp composer-TEMPLATE.json composer.json
 	# vi composer.json
-	$(COMPOSER) self-update
-	#$(COMPOSER) diagnose
-	$(COMPOSER) require wikimedia/composer-merge-plugin:v1.0.0
-	#$(COMPOSER) update --prefer-source
+	$(COMPOSER) update --prefer-source
 
 sym-links:
 	[ -d "$(PLUGIN_DIR)-BAK" ] || mv $(PLUGIN_DIR) $(PLUGIN_DIR)-BAK
@@ -43,7 +41,7 @@ install-oer: install-common
 
 install-lace: install-common
 	@echo Installing LACE Evidence Hub...
-	cp  ./wp-config-LACE-TEMPLATE.php  wp-config.php
+	[ -f wp-config.php ] || cp  ./wp-config-LACE-TEMPLATE.php  wp-config.php
 	$(COMPOSER) run-script install-lace
 	make sym-links
 

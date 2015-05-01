@@ -21,12 +21,17 @@
  * @package WordPress
  */
 
+//http://wpbeginner.com/wp-tutorials/how-to-disable-automatic-updates-in-wordpress/
+//define( 'WP_AUTO_UPDATE_CORE', false );
+
+
+
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define('DB_NAME', 'oer_evidence_hub_wp');
+define('DB_NAME', 'lace_evidence_wp');
 
 /** MySQL database username */
-define('DB_USER', 'evidencehub_user');
+define('DB_USER', 'lace_user');
 
 /** MySQL database password */
 define('DB_PASSWORD', '*****');
@@ -144,8 +149,12 @@ define('WPLANG', '');
  * It is strongly recommended that plugin and theme developers use WP_DEBUG
  * in their development environments.
  */
-define('WP_DEBUG', false);
-##define('WP_DEBUG', true);
+// define('WP_DEBUG', false);
+
+define('WP_DEBUG', true);
+define('WP_DEBUG_LOG', true);
+define('WP_DEBUG_DISPLAY', false);
+@ini_set('display_errors', 0);
 
 /* That's all, stop editing! Happy blogging. */
 

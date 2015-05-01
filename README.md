@@ -45,10 +45,11 @@ Please refer to [installing WordPress][wp-install], and [@mhawksey's Readme][plu
 2. We're using [Composer][] and [WPackagist][],
 
     ```sh
-        cd /var/www  # Or, wherever you put web sites.
+        cd /var/www   # Or, wherever you put web sites.
         curl -sS https://getcomposer.org/installer | php
-        git clone https://github.com/IET-OU/oer-evidence-hub-org.git
-        cd oer-evidence-hub-org
+        git clone https://github.com/IET-OU/oer-evidence-hub-org.git lace-wp
+        cd lace-wp
+        git checkout CR40-composer
         make install-lace
     ```
 
@@ -77,7 +78,7 @@ Please refer to [installing WordPress][wp-install], and [@mhawksey's Readme][plu
 
 ## Theme
 
-Tiny Forge, version ? - a snapshot is included in this Git repo.
+Tiny Forge - a snapshot is included via this Git repo.
 
 * <http://wordpress.org/themes/tiny-forge>
 
