@@ -15,6 +15,7 @@
 Thumbs.db
 .DS_Store
 *Copy.*
+*BAK*
 
 wp-config.php
 wp-content/plugins/wordpress-importer

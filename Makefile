@@ -111,7 +111,7 @@ find-ln:
 diag:
 	$(COMPOSER) diagnose -vvv
 status:
-	$(COMPOSER) status -vvv
+	$(COMPOSER) status -v
 	git status
 self:
 	$(COMPOSER) self-update -vvv

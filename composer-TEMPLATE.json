@@ -22,9 +22,8 @@
 
     "wordpress/wordpress": "4.1",
 
-    "wpackagist-plugin/google-universal-analytics": "2.3.4",
-    "wpackagist-plugin/wordpress-seo": "1.7.4",
-    "wpackagist-plugin/cookie-notice": "1.2.17",
+    "wpackagist-plugin/google-universal-analytics": "2.4.2",
+    "wpackagist-plugin/wordpress-seo": "2.1.1",
 
     "wpackagist-theme/tiny-forge": "1.5.9",
     "wpackagist-theme/make": "1.5.0",
@@ -38,7 +37,8 @@
     "wordpress/wordpress": "4.2.1; [LACE] only for now!",
 
     "wpackagist-plugin/facetious": "1.1.4; [LACE] and [OERRH] projects.",
-    "wpackagist-plugin/wp-postratings": "1.78; [LACE] and [OERRH]",
+    "wpackagist-plugin/wp-postratings": "1.78; [LA--X--CE] and [OERRH]",
+    "wpackagist-plugin/cookie-notice": "1.2.23; [LA--X--CE]",
     "wpackagist-plugin/custom-post-type-list-shortcode": "1.4.4; [LACE]",
 
     "wpackagist-plugin/slickquiz": "1.3.7.1; For [Juxtalearn] project only.",
