@@ -6,6 +6,8 @@
 -->
 
 
+
+<!--
 <div class="section group">
 <div class="col span_1_of_3">
 <p style="text-align: center;">Sector Breakdown</p>
@@ -28,6 +30,7 @@
 
 <hr width="100%" />
 
+-->
 <div class="section group">
 <div class="col span_1_of_2">
 <div style="border: 1px solid #d2691e; text-align: center;"><strong>Geographical Report</strong></div>
@@ -42,31 +45,37 @@
 </div>
 </div>
 <div class="section group">
-<div class="col span_1_of_2">
+<div class="col xx-span_1_of_2 span_2_of_2">
 <div style="border: 1px solid #d2691e; text-align: center;"><em>Key Questions</em></div>
 [get_post_meta meta_key="key_questions"]
 
 </div>
+<!--
 <div class="col span_1_of_2">
 <div style="border: 1px solid #d2691e; text-align: center;"><em>Highlighted Evidence</em></div>
-[get_evidence_tagged tag="featured"]
+[[get_evidence_tagged tag="featured"]]
 
 </div>
 </div>
-<div class="section group">
+-->
+<div class="section group"><!--
 <div class="col span_1_of_3">
 <div style="border: 1px solid #d2691e; text-align: center;"><em>Popular evidence against </em><small>(negative)</small></div>
-[evidence_ratings post_type="evidence" polarity="neg"]
+[[evidence_ratings post_type="evidence" polarity="neg"]]
 
 </div>
-<div class="col span_1_of_3">
+-->
+<div class="col xx-span_1_of_3 span_3_of_3">
 <div style="border: 1px solid chocolate;" align="center"><em>Most Viewed Evidence</em></div>
 [evidence_ratings post_type="evidence" rating_type="post_views_count" display_ratings="false"]
 
 </div>
+<!--
 <div class="col span_1_of_3">
-<div style="border: 1px solid #d2691e; text-align: center;"><em>Popular evidence for </em>(<small><span style="color: #ff6600;">positive</span></small>)</div>
-[evidence_ratings post_type="evidence" polarity="pos"]
+<div style="border: 1px solid #d2691e; text-align: center;"><em>Popular evidence for </em><small>(<span style="color: #ff6600;">positive</span>)</small></div>
+[[evidence_ratings post_type="evidence" polarity="pos"]]
 
 </div>
+-->
+
 </div>
