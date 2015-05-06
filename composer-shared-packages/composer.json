@@ -44,12 +44,12 @@
       "package": {
         "name": "iet-ou/wp-evidence-hub",
         "type": "wordpress-plugin",
-        "version": "1.1.4-beta",
+        "version": "master",
         "source": {
           "type": "git",
           "url": "https://github.com/IET-OU/wp-evidence-hub.git",
-          "x-reference": "8ce7d63",
-          "reference": "CR38-lace"
+          "reference": "master",
+          "X-reference": "CR38-lace"
         },
         "require": {
           "composer/installers": "~1.0"
@@ -125,10 +125,10 @@
       "package": {
         "name": "iet-ou/wp-iet-generic-plugins",
         "type": "wordpress-plugin",
-        "version": "v0.9.0-dev",
+        "version": "master",
         "source": {
           "type": "git",
-          "url": "https://bitbucket.org/nfreear/wp-iet-generic-plugins.git",
+          "url": "https://github.com/IET-OU/wp-iet-generic-plugins.git",
           "reference": "master"
         },
         "require": {
