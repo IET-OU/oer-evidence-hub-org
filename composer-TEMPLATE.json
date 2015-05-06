@@ -48,10 +48,10 @@
     "nfreear/wp-accessify": "0.*; For [JXL]"
   },
   "scripts": {
-    "my-test": "nfreear\\Composer\\Composer_Suggest::install",
-    "install-suggest": "php -f vendor/nfreear/composer-suggest/src/Composer_Suggest.php",
-    "install-lace": "php -f vendor/nfreear/composer-suggest/src/Composer_Suggest.php -- LACE",
-    "install-jl": "php -f vendor/nfreear/composer-suggest/src/Composer_Suggest.php -- 'Ju?X(ta)?L'"
+    "my-test": "nfreear\\Composer\\Suggest::install",
+    "install-suggest": "php -f vendor/nfreear/composer-suggest/src/Suggest.php",
+    "install-lace": "php -f vendor/nfreear/composer-suggest/src/Suggest.php -- LACE",
+    "install-jl": "php -f vendor/nfreear/composer-suggest/src/Suggest.php -- 'Ju?X(ta)?L'"
   },
   "config": {
     "preferred-install": "source",
