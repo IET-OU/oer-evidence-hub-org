@@ -34,7 +34,7 @@
   "suggest": {
     "wpackagist-plugin/wp-markdown": "1.5.1",
 
-    "wordpress/wordpress": "4.2.1; [LACE] only for now!",
+    "wordpress/wordpress": "4.2.2; [LACE] only for now!",
 
     "wpackagist-plugin/facetious": "1.1.4; [LACE] and [OERRH] projects.",
     "wpackagist-plugin/wp-postratings": "1.81; [LACE] and [OERRH]",

@@ -112,12 +112,22 @@ find-ln:
 
 
 diag:
-	$(COMPOSER) diagnose -vvv
+	-$(COMPOSER) diagnose -vvv
+	cd composer-shared-packages; php ../../composer.phar validate -vvv
 status:
 	git status
 	-$(COMPOSER) status -v
 self:
 	$(COMPOSER) self-update -vvv
+clear-cache:
+	$(COMPOSER) clear-cache -v
+
+clean: clear-cache
+	rm -rf vendor/
+	rm -rf wordpress/
+	rm -rf wp-content/plugins
+	rm -rf wp-content/themes
+	rm -f composer.*
 
 #.DEFAULT_GOAL: help
 

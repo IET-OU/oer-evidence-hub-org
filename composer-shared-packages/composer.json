@@ -10,6 +10,7 @@
       "url": "http://wpackagist.org"
     },
     {
+      "//": "to DELETE",
       "type": "package",
       "package": {
         "name": "wordpress/wordpress",
@@ -25,6 +26,7 @@
       }
     },
     {
+      "//": "to DELETE",
       "type": "package",
       "package": {
         "name": "wordpress/wordpress",
@@ -33,6 +35,21 @@
         "dist": {
           "type": "zip",
           "url": "https://github.com/WordPress/WordPress/archive/4.2.1.zip"
+        },
+        "require": {
+          "fancyguy/webroot-installer": "1.1.0"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "wordpress/wordpress",
+        "type": "webroot",
+        "version": "4.2.2",
+        "dist": {
+          "type": "zip",
+          "url": "https://github.com/WordPress/WordPress/archive/4.2.2.zip"
         },
         "require": {
           "fancyguy/webroot-installer": "1.1.0"
