@@ -21,11 +21,13 @@ help:
 	@echo "	install-oer install-jl install-lace update jl-quiz-pot jl-quiz-lint ..."
 	@echo
 
+composer:
+	cp composer-TEMPLATE.json composer.json
 
 install-common: self
 	git checkout $(BRANCH)
 	$(COMPOSER) require wikimedia/composer-merge-plugin:v1.0.0
-	cp composer-TEMPLATE.json composer.json
+	make composer
 	# vi composer.json
 	$(COMPOSER) update --prefer-source
 
@@ -122,12 +124,13 @@ self:
 clear-cache:
 	$(COMPOSER) clear-cache -v
 
-clean: clear-cache
+clean:
 	rm -rf vendor/
 	rm -rf wordpress/
 	rm -rf wp-content/plugins
 	rm -rf wp-content/themes
 	rm -f composer.*
+	make clear-cache
 
 #.DEFAULT_GOAL: help
 
