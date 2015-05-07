@@ -4,6 +4,7 @@
 /vendor
 /wordpress
 /wp-content
+#? /wp-content/uploads
 
 
 #juxtalearn-clipit-client/lib

@@ -3,6 +3,7 @@
 # Environment.
 COMPOSER=php ../composer.phar
 PLUGIN_DIR=wordpress/wp-content/plugins
+FILES_DIR=wordpress/wp-content/uploads
 THEME_DIR=wordpress/wp-content/themes/
 THEME_SRC=../../../wp-content/themes/
 BRANCH=CR40-composer
@@ -31,9 +32,11 @@ install-common: self
 sym-links:
 	[ -d "$(PLUGIN_DIR)-BAK" ] || mv $(PLUGIN_DIR) $(PLUGIN_DIR)-BAK
 	[ -L $(PLUGIN_DIR) ] || ln -s ../../wp-content/plugins $(PLUGIN_DIR)
+	[ -L $(FILES_DIR) ] || ln -s ../../wp-content/uploads $(FILES_DIR)
 	[ -L $(THEME_DIR)tiny-forge ] || ln -s $(THEME_SRC)tiny-forge $(THEME_DIR)tiny-forge
 	[ -L wordpress/wp-config.php ] || ln -s ../wp-config.php wordpress/wp-config.php
 	[ -L wordpress/.htaccess ] || ln -s ../.htaccess-TEMPLATE wordpress/.htaccess
+	#chown -R apache:apache  wp-content/uploads
 
 install-oer: install-common
 	@echo Installing OER MAP...
@@ -111,8 +114,8 @@ find-ln:
 diag:
 	$(COMPOSER) diagnose -vvv
 status:
-	$(COMPOSER) status -v
 	git status
+	-$(COMPOSER) status -v
 self:
 	$(COMPOSER) self-update -vvv
 

@@ -37,8 +37,8 @@
     "wordpress/wordpress": "4.2.1; [LACE] only for now!",
 
     "wpackagist-plugin/facetious": "1.1.4; [LACE] and [OERRH] projects.",
-    "wpackagist-plugin/wp-postratings": "1.78; [LA--X--CE] and [OERRH]",
-    "wpackagist-plugin/cookie-notice": "1.2.23; [LA--X--CE]",
+    "wpackagist-plugin/wp-postratings": "1.81; [LACE] and [OERRH]",
+    "wpackagist-plugin/cookie-notice": "1.2.23; [LACE]",
     "wpackagist-plugin/custom-post-type-list-shortcode": "1.4.4; [LACE]",
 
     "wpackagist-plugin/slickquiz": "1.3.7.1; For [Juxtalearn] project only.",
