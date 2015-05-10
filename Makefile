@@ -98,7 +98,7 @@ jl-quiz-lint:
 	find "wp-juxtalearn-quiz" -type f -name "*.js" -exec $(JSHINT) {} \;	
 
 
-test:
+test-old:
 	grep -v -q apache /etc/passwd && chown -R apache:apache  wordpress/wp-content/files/
 	#grep -v -q apache /etc/passwd && echo Hi
 	#grep -v -q apache /etc/passwd || echo Hi 2
@@ -112,10 +112,11 @@ find-ln:
 	# find -L  ~/workspace/lace-wp-2  -type l
 	ls -lR . | grep ^l
 
-
+test: composer
+	$(COMPOSER) validate -vvv
+	cd composer-shared-packages; php ../../composer.phar validate -vvv
 diag:
 	-$(COMPOSER) diagnose -vvv
-	cd composer-shared-packages; php ../../composer.phar validate -vvv
 status:
 	git status
 	-$(COMPOSER) status -v
