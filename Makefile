@@ -7,6 +7,7 @@ FILES_DIR=wordpress/wp-content/uploads
 THEME_DIR=wordpress/wp-content/themes/
 THEME_SRC=../../../wp-content/themes/
 BRANCH=CR40-composer
+DIFF=git diff --no-color | cat
 XGETTEXT=/usr/local/bin/xgettext
 WORDPRESS=--language=PHP --keyword=__:1 -k_e:1 -k_x:1
 PO_DIR=translations/
@@ -47,7 +48,8 @@ install-oer: install-common
 install-lace: install-common
 	@echo Installing LACE Evidence Hub...
 	[ -f wp-config.php ] || cp  ./wp-config-LACE-TEMPLATE.php  wp-config.php
-	$(COMPOSER) run-script install-lace
+	#$(COMPOSER) run-script install-lace
+	$(COMPOSER) require-suggest "(LACE|Exp-LA)"
 	make sym-links
 
 install-jl: install-common
@@ -97,7 +99,10 @@ jl-quiz-lint:
 	#$(JSHINT) wp-juxtalearn-quiz/js/juxtalearn-quiz-scaffold.js
 	find "wp-juxtalearn-quiz" -type f -name "*.js" -exec $(JSHINT) {} \;	
 
-
+SUGGEST = "(LACE|Exp-LA|yyyyy)"
+test-s:
+	#make test-s S="(x|y)"
+	@echo env S = $S
 test-old:
 	grep -v -q apache /etc/passwd && chown -R apache:apache  wordpress/wp-content/files/
 	#grep -v -q apache /etc/passwd && echo Hi
@@ -124,6 +129,13 @@ self:
 	$(COMPOSER) self-update -vvv
 clear-cache:
 	$(COMPOSER) clear-cache -v
+
+diff:
+	$(DIFF)
+	@echo ""
+	cd wp-content/plugins/wp-evidence-hub;        $(DIFF)
+	@echo ""
+	cd wp-content/plugins/wp-iet-generic-plugins; $(DIFF)
 
 clean:
 	rm -rf vendor/

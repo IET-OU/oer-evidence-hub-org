@@ -5,6 +5,8 @@
  * @link http://evidence.laceproject.eu/
  */
 
+// For test/ dev servers!
+//define( 'IET_CUSTOM_STYLE_HOSTNAME', 'evidence.laceproject.eu' );
 
 /**
  * The base configurations of the WordPress.
@@ -67,6 +69,13 @@ define( 'EVIDENCE_POST_TYPE_NO_REWRITE', TRUE );
 
 // Set to TRUE for LACE [Bug: #39]
 define( 'WP_EVIDENCE_HUB_IS_PROPOSITION', TRUE );
+
+// Vary for LACE (note, all lower case)
+define( 'EVIDENCE_GEOMAP_SUMMARY_POSITION', 'topright' ); # AKA "search"
+define( 'EVIDENCE_GEOMAP_FILTER_POSITION',  'topright' );
+define( 'EVIDENCE_GEOMAP_CENTER', '[ 35, 30 ]' );    #[ 25, 0 ] [ y, x ]
+define( 'EVIDENCE_GEOMAP_ATTRIBUTION',
+  "<a id='lace-map-icon' href='http://evidence.laceproject.eu' title='placeholder - LACE logo'><img src='http://upload.wikimedia.org/wikipedia/commons/0/07/Rss.jpg' /></a>");
 
 
 /* LACE SVG logo, URL field, etc.
