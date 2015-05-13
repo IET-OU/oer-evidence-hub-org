@@ -8,6 +8,7 @@ THEME_DIR=wordpress/wp-content/themes/
 THEME_SRC=../../../wp-content/themes/
 BRANCH=CR40-composer
 DIFF=git diff --no-color | cat
+GLOG=git log --graph --decorate --pretty=oneline --abbrev-commit -3 | cat
 XGETTEXT=/usr/local/bin/xgettext
 WORDPRESS=--language=PHP --keyword=__:1 -k_e:1 -k_x:1
 PO_DIR=translations/
@@ -136,6 +137,14 @@ diff:
 	cd wp-content/plugins/wp-evidence-hub;        $(DIFF)
 	@echo ""
 	cd wp-content/plugins/wp-iet-generic-plugins; $(DIFF)
+log:
+	@$(GLOG)
+	@echo ""
+	## cd wp-content/plugins/wp-evidence-hub
+	@cd wp-content/plugins/wp-evidence-hub;        $(GLOG)
+	@echo ""
+	## cd wp-content/plugins/wp-iet-generic-plugins
+	@cd wp-content/plugins/wp-iet-generic-plugins; $(GLOG)
 
 clean:
 	rm -rf vendor/
