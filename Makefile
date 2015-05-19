@@ -146,6 +146,9 @@ log:
 	## cd wp-content/plugins/wp-iet-generic-plugins
 	@cd wp-content/plugins/wp-iet-generic-plugins; $(GLOG)
 
+scp-pull:
+	scp root@iet-lace-approval.open.ac.uk:/var/www/*.diff ~/Dropbox/Public/lace/
+
 clean:
 	rm -rf vendor/
 	rm -rf wordpress/

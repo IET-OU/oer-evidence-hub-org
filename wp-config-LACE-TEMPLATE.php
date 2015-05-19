@@ -76,6 +76,9 @@ define( 'EVIDENCE_GEOMAP_FILTER_POSITION',  'topright' );
 define( 'EVIDENCE_GEOMAP_CENTER', '[ 35, 30 ]' );    #[ 25, 0 ] [ y, x ]
 define( 'EVIDENCE_GEOMAP_ATTRIBUTION',
   "<a id='lace-map-icon' href='http://evidence.laceproject.eu' title='placeholder - LACE logo'><img src='http://upload.wikimedia.org/wikipedia/commons/0/07/Rss.jpg' /></a>");
+// Re-locate "no location" evidence [Bug: #50]
+// [ -0.3839, -90.4513 ] Galapagos Is. // [ 24.1187, -157.8566 ] Hawaii.
+define( 'EVIDENCE_GEOMAP_NO_LOCATION_LATLNG', '[ -20, -110 ]' );
 
 
 /* LACE SVG logo, URL field, etc.

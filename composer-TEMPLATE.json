@@ -48,10 +48,11 @@
     "wpackagist-plugin/cookie-notice": "1.2.23; [LACE]",
     "wpackagist-plugin/custom-post-type-list-shortcode": "1.4.4; [LACE]",
 
+    "wpackagist-plugin/cleanprint-lt": "3.4.6; Print & RTF export?! [Exp-LA]",
+    "wpackagist-plugin/text-hover": "3.6; better maintained than 'acronyms-2' [Exp-LA]",
     "wpackagist-plugin/anthologize": "0.7.5; experiment / RTF [Exp-LA]",
     "wpackagist-plugin/wp-csv": "1.7.4; experiment [Exp-NO]",
     "wpackagist-plugin/floating-social-bar": "1.1.7; experiment [Exp-NO]",
-
     "wpackagist-plugin/wp-csv-exporter": "1.0.7; experiment [Exp-LA]",
     "wpackagist-plugin/jetpack": "3.5.3; experiment [Exp-LA] and [OERRH]",
 
