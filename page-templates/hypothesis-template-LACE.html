@@ -11,11 +11,13 @@
 
 
 
+<div class="hypothesis-template">
+
 <div class="hypothesis-template-explain">
 
-<p>This map links the evidence in the Evidence Hub with the location where it was gathered. Zoom in to the map, or click on one of the numbers for a more detailed view. Once you have done this, you can click on a coloured pin for more information, and then click through to the evidence.
+<p> This map links the evidence in the Evidence Hub with the location where it was gathered. Zoom in to the map, or click on one of the numbers for a more detailed view. Once you have done this, you can click on a coloured pin for more information, and then click through to the evidence.
 
-<p>Using the Search or Filter options will change the evidence that appears on the maps. Use the Search box to find evidence based on the words in its title.
+<p> Using the Search or Filter options will change the evidence that appears on the maps. Use the Search box to find evidence based on the words in its title.
 Use the Filter bar to search by Type (evidence of project), by Hypothesis (related to learning, teaching, uptake or ethics), by Polarity (positive, negative or neutral/mixed) and by Sector (schools, universities, workplace or informal).
 
 </div>
@@ -45,26 +47,26 @@ Use the Filter bar to search by Type (evidence of project), by Hypothesis (relat
 -->
 <div class="section group">
 <div class="col span_1_of_2">
-<div style="border: 1px solid #d2691e; text-align: center;"><strong>Geographical Report</strong></div>
-[hypothesis_geosummary]<small><em>Click on nodes above to explore the evidence further</em></small>
+<h2> Geographical Report </h2>
+[hypothesis_geosummary]<p class="hyp-tpl-hint"> Click on nodes above to explore the evidence further </p>
 
 </div>
 <div class="col span_1_of_2">
-<div style="border: 1px solid #d2691e; text-align: center;"><strong>Flowmap</strong></div>
+<h2> Flowmap </h2>
 [hypothesis_sankey]
-<small><em>Click on the table or map above to filter the flow diagram </em></small>
+<p class="hyp-tpl-hint"> Click on the table or map above to filter the flow diagram </p>
 
 </div>
 </div>
 <div class="section group">
 <div class="col xx-span_1_of_2 span_2_of_2">
-<div style="border: 1px solid #d2691e; text-align: center;"><em>Key Questions</em></div>
+<h3> Key Questions </h3>
 [get_post_meta meta_key="key_questions"]
 
 </div>
 <!--
 <div class="col span_1_of_2">
-<div style="border: 1px solid #d2691e; text-align: center;"><em>Highlighted Evidence</em></div>
+<h3> Highlighted Evidence </h3>
 [[get_evidence_tagged tag="featured"]]
 
 </div>
@@ -74,23 +76,25 @@ Use the Filter bar to search by Type (evidence of project), by Hypothesis (relat
 
 <!--
 <div class="col span_1_of_3">
-<div style="border: 1px solid #d2691e; text-align: center;"><em>Popular evidence against </em><small>(negative)</small></div>
+<h3> Popular evidence against <small>(negative)</small> </h3>
 [[evidence_ratings post_type="evidence" polarity="neg"]]
 
 </div>
 -->
 <div class="col xx-span_1_of_3 span_3_of_3">
-<div style="border: 1px solid chocolate;" align="center"><em>Most Viewed Evidence</em></div>
+<h3> Most Viewed Evidence </h3>
 [evidence_ratings post_type="evidence" rating_type="post_views_count" display_ratings="false"]
 
 </div>
 <!--
 <div class="col span_1_of_3">
-<div style="border: 1px solid #d2691e; text-align: center;"><em>Popular evidence for </em><small>(<span style="color: #ff6600;">positive</span>)</small></div>
+<h3> Popular evidence for <small>(<span style="color: #ff6600;">positive</span>)</small> </h3>
 [[evidence_ratings post_type="evidence" polarity="pos"]]
 
 </div>
 -->
 
 </div>
+</div>
+
 </div>
