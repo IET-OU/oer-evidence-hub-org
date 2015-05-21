@@ -1,0 +1,36 @@
+#
+# Abbreviations used with the Text Hover WordPress plugin [LACE]
+#
+# http://iet-lace-approval.open.ac.uk/wp-admin/options-general.php?page=text-hover%2Ftext-hover.php
+# https://wordpress.org/plugins/text-hover/
+
+
+WP => WordPress
+CNS => central nervous system
+OU => The Open University, UK
+IET => Institute of Educational Technology <a href='http://iet.open.ac.uk'>IET</a> at The Open University
+IET-OU => Institute of Educational Technology <a href='http://iet.open.ac.uk'>IET</a> at The Open University
+IET@OU => Institute of Educational Technology <a href='http://iet.open.ac.uk'>IET</a> at The Open University
+LACE => Learning Analytics Community Exchange
+LAK => Learning Analytics and Knowledge conference
+LAK12 => Learning Analytics and Knowledge conference 2012
+LAK13 => Learning Analytics and Knowledge conference 2013
+LAK14 => Learning Analytics and Knowledge conference 2014
+LAK15 => Learning Analytics and Knowledge conference 2015
+LAK'15 => Learning Analytics and Knowledge conference 2015
+LA => Learning analytics
+LA/EDM => Learning analytics / ? <a href='http://wikipedia.org'>WP</a>
+RCT => Randomized controlled trial
+OER => Open educational resource
+OERs => Open educational resources
+MOOCs => Massive open online courses
+OAAI => The Online Academic Analytics Initiative
+OASE => Online academic support environment
+TELE => Technology-enhanced learning environment
+LMS => Learning management system
+LMSs => Learning management systems
+TEST => Test ...
+Zoom => Zoom is a ...
+
+
+# End.
