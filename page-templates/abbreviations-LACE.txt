@@ -6,7 +6,6 @@
 
 
 WP => WordPress
-CNS => central nervous system
 OU => The Open University, UK
 IET => Institute of Educational Technology <a href='http://iet.open.ac.uk'>IET</a> at The Open University
 IET-OU => Institute of Educational Technology <a href='http://iet.open.ac.uk'>IET</a> at The Open University
@@ -19,18 +18,16 @@ LAK14 => Learning Analytics and Knowledge conference 2014
 LAK15 => Learning Analytics and Knowledge conference 2015
 LAK'15 => Learning Analytics and Knowledge conference 2015
 LA => Learning analytics
-LA/EDM => Learning analytics / ? <a href='http://wikipedia.org'>WP</a>
+LA/EDM => Learning analytics / educational data mining
 RCT => Randomized controlled trial
 OER => Open educational resource
 OERs => Open educational resources
 MOOCs => Massive open online courses
 OAAI => The Online Academic Analytics Initiative
-OASE => Online academic support environment
+OASE => online academic support environment
 TELE => Technology-enhanced learning environment
 LMS => Learning management system
 LMSs => Learning management systems
-TEST => Test ...
-Zoom => Zoom is a ...
 
 
 # End.
