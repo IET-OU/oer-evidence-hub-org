@@ -37,6 +37,9 @@
     "iet-ou/wp-evidence-hub": "dev-master",
     "iet-ou/wp-iet-generic-plugins": "dev-master"
   },
+  "require-dev": {
+    "jakub-onderka/php-parallel-lint": "~0.8"
+  },
   "suggest": {
     "wpackagist-plugin/wp-markdown": "1.5.1",
 

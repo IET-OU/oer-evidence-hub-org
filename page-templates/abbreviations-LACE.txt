@@ -7,27 +7,30 @@
 
 WP => WordPress
 OU => The Open University, UK
-IET => Institute of Educational Technology <a href='http://iet.open.ac.uk'>IET</a> at The Open University
 IET-OU => Institute of Educational Technology <a href='http://iet.open.ac.uk'>IET</a> at The Open University
 IET@OU => Institute of Educational Technology <a href='http://iet.open.ac.uk'>IET</a> at The Open University
-LACE => Learning Analytics Community Exchange
-LAK => Learning Analytics and Knowledge conference
+IET => Institute of Educational Technology <a href='http://iet.open.ac.uk'>IET</a> at The Open University
+LACE => Learning Analytics Community Exchange project
+SoLAR => Society for Learning Analytics Research <a href='http://solaresearch.org'>SoLAR</a>
 LAK12 => Learning Analytics and Knowledge conference 2012
 LAK13 => Learning Analytics and Knowledge conference 2013
+LAK 2013 => Learning Analytics and Knowledge conference 2013
 LAK14 => Learning Analytics and Knowledge conference 2014
 LAK15 => Learning Analytics and Knowledge conference 2015
 LAK'15 => Learning Analytics and Knowledge conference 2015
+LAK => Learning Analytics and Knowledge conference
 LA => Learning analytics
 LA/EDM => Learning analytics / educational data mining
 RCT => Randomized controlled trial
-OER => Open educational resource
 OERs => Open educational resources
+OER => Open educational resource
 MOOCs => Massive open online courses
+MOOC => Massive open online course
 OAAI => The Online Academic Analytics Initiative
 OASE => online academic support environment
 TELE => Technology-enhanced learning environment
-LMS => Learning management system
 LMSs => Learning management systems
+LMS => Learning management system
 
 
 # End.
