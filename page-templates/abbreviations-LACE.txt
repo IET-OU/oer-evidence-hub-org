@@ -1,36 +1,46 @@
 #
 # Abbreviations used with the Text Hover WordPress plugin [LACE]
 #
-# http://iet-lace-approval.open.ac.uk/wp-admin/options-general.php?page=text-hover%2Ftext-hover.php
+# http://evidence.laceproject.eu/wp-admin/options-general.php?page=text-hover%2Ftext-hover.php
 # https://wordpress.org/plugins/text-hover/
 
 
-WP => WordPress
-OU => The Open University, UK
+EDM => Educational Data Mining
+IET => Institute of Educational Technology <a href='http://iet.open.ac.uk'>IET</a> at The Open University
 IET-OU => Institute of Educational Technology <a href='http://iet.open.ac.uk'>IET</a> at The Open University
 IET@OU => Institute of Educational Technology <a href='http://iet.open.ac.uk'>IET</a> at The Open University
-IET => Institute of Educational Technology <a href='http://iet.open.ac.uk'>IET</a> at The Open University
+LA => Learning analytics
 LACE => Learning Analytics Community Exchange project
-SoLAR => Society for Learning Analytics Research <a href='http://solaresearch.org'>SoLAR</a>
+LA/EDM => Learning analytics / educational data mining
+LAK => Learning Analytics and Knowledge conference
 LAK12 => Learning Analytics and Knowledge conference 2012
+LAK 2012 => Learning Analytics and Knowledge conference 2012
+LAK'12 => Learning Analytics and Knowledge conference 2012
 LAK13 => Learning Analytics and Knowledge conference 2013
 LAK 2013 => Learning Analytics and Knowledge conference 2013
+LAK'13 => Learning Analytics and Knowledge conference 2013
 LAK14 => Learning Analytics and Knowledge conference 2014
+LAK 2014 => Learning Analytics and Knowledge conference 2014
+LAK'14 => Learning Analytics and Knowledge conference 2014
 LAK15 => Learning Analytics and Knowledge conference 2015
+LAK 2015 => Learning Analytics and Knowledge conference 2015
 LAK'15 => Learning Analytics and Knowledge conference 2015
-LAK => Learning Analytics and Knowledge conference
-LA => Learning analytics
-LA/EDM => Learning analytics / educational data mining
-RCT => Randomized controlled trial
-OERs => Open educational resources
-OER => Open educational resource
-MOOCs => Massive open online courses
-MOOC => Massive open online course
-OAAI => The Online Academic Analytics Initiative
-OASE => online academic support environment
-TELE => Technology-enhanced learning environment
-LMSs => Learning management systems
+LAK16 => Learning Analytics and Knowledge conference 2016
+LAK 2016 => Learning Analytics and Knowledge conference 2016
+LAK'16 => Learning Analytics and Knowledge conference 2016
 LMS => Learning management system
+LMSs => Learning management systems
+MOOC => Massive open online course
+MOOCs => Massive open online courses
+OAAI => The Online Academic Analytics Initiative
+OASE => online academic support environmentTELE => Technology-enhanced learning environment
+OER => Open educational resource
+OERs => Open educational resources
+OU => The Open University, UK
+OUNL => Open University of the Netherlands
+RCT => Randomized controlled trial
+SoLAR => Society for Learning Analytics Research <a href='http://solaresearch.org'>SoLAR</a>
+WP => WordPress
 
 
 # End.
