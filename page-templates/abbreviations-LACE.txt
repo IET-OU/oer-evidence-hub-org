@@ -28,18 +28,20 @@ LAK'15 => Learning Analytics and Knowledge conference 2015
 LAK16 => Learning Analytics and Knowledge conference 2016
 LAK 2016 => Learning Analytics and Knowledge conference 2016
 LAK'16 => Learning Analytics and Knowledge conference 2016
+LASI => Learning analytics summer institute
 LMS => Learning management system
 LMSs => Learning management systems
 MOOC => Massive open online course
 MOOCs => Massive open online courses
 OAAI => The Online Academic Analytics Initiative
-OASE => online academic support environmentTELE => Technology-enhanced learning environment
+OASE => online academic support environment
 OER => Open educational resource
 OERs => Open educational resources
 OU => The Open University, UK
 OUNL => Open University of the Netherlands
 RCT => Randomized controlled trial
 SoLAR => Society for Learning Analytics Research <a href='http://solaresearch.org'>SoLAR</a>
+TELE => Technology-enhanced learning environment
 WP => WordPress
 
 
