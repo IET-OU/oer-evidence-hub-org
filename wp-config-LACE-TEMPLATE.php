@@ -63,7 +63,7 @@ define('SMTP_PORT', 25);
 //define( 'IET_CUSTOM_STYLE_NO_GOOGLE_FONT', true );
 //define( 'IET_CUSTOM_STYLE_HOSTNAME', 'evidence.laceproject.eu' );
 
-define( 'IET_CUSTOM_FN_BODY_CLASS', 'lace-with-banner lace-orange' );
+define( 'IET_CUSTOM_FN_BODY_CLASS', 'lace-with-banner xx-lace-orange' );
 
 
 // Set to TRUE for LACE.
@@ -111,7 +111,8 @@ define( 'WP_EVIDENCE_HUB_URL_FIELD', TRUE );
 */
 define( 'IET_ATTRIBUTION_COPYRIGHT_HTML',
   'Content &copy; %s <a href="http://www.laceproject.eu/"><abbr title=' .
-  '"Learning Analytics Community Exchange">LACE</abbr> Consortium</a> and contributors' );
+  '"Learning Analytics Community Exchange">LACE</abbr> Consortium</a> and contributors' .
+  '<br><a href="/about/">About the LACE Evidence Hub</a>' );
 define( 'IET_ATTRIBUTION_LICENSE_CURIE', 'cc:by/4.0/88x31' );
 define( '_M_IET_ATTRIBUTION_CSS', '#iet-attribution-logo svg g { fill: #43672B; }' );
 #define( 'IET_ATTRIBUTION_AVATAR_ID', 'images/iet-logo-lace-green-28px.png' );

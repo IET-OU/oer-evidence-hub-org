@@ -53,11 +53,11 @@
 
     "wpackagist-plugin/cleanprint-lt": "3.4.6; Print & RTF export?! [Exp-LA]",
     "wpackagist-plugin/text-hover": "3.6; better maintained than 'acronyms-2' [Exp-LA]",
-    "wpackagist-plugin/anthologize": "0.7.5; experiment / RTF [Exp-LA]",
+    "wpackagist-plugin/anthologize": "0.7.5; experiment / RTF [Exp-NO]",
     "wpackagist-plugin/wp-csv": "1.7.4; experiment [Exp-NO]",
     "wpackagist-plugin/floating-social-bar": "1.1.7; experiment [Exp-NO]",
-    "wpackagist-plugin/wp-csv-exporter": "1.0.7; experiment [Exp-LA]",
-    "wpackagist-plugin/jetpack": "3.5.3; experiment [Exp-LA] and [OERRH]",
+    "wpackagist-plugin/wp-csv-exporter": "1.0.7; experiment [Exp-NO]",
+    "wpackagist-plugin/jetpack": "3.5.3; experiment [Exp-NO] and [OERRH]",
 
     "wpackagist-plugin/slickquiz": "1.3.7.1; For [Juxtalearn] project only.",
     "iet-ou/wp-juxtalearn-hub": "0.9.*; For [JuxtaLearn]",
