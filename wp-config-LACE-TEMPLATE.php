@@ -63,7 +63,7 @@ define('SMTP_PORT', 25);
 //define( 'IET_CUSTOM_STYLE_NO_GOOGLE_FONT', true );
 //define( 'IET_CUSTOM_STYLE_HOSTNAME', 'evidence.laceproject.eu' );
 
-define( 'IET_CUSTOM_FN_BODY_CLASS', 'lace-with-banner xx-lace-orange' );
+define( 'IET_CUSTOM_FN_BODY_CLASS', 'lace-with-banner lace-ragged-right xx-lace-orange' );
 
 
 // Set to TRUE for LACE.

@@ -3,36 +3,23 @@
   http://evidence.laceproject.eu/
   http://evidence.laceproject.eu/wp-admin/post.php?post=128&action=edit
   http://iet-lace-approval.open.ac.uk/
+
+  TASK:  https://iet.teamworkpm.net/tasks/3594480?c=1164017
 -->
 
 
-<p> Welcome to the LACE Evidence Hub. You can use this site to find or share research evidence relating to learning analytics.
+<!--
+<h2>Are you are interested in learning analytics?</h2>
+-->The LACE Evidence Hub can help you make informed, evidence–based decisions, whether you are a teacher, a manager, a provider or a policymaker.
 
-<p> Learning analytics is the measurement, collection, analysis and reporting of data about learners and their contexts, in order to understand and optimise learning and the environments in which it occurs.
-
-<p> On this site, you can search for, or share, evidence related to these four propositions:
-<ul>
-	<li>Learning analytics <a href="/proposition/25/a-learning/">improve learning outcomes</a>.</li>
-	<li>Learning analytics <a href="/proposition/26/b-teaching/">improve learning support and teaching</a>, including retention, completion and progression.</li>
-	<li>Learning analytics <a href="/proposition/27/c-uptake/">are taken up and used widely</a>, including deployment at scale.</li>
-	<li>Learning analytics <a href="/proposition/28/d-ethics/">are used in an ethical way</a>.</li>
+The Evidence Hub is organised around four key propositions ... that learning analytics:
+<ul class="lace-propositions">
+	<li><a href="/proposition/25/a-learning/">Improves learning outcomes</a>.</li>
+	<li><a href="/proposition/26/b-teaching/">Improves learning support and teaching</a>, including retention, completion and progression.</li>
+	<li><a href="/proposition/27/c-uptake/">Are taken up and used widely</a>, including deployment at scale.</li>
+	<li><a href="/proposition/28/d-ethics/">Are used in an ethical way</a>.</li>
 </ul>
-
-<p> Use the search options on the right to find evidence for and against these claims, as well as links to projects that are exploring these issues.
-
-<p> You can filter your search in order to look for evidence related to a specific country or educational sector. You can also explore key words and tags, or focus just on positive, negative or neutral evidence.
-
-<p> The Evidence tab above provides different ways of visualizing the evidence in the Hub.
-
-<p> If you know of any evidence that isn't already included in the Hub, please select the 'Contribute' tab to add it.
-
-<p> To find out more about the Learning Analytics Community Exchange (LACE) project, <a href="http://www.laceproject.eu/">visit our website, or subscribe to our newsletter</a>.
-
-<div class="small inset">
-
-The LACE Evidence Hub is run by the <a href="http://iet.open.ac.uk/">Institute of Educational Technology</a> at <a href="http://www.open.ac.uk">The Open University</a>, UK, as part of the LACE project, using software developed for the <a href="http://oerresearchhub.org/">OER Research Hub</a> at the Institute of Educational Technology. It is based on <a href="https://wordpress.org/">WordPress</a>, and the code is <a href="https://github.com/IET-OU/oer-evidence-hub-org">open source, freely available on GitHub</a>. For more information about the LACE project, see the <a href="http://www.laceproject.eu/">main LACE project website</a>.
-
-</div>
+Use our search and filter options and visualise evidence for and against these claims, and links to projects that are exploring these issues.
 <div id="video">
 
 [embed]https://youtube.com/watch?v=4iZaFSH3fpo[/embed]
@@ -40,5 +27,9 @@ The LACE Evidence Hub is run by the <a href="http://iet.open.ac.uk/">Institute o
 <strong>{{ Placeholder video -- will be "welcome to the LACE evidence hub", or similar? }}</strong>
 
 </div>
-<h3 id="recent-evidence">Recent evidence</h3>
-[wp_query post_type="evidence" format="list" posts_per_page="4" orderby="date"]
+The Evidence Hub is associated with the <a href="http://www.laceproject.eu/">Learning Analytics Community Exchange (LACE)</a> project. Please <a href="http://www.laceproject.eu/">subscribe to our newsletter</a>.
+<div class="lace-richlist">
+<h3 id="recent-evidence">Recent evidence and content</h3>
+[wp_query post_type="evidence,project" format="richlist" posts_per_page="6" orderby="date" order="DESC"]
+
+</div>
