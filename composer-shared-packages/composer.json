@@ -26,22 +26,6 @@
       }
     },
     {
-      "//": "to DELETE",
-      "type": "package",
-      "package": {
-        "name": "wordpress/wordpress",
-        "type": "webroot",
-        "version": "4.2.1",
-        "dist": {
-          "type": "zip",
-          "url": "https://github.com/WordPress/WordPress/archive/4.2.1.zip"
-        },
-        "require": {
-          "fancyguy/webroot-installer": "1.1.0"
-        }
-      }
-    },
-    {
       "type": "package",
       "package": {
         "name": "wordpress/wordpress",
@@ -57,21 +41,8 @@
       }
     },
     {
-      "type": "package",
-      "package": {
-        "name": "iet-ou/wp-evidence-hub",
-        "type": "wordpress-plugin",
-        "version": "master",
-        "source": {
-          "type": "git",
-          "url": "https://github.com/IET-OU/wp-evidence-hub.git",
-          "reference": "master",
-          "X-reference": "CR38-lace"
-        },
-        "require": {
-          "composer/installers": "~1.0"
-        }
-      }
+      "type": "vcs",
+      "url": "https://github.com/IET-OU/wp-evidence-hub"
     },
     {
       "type": "package",
@@ -138,20 +109,8 @@
       }
     },
     {
-      "type": "package",
-      "package": {
-        "name": "iet-ou/wp-iet-generic-plugins",
-        "type": "wordpress-plugin",
-        "version": "master",
-        "source": {
-          "type": "git",
-          "url": "https://github.com/IET-OU/wp-iet-generic-plugins.git",
-          "reference": "master"
-        },
-        "require": {
-          "composer/installers": "~1.0"
-        }
-      }
+      "type": "vcs",
+      "url": "https://github.com/IET-OU/wp-iet-generic-plugins"
     },
     {
       "type": "package",
