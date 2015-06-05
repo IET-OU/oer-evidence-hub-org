@@ -51,7 +51,7 @@
     "wpackagist-plugin/cookie-notice": "1.2.23; [LACE]",
     "wpackagist-plugin/custom-post-type-list-shortcode": "1.4.4; [LACE]",
 
-    "wpackagist-plugin/cleanprint-lt": "3.4.6; Print & RTF export?! [Exp-LA]",
+    "wpackagist-plugin/cleanprint-lt": "3.4.6; Print & RTF export [Exp-LA]",
     "wpackagist-plugin/text-hover": "3.6; better maintained than 'acronyms-2' [Exp-LA]",
     "wpackagist-plugin/anthologize": "0.7.5; experiment / RTF [Exp-NO]",
     "wpackagist-plugin/wp-csv": "1.7.4; experiment [Exp-NO]",
@@ -63,7 +63,8 @@
     "iet-ou/wp-juxtalearn-hub": "0.9.*; For [JuxtaLearn]",
     "iet-ou/wp-juxtalearn-quiz": "0.9.*; For [JuxtaLearn]",
     "juxtalearn/juxtalearn-cookie-authentication": "~0.9; For [JuxtaLearn]",
-    "nfreear/wp-accessify": "0.*; For [JXL]"
+    "iet-ou/wp-ou-embed": "0.*; [Exp-LACE]",
+    "nfreear/wp-accessify": "0.*; For [Exp-LACE] [JXL]"
   },
   "scripts": {
     "dry-run-suggest": "Nfreear\\Composer\\Suggest::dry_run",
