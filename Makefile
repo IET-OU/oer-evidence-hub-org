@@ -1,7 +1,7 @@
 # GNU Make file for OER Map, JuxtaLearn & LACE evidence hub..
 
 # Environment.
-COMPOSER=php ../composer.phar
+COMPOSER=composer
 PLUGIN_DIR=wordpress/wp-content/plugins
 FILES_DIR=wordpress/wp-content/uploads
 THEME_DIR=wordpress/wp-content/themes/
@@ -20,18 +20,9 @@ JSHINT=../node_modules/jshint/bin/jshint
 help:
 	# OER Map/ JuxtaLearn/ LACE Evidence Hub installer.
 	# Available targets:
-	@echo "	install-oer install-jl install-lace update jl-quiz-pot jl-quiz-lint ..."
+	@echo "	install-oer install-jl init-lace update jl-quiz-pot jl-quiz-lint ..."
 	@echo
-
-composer:
-	cp composer-TEMPLATE.json composer.json
-
-install-common: self
-	git checkout $(BRANCH)
-	$(COMPOSER) require wikimedia/composer-merge-plugin:v1.0.0
-	make composer
-	# vi composer.json
-	$(COMPOSER) update --prefer-source
+	@echo To install LACE use \"composer install\"
 
 sym-links:
 	[ -d "$(PLUGIN_DIR)-BAK" ] || mv $(PLUGIN_DIR) $(PLUGIN_DIR)-BAK
@@ -42,18 +33,19 @@ sym-links:
 	[ -L wordpress/.htaccess ] || ln -s ../.htaccess-TEMPLATE wordpress/.htaccess
 	#chown -R apache:apache  wp-content/uploads
 
-install-oer: install-common
+install-oer:
 	@echo Installing OER MAP...
 	cp  ./wp-config-OER-TEMPLATE.php  wp-config.php
 
-install-lace: install-common
-	@echo Installing LACE Evidence Hub...
-	[ -f wp-config.php ] || cp  ./wp-config-LACE-TEMPLATE.php  wp-config.php
-	#$(COMPOSER) run-script install-lace
-	$(COMPOSER) require-suggest "(LACE|Exp-LA)"
-	make sym-links
+init-lace:
+	# Initializing LACE Evidence Hub...
+	[ -f .env ] || cp .env-example .env
+	[ -f wp-config.php ] || cp wp-config-LACE-TEMPLATE.php wp-config.php
 
-install-jl: install-common
+install-lace:
+	@echo To install LACE Evidence Hub use \"composer install\"
+
+install-jl:
 	@echo Installing JuxtaLearn...
 	cp  ./wp-config-JUXTA-TEMPLATE.php  wp-config.php
 

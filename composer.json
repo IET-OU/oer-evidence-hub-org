@@ -71,11 +71,16 @@
   },
   "scripts": {
     "dry-run-suggest": "Nfreear\\Composer\\Suggest::dry_run",
-    "require-suggest": "Nfreear\\Composer\\Suggest::install",
-    "install-suggest": "Nfreear\\Composer\\Suggest::install",
-    "install-lace": "php -f vendor/nfreear/composer-suggest/src/Suggest.php -- LACE",
-    "exp-la": "php -f vendor/nfreear/composer-suggest/src/Suggest.php -- Exp-LA" ,
-    "install-jl": "php -f vendor/nfreear/composer-suggest/src/Suggest.php -- 'Ju?X(ta)?L'"
+    "pre-install-cmd": [
+      "[ -f .env ] || cp .env-example .env",
+      "[ -f wp-config.php ] || cp wp-config-LACE-TEMPLATE.php wp-config.php"
+    ],
+    "post-install-cmd": [
+      "make sym-links"
+    ],
+    "post-update-cmd": [
+      "make sym-links"
+    ]
   },
   "config": {
     "preferred-install": "source",
