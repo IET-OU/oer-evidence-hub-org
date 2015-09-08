@@ -34,7 +34,7 @@
     "wpackagist-plugin/google-universal-analytics": "2.4.2",
     "wpackagist-plugin/wordpress-seo": "2.3.4",
 
-    "wpackagist-theme/tiny-forge": "1.5.9",
+    "wpackagist-theme/tiny-forge": "1.6.1",
     "wpackagist-theme/make": "1.5.0",
 
     "iet-ou/wp-evidence-hub": "dev-master",
@@ -59,6 +59,7 @@
     "wpackagist-plugin/text-hover": "3.6; better maintained than 'acronyms-2' [Exp-LA]",
     "wpackagist-plugin/wp-to-twitter": "3.1.5; wp-to-twitter / wp2tw [Exp-LA]",
     "wpackagist-plugin/wp-all-import": "3.3.1; wp-all-import [Exp-LA]",
+    "nfreear/wp-cdn-js-plugin": "0.2-dev; CDN_JS [Exp-LA]",
 
     "wpackagist-plugin/anthologize": "0.7.5; experiment / RTF [Exp-NO]",
     "wpackagist-plugin/wp-csv": "1.7.4; experiment [Exp-NO]",
