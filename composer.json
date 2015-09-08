@@ -32,7 +32,7 @@
     "wordpress/wordpress": "4.1",
 
     "wpackagist-plugin/google-universal-analytics": "2.4.2",
-    "wpackagist-plugin/wordpress-seo": "2.1.1",
+    "wpackagist-plugin/wordpress-seo": "2.3.4",
 
     "wpackagist-theme/tiny-forge": "1.5.9",
     "wpackagist-theme/make": "1.5.0",
@@ -51,8 +51,8 @@
     "wp-cli/wp-cli": "0.*; wp-cli [NONE]",
 
     "wpackagist-plugin/facetious": "1.1.4; [LACE] and [OERRH] projects.",
-    "wpackagist-plugin/wp-postratings": "1.81; [LACE] and [OERRH]",
-    "wpackagist-plugin/cookie-notice": "1.2.23; [LACE]",
+    "wpackagist-plugin/wp-postratings": "1.82; [LACE] and [OERRH]",
+    "wpackagist-plugin/cookie-notice": "1.2.32; [LACE]",
     "wpackagist-plugin/custom-post-type-list-shortcode": "1.4.4; [LACE]",
 
     "wpackagist-plugin/cleanprint-lt": "3.4.6; Print & RTF export [Exp-LA]",
