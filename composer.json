@@ -46,7 +46,8 @@
   "suggest": {
     "wpackagist-plugin/wp-markdown": "1.5.1",
 
-    "wordpress/wordpress": "4.2.2; [LACE] only for now!",
+    "wordpress/wordpress": "4.2.2; WP-4.2.2 [LACE] only for now!",
+    "wordpress/wordpress": "4.3; WP-4.3 []",
     "wp-cli/wp-cli": "0.*; wp-cli [NONE]",
 
     "wpackagist-plugin/facetious": "1.1.4; [LACE] and [OERRH] projects.",
@@ -56,6 +57,9 @@
 
     "wpackagist-plugin/cleanprint-lt": "3.4.6; Print & RTF export [Exp-LA]",
     "wpackagist-plugin/text-hover": "3.6; better maintained than 'acronyms-2' [Exp-LA]",
+    "wpackagist-plugin/wp-to-twitter": "3.1.5; wp-to-twitter / wp2tw [Exp-LA]",
+    "wpackagist-plugin/wp-all-import": "3.3.1; wp-all-import [Exp-LA]",
+
     "wpackagist-plugin/anthologize": "0.7.5; experiment / RTF [Exp-NO]",
     "wpackagist-plugin/wp-csv": "1.7.4; experiment [Exp-NO]",
     "wpackagist-plugin/floating-social-bar": "1.1.7; experiment [Exp-NO]",
@@ -82,17 +86,8 @@
       "make sym-links"
     ]
   },
-  "config": {
-    "preferred-install": "source",
-    "store-auths": true,
-    "github-protocols": [ "git", "https", "ssh" ]
-  },
   "extra": {
-
     "webroot-dir": "wordpress",
-    "webroot-package": "wordpress/wordpress",
-
-    "merge-plugin": {
-    }
+    "webroot-package": "wordpress/wordpress"
   }
 }
