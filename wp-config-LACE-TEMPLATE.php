@@ -49,7 +49,7 @@ define('DB_COLLATE', '');
 
 
 
-/* Open University-specific configuration. 
+/* Open University-specific configuration.
    HTTP proxy (http://wpengineer.com/1227/wordpress-proxysupport)
 */
 define('WP_PROXY_HOST', 'wwwcache.open.ac.uk');
@@ -64,6 +64,31 @@ define('SMTP_PORT', 25);
 //define( 'IET_CUSTOM_STYLE_HOSTNAME', 'evidence.laceproject.eu' );
 
 define( 'IET_CUSTOM_FN_BODY_CLASS', 'lace-with-banner lace-ragged-right xx-lace-orange' );
+
+
+define( 'CDN_JS_INI', '
+[hosts]
+%wp = /wp-content/plugins
+
+[scripts]
+anchorjs = //cdn.jsdelivr.net/anchorjs/1.1.1/anchor.min.js
+sa-nav = %wp/sa-arrow-key-navigation-js/sa-arrow-key-navigation.jquery.js
+' );
+define( 'CDN_JS_INLINE', "
+
+jQuery('#menu-main > li > a').arrowKeyNavigation({
+    sub_menu_sel: '.sub-menu',
+    debug: false
+});
+
+anchors.options = {
+    placement: 'left',
+    visible: 'always'
+    //, icon: '¶'
+};
+anchors.add( 'h2, h3, h4, #map, .x-test' );
+
+" );
 
 
 // Set to TRUE for LACE.
