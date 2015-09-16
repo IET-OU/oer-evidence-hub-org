@@ -1,6 +1,6 @@
 {
   "name": "iet-ou/wp-lace-evidence-site",
-  "description": "Site-installer for WordPress-based LACE Evidence Hub. ©2015 The Open University, UK.",
+  "description": "Site installer for WordPress-based LACE Evidence Hub (+ JuxtaLearn, OER Map). ©2015 The Open University.",
   "keywords": [ "LACE", "LearningAnalytics", "OpenUniversity", "IET-OU" ],
   "homepage": "http://evidence.laceproject.eu/",
   "type": "project",
@@ -46,8 +46,9 @@
   "suggest": {
     "wpackagist-plugin/wp-markdown": "1.5.1",
 
-    "wordpress/wordpress": "4.2.2; WP-4.2.2 [LACE] only for now!",
-    "wordpress/wordpress": "4.3; WP-4.3 []",
+    "wordpress/wordpress": "4.2.2; WP-4.2.2 / LAC-E only for now!",
+    "wordpress/wordpress": "4.3; WP-4.3.x",
+    "wordpress/wordpress": "4.3.1; WP-4.3.1 / LAC-E only for now!",
     "wp-cli/wp-cli": "0.*; wp-cli [NONE]",
 
     "wpackagist-plugin/facetious": "1.1.4; [LACE] and [OERRH] projects.",
@@ -72,8 +73,8 @@
     "iet-ou/wp-juxtalearn-hub": "0.9.*; For [JuxtaLearn]",
     "iet-ou/wp-juxtalearn-quiz": "0.9.*; For [JuxtaLearn]",
     "juxtalearn/juxtalearn-cookie-authentication": "~0.9; For [JuxtaLearn]",
-    "iet-ou/wp-ou-embed": "0.*; [Exp-LACE]",
-    "nfreear/wp-accessify": "0.*; For [Exp-LACE] [JXL]"
+    "iet-ou/wp-ou-embed": "0.*; [Exp-LA]",
+    "nfreear/wp-accessify": "*; For [Exp-LA] [JXL]"
   },
   "scripts": {
     "dry-run-suggest": "Nfreear\\Composer\\Suggest::dry_run",
