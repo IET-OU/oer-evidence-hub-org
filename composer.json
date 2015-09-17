@@ -32,7 +32,7 @@
     "wordpress/wordpress": "4.1",
 
     "wpackagist-plugin/google-universal-analytics": "2.4.2",
-    "wpackagist-plugin/wordpress-seo": "2.3.4",
+    "wpackagist-plugin/wordpress-seo": "2.3.5",
 
     "wpackagist-theme/tiny-forge": "1.6.1",
     "wpackagist-theme/make": "1.5.0",
@@ -59,7 +59,7 @@
     "wpackagist-plugin/cleanprint-lt": "3.4.6; Print & RTF export [Exp-LA]",
     "wpackagist-plugin/text-hover": "3.6; better maintained than 'acronyms-2' [Exp-LA]",
     "wpackagist-plugin/wp-to-twitter": "3.1.5; wp-to-twitter / wp2tw [Exp-LA]",
-    "wpackagist-plugin/wp-all-import": "3.3.1; wp-all-import [Exp-LA]",
+    "wpackagist-plugin/wp-all-import": "3.3.2; wp-all-import [Exp-LA]",
     "nfreear/wp-cdn-js-plugin": "0.4-dev; CDN_JS [Exp-LA]",
     "nfreear/sa-arrow-key-navigation-js": "0.2-dev; SA-Arrow-Key-Nav-JS [Exp-LA]",
 
