@@ -51,7 +51,8 @@
     "wordpress/wordpress": "4.3.1; WP-4.3.1 / LAC-E only for now!",
     "wp-cli/wp-cli": "0.*; wp-cli [NONE]",
 
-    "wpackagist-plugin/facetious": "1.1.4; [LACE] and [OERRH] projects.",
+    "wpackagist-plugin/facetious": "1.1.4; wp-facet [LAC-E] & [OERR-H] projects",
+    "cftp/facetious": "dev-master; cftp-facet-1.2 [LAC-E] project",
     "wpackagist-plugin/wp-postratings": "1.82; [LACE] and [OERRH]",
     "wpackagist-plugin/cookie-notice": "1.2.32; [LACE]",
     "wpackagist-plugin/custom-post-type-list-shortcode": "1.4.4; [LACE]",
