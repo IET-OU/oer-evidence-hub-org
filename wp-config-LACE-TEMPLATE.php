@@ -73,6 +73,7 @@ define( 'CDN_JS_INI', '
 [scripts]
 anchorjs = //cdn.jsdelivr.net/anchorjs/1.1.1/anchor.min.js
 sa-nav = %wp/sa-arrow-key-navigation-js/sa-arrow-key-navigation.jquery.js
+ignore = %wp/wp-ignore-color-js/ignore-color.jquery.js
 ' );
 define( 'CDN_JS_INLINE', "
 

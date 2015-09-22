@@ -59,10 +59,11 @@
 
     "wpackagist-plugin/cleanprint-lt": "3.4.6; Print & RTF export [Exp-LA]",
     "wpackagist-plugin/text-hover": "3.6; better maintained than 'acronyms-2' [Exp-LA]",
-    "wpackagist-plugin/wp-to-twitter": "3.1.5; wp-to-twitter / wp2tw [Exp-LA]",
+    "wpackagist-plugin/wp-to-twitter": "3.1.7; wp-to-twitter / wp2tw [Exp-LA]",
     "wpackagist-plugin/wp-all-import": "3.3.2; wp-all-import [Exp-LA]",
     "nfreear/wp-cdn-js-plugin": "0.4-dev; CDN_JS [Exp-LA]",
     "nfreear/sa-arrow-key-navigation-js": "0.2-dev; SA-Arrow-Key-Nav-JS [Exp-LA]",
+    "nfreear/wp-ignore-color-js": "0.2-dev; ignore-color-js [Exp-LA]",
 
     "wpackagist-plugin/anthologize": "0.7.5; experiment / RTF [Exp-NO]",
     "wpackagist-plugin/wp-csv": "1.7.4; experiment [Exp-NO]",
