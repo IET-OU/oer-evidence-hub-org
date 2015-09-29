@@ -53,7 +53,7 @@
 
     "wpackagist-plugin/facetious": "1.1.4; wp-facet [LAC-E] & [OERR-H] projects",
     "cftp/facetious": "dev-master; cftp-facet-1.2 [LAC-E] project",
-    "wpackagist-plugin/wp-postratings": "1.82; [LACE] and [OERRH]",
+    "wpackagist-plugin/wp-postratings": "1.82; postratings [LACE] & [OERRH]",
     "wpackagist-plugin/cookie-notice": "1.2.32; [LACE]",
     "wpackagist-plugin/custom-post-type-list-shortcode": "1.4.4; [LACE]",
 
@@ -61,7 +61,7 @@
     "wpackagist-plugin/text-hover": "3.6; better maintained than 'acronyms-2' [Exp-LA]",
     "wpackagist-plugin/wp-to-twitter": "3.1.7; wp-to-twitter / wp2tw [Exp-LA]",
     "wpackagist-plugin/wp-all-import": "3.3.2; wp-all-import [Exp-LA]",
-    "nfreear/wp-cdn-js-plugin": "0.4-dev; CDN_JS [Exp-LA]",
+    "nfreear/wp-cdn-js-plugin": "0.5-dev; CDN_JS [Exp-LA]",
     "nfreear/sa-arrow-key-navigation-js": "0.2-dev; SA-Arrow-Key-Nav-JS [Exp-LA]",
     "nfreear/wp-ignore-color-js": "0.2-dev; ignore-color-js [Exp-LA]",
 

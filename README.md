@@ -110,10 +110,8 @@ Tiny Forge - a snapshot is included via this Git repo.
 [plugin-readme-jx]: https://github.com/mhawksey/wp-juxtalearn-hub#readme
 [plugin-readme]: https://github.com/mhawksey/wp-evidence-hub#readme
 [blog-build-plugin]: http://mashe.hawksey.info/2013/10/building-an-evidence-hub-plugin-for-wordpress
-[submodules]: http://git-scm.com/book/en/Git-Tools-Submodules
-[submodules-cheat]: http://blog.jacius.info/git-submodule-cheat-sheet/
 
-[@IET-OU/wp-evidence-hub]:   https://github.com/mhawksey/wp-evidence-hub
+[@IET-OU/wp-evidence-hub]:   https://github.com/IET-OU/wp-evidence-hub "Fork of: @mhawksey/wp-evidence-hub"
 [@IET-OU/wp-juxtalearn-hub]: https://github.com/IET-OU/wp-juxtalearn-hub
 [@IET-OU/wp-juxtalearn-quiz]: https://bitbucket.org/nfreear/wp-juxtalearn-quiz
 [@IET-OU/wp-juxtalearn-clipit-client]: https://bitbucket.org/nfreear/wp-juxtalearn-clipit-client
