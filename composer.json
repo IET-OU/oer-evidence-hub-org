@@ -17,15 +17,15 @@
   "repositories": [
     {
       "type": "composer",
-      "url": "http://iet-embed-acct.open.ac.uk/satis/"
+      "url": "https://embed.open.ac.uk/iet-satis/"
     },
     {
       "type": "composer",
-      "url": "http://wpackagist.org"
+      "url": "https://wpackagist.org"
     }
   ],
   "require": {
-    "php": ">=5.3.3",
+    "php": ">= 7.0",
     "fancyguy/webroot-installer": "1.1.0",
     "nfreear/composer-suggest": "^1.1",
 

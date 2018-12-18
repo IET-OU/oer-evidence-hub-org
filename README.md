@@ -101,15 +101,19 @@ Tiny Forge - a snapshot is included via this Git repo.
     * Gill Clough (lead researcher)
     * Martin Hawksey (developer, wp-juxtalearn-hub)
 
+## GDPR
+
+Details of GDPR / privacy fixes can be found in [Bug #56][].
+
 ---
 © 2015 The Open University. ([Institute of Educational Technology][])
 
 
-[wp-install]: http://codex.wordpress.org/Installing_WordPress
+[wp-install]: https://codex.wordpress.org/Installing_WordPress
 [wp-secrets]: https://api.wordpress.org/secret-key/1.1/salt/
 [plugin-readme-jx]: https://github.com/mhawksey/wp-juxtalearn-hub#readme
 [plugin-readme]: https://github.com/mhawksey/wp-evidence-hub#readme
-[blog-build-plugin]: http://mashe.hawksey.info/2013/10/building-an-evidence-hub-plugin-for-wordpress
+[blog-build-plugin]: https://mashe.hawksey.info/2013/10/building-an-evidence-hub-plugin-for-wordpress
 
 [@IET-OU/wp-evidence-hub]:   https://github.com/IET-OU/wp-evidence-hub "Fork of: @mhawksey/wp-evidence-hub"
 [@IET-OU/wp-juxtalearn-hub]: https://github.com/IET-OU/wp-juxtalearn-hub
@@ -128,11 +132,11 @@ Tiny Forge - a snapshot is included via this Git repo.
 [OER Research Hub]: http://oerresearchhub.org/
 [blog-oer-map]: http://oerresearchhub.org/2014/05/14/visit-oer-impact-map-for-evidence-of-oer-impact/
 [JuxtaLearn]: http://juxtalearn.eu/
-[Institute of Educational Technology]: http://iet.open.ac.uk/
-
+[Institute of Educational Technology]: https://iet.open.ac.uk/
 
 [Composer]: https://getcomposer.org/doc/00-intro.md#system-requirements "Dependency Manager for PHP - getting started"
-[WPackagist]: http://wpackagist.org/ "This site mirrors the WordPress plugin and theme directories as a Composer repository."
-[iet-satis]: http://iet-embed-acct.open.ac.uk/satis/ "IET's test/ private Satis-based Packagist repository"
+[WPackagist]: https://wpackagist.org/ "This site mirrors the WordPress plugin and theme directories as a Composer repository."
+[iet-satis]: https://embed.open.ac.uk/iet-satis/ "IET's test/ private Satis-based Packagist repository"
+[bug #56]: https://github.com/IET-OU/oer-evidence-hub-org/issues/56 "GDPR/privacy"
 
-[End]: http://example
+[End]: //

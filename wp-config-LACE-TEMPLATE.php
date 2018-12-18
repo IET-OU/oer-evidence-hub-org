@@ -6,7 +6,7 @@
  */
 
 // For test/ dev servers!
-//define( 'IET_CUSTOM_STYLE_HOSTNAME', 'evidence.laceproject.eu' );
+// define( 'IET_CUSTOM_STYLE_HOSTNAME', 'evidence.laceproject.eu' );
 
 /**
  * The base configurations of the WordPress.
@@ -23,8 +23,8 @@
  * @package WordPress
  */
 
-//http://wpbeginner.com/wp-tutorials/how-to-disable-automatic-updates-in-wordpress/
-//define( 'WP_AUTO_UPDATE_CORE', false );
+// https://wpbeginner.com/wp-tutorials/how-to-disable-automatic-updates-in-wordpress/
+// define( 'WP_AUTO_UPDATE_CORE', false );
 
 
 
@@ -50,7 +50,7 @@ define('DB_COLLATE', '');
 
 
 /* Open University-specific configuration.
-   HTTP proxy (http://wpengineer.com/1227/wordpress-proxysupport)
+   HTTP proxy (https://wpengineer.com/1227/wordpress-proxysupport)
 */
 define('WP_PROXY_HOST', 'wwwcache.open.ac.uk');
 define('WP_PROXY_PORT', '80');
@@ -142,11 +142,11 @@ define( 'WP_EVIDENCE_HUB_URL_FIELD', TRUE );
 define( 'IET_ATTRIBUTION_COPYRIGHT_HTML',
   'Content &copy; %s <a href="http://www.laceproject.eu/"><abbr title=' .
   '"Learning Analytics Community Exchange">LACE</abbr> Consortium</a> and contributors' .
-  '<br><a href="/about/">About the LACE Evidence Hub</a>' );
+  '<br><a href="/about/">About the LACE Evidence Hub</a>' .
+  '<br><a href="https://www.open.ac.uk/privacy">Privacy policy</a>' );
 define( 'IET_ATTRIBUTION_LICENSE_CURIE', 'cc:by/4.0/88x31' );
 define( '_M_IET_ATTRIBUTION_CSS', '#iet-attribution-logo svg g { fill: #43672B; }' );
-#define( 'IET_ATTRIBUTION_AVATAR_ID', 'images/iet-logo-lace-green-28px.png' );
-
+# define( 'IET_ATTRIBUTION_AVATAR_ID', 'images/iet-logo-lace-green-28px.png' );
 
 
 /**#@+
